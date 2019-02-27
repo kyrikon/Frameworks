@@ -28,35 +28,35 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <lc:DockLayoutControl AllowItemSizing="True"  >
+        <lc:DockLayoutControl AllowItemSizing="True">
             <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
-                         lc:DockLayoutControl.Dock="Left"                         
-                         ShowShadow="WhenHasMouse" 
-                         CornerRadius="2" 
+                         lc:DockLayoutControl.Dock="Left"
+                         ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
                          TitleVisibility="Collapsed"
                          DisplayMode="Light"
                          Width="300"
                          HorizontalAlignment="Stretch"
-                         VerticalAlignment="Stretch"                         
+                         VerticalAlignment="Stretch"
                          Header="Navigation">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" >
+                <StackPanel Orientation="Vertical"
+                            VerticalAlignment="Stretch">
                     <TextBlock Style="{StaticResource HeaderStyle}"
                                Text="Navigation"
                                Margin="2,5,2,5" />
                     <TextBlock Style="{StaticResource TextBlockFormStyle}"
                                Text="Filter"
                                Margin="2,5,2,2" />
-                    <dxg:TreeListControl x:Name="treeList"                            
-                             CurrentItem="{Binding SelectedNode}"
-                             IsFilterEnabled="True"          
-                             BorderThickness="0"                                        
+                    <dxg:TreeListControl x:Name="treeList"
+                                         CurrentItem="{Binding SelectedNode}"
+                                         IsFilterEnabled="True"
+                                         BorderThickness="0"
                                          VerticalAlignment="Stretch"
                                          HorizontalAlignment="Stretch"
                                          ShowBorder="False"
-                             BorderBrush="Transparent"
-                             MaxHeight="1800"                                
-                             ItemsSource="{Binding MyRoot}">
-                       
+                                         BorderBrush="Transparent"
+                                         MaxHeight="1800"
+                                         ItemsSource="{Binding DM.Root}">
                         <dxg:TreeListControl.Columns>
                             <dxg:TreeListColumn AllowSorting="True"
                                                 Header="Name"
@@ -65,7 +65,7 @@
                                                 FilterPopupMode="Excel"
                                                 CellTemplateSelector="{StaticResource TreeItemSelector}" />
                         </dxg:TreeListControl.Columns>
-            <dxg:TreeListControl.View>
+                        <dxg:TreeListControl.View>
                             <dxg:TreeListView x:Name="view"
                                               Padding="2"
                                               Hlprs:TreeListExpandedNodesHelper.SynchIsExpanded="True"
@@ -89,7 +89,7 @@
                                               AutoWidth="True"
                                               NavigationStyle="Row" />
                         </dxg:TreeListControl.View>
-        </dxg:TreeListControl>
+                    </dxg:TreeListControl>
                 </StackPanel>
             </lc:GroupBox>
             <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
@@ -97,57 +97,57 @@
                          DisplayMode="Light"
                          Header="Content">
                 <StackPanel Orientation="Vertical">
-                    <Button Command="{Binding AddItemsCmd}" Content="Expand selected" />
+                    <Button Command="{Binding AddItemsCmd}"
+                            Content="Expand selected" />
                     <dxg:GridControl x:Name="DXgrdObjects"
-                                 MaxHeight="1800"
+                                     MaxHeight="1800"
                                      ItemsSource="{Binding SelectedNode.Children}"
-                                 Grid.Row="0"
-                                 Grid.Column="1"
-                                 SelectionMode="Cell">
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn Binding="{Binding Path=Key.StrKey}"
-                                        FieldName="Key"
-                                        ReadOnly="True"
-                                        AllowSorting="true"
-                                        Visible="True"
-                                        SortFieldName="Key"
-                                        Header="Key" />
-                        <dxg:GridColumn Binding="{Binding Path=Value.Parent[Name]}"
-                                        FieldName="Parent"
-                                        ReadOnly="True"
-                                        AllowSorting="true"
-                                        SortFieldName="Parent"
-                                        Header="Parent" />
-                        <dxg:GridColumn Binding="{Binding Path=Name,Mode=TwoWay}"
-                                        FieldName="Name"
-                                        ReadOnly="False"
-                                        Header="Name" />
-                        <dxg:GridColumn  Binding="{Binding Path=Description,Mode=TwoWay}"
-                                         FieldName="Description"
-                                         ReadOnly="False"
-                                         AllowSorting="true"
-                                         Header="Description"></dxg:GridColumn>
-                        <dxg:GridColumn Binding="{Binding Path=Value.IsSelected,Mode=TwoWay}"
-                                        Header="Selected"
-                                        FieldName="IsSelected">
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:CheckEdit HorizontalAlignment="Center"
-                                                   IsChecked="{Binding RowData.Row.Value.IsSelected}"
-                                                   IsEnabled="{Binding RowData.Row.Value.IsReadOnly,Converter={StaticResource NegBoolCvrt}}" />
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                    </dxg:GridControl.Columns>
-                    <dxg:GridControl.View>
-                        <dxg:TableView Name="ObjView"
-                                       ShowHorizontalLines="True"
-                                       NavigationStyle="Cell"></dxg:TableView>
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
+                                     Grid.Row="0"
+                                     Grid.Column="1"
+                                     SelectionMode="Cell">
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn Binding="{Binding Path=Key.StrKey}"
+                                            FieldName="Key"
+                                            ReadOnly="True"
+                                            AllowSorting="true"
+                                            Visible="True"
+                                            SortFieldName="Key"
+                                            Header="Key" />
+                            <dxg:GridColumn Binding="{Binding Path=Value.Parent[Name]}"
+                                            FieldName="Parent"
+                                            ReadOnly="True"
+                                            AllowSorting="true"
+                                            SortFieldName="Parent"
+                                            Header="Parent" />
+                            <dxg:GridColumn Binding="{Binding Path=Name,Mode=TwoWay}"
+                                            FieldName="Name"
+                                            ReadOnly="False"
+                                            Header="Name" />
+                            <dxg:GridColumn  Binding="{Binding Path=Description,Mode=TwoWay}"
+                                             FieldName="Description"
+                                             ReadOnly="False"
+                                             AllowSorting="true"
+                                             Header="Description"></dxg:GridColumn>
+                            <dxg:GridColumn Binding="{Binding Path=Value.IsSelected,Mode=TwoWay}"
+                                            Header="Selected"
+                                            FieldName="IsSelected">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <dxe:CheckEdit HorizontalAlignment="Center"
+                                                       IsChecked="{Binding RowData.Row.Value.IsSelected}"
+                                                       IsEnabled="{Binding RowData.Row.Value.IsReadOnly,Converter={StaticResource NegBoolCvrt}}" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                        <dxg:GridControl.View>
+                            <dxg:TableView Name="ObjView"
+                                           ShowHorizontalLines="True"
+                                           NavigationStyle="Cell"></dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
                 </StackPanel>
             </lc:GroupBox>
-           
         </lc:DockLayoutControl>
     </Grid>
 </UserControl>

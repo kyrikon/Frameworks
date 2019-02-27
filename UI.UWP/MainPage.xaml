@@ -7,8 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <StackPanel Orientation="Horizontal">
+    <Page.Resources>
+        <local:mainVM x:Key="ViewModel" />
+    </Page.Resources>
+    <StackPanel Orientation="Horizontal"
+                DataContext="{StaticResource ViewModel}">
         <TextBlock Text="{x:Bind VM.AString}" />
         <Button Command="{x:Bind VM.Cmd}" />
     </StackPanel>

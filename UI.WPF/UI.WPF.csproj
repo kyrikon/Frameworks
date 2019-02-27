@@ -220,10 +220,6 @@
     <Compile Include="Views\SimProject\CreateProject.xaml.cs">
       <DependentUpon>CreateProject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DataGrid\DataGridTest.xaml.cs">
-      <DependentUpon>DataGridTest.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataGrid\DataGridTestVM.cs" />
     <Compile Include="Views\Login\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -275,10 +271,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SimProject\CreateProject.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DataGrid\DataGridTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

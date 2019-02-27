@@ -171,6 +171,13 @@ namespace DataInterface
         {
             return value._Key;
         }
+        public static HKey RootKeyVal
+        {
+            get
+            { 
+                return (HKey)new int[] { 1 };
+            }
+        }
         #endregion
 
     }

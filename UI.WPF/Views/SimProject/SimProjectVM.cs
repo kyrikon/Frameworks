@@ -93,40 +93,7 @@ namespace UI.WPF.Views.SimProject
                 return _UId;
             }
         }
-        public UIHKeyDictionary mylist
-        {
-            get
-            {
-                return GetPropertyValue<UIHKeyDictionary>();
-            }
-            private set
-            {
-                if (GetPropertyValue<UIHKeyDictionary>() != value)
-                {
-                    SetPropertyValue<UIHKeyDictionary>(value);
-                }
-            }
-
-        }
-        public ObservableCollection<HDynamicObject> MyRoot
-        {
-            get
-            {
-                return GetPropertyValue<ObservableCollection<HDynamicObject>>();
-            }
-            private set
-            {
-                if (GetPropertyValue<ObservableCollection<HDynamicObject>>() != value)
-                {
-                    SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
-                }
-            }
-
-        }
-        public int Key
-        {
-            get; set;
-        }
+                
         public HDynamicObject SelectedNode
         {
             get
@@ -169,7 +136,6 @@ namespace UI.WPF.Views.SimProject
             if (DM.Root != null)
             {
                 DM.Clear();
-                MyRoot = new ObservableCollection<HDynamicObject>();
             }
         }        
         private async Task CreateProject()
@@ -228,7 +194,7 @@ namespace UI.WPF.Views.SimProject
         }
         private async void DM_ModelInitialized(object sender, EventArgs args)
         {
-            MyRoot = new ObservableCollection<HDynamicObject>((ICollection<HDynamicObject>)DM.Root.Values);
+            
             _SW1.Stop();
             GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
             if (_IsNew)
@@ -236,7 +202,7 @@ namespace UI.WPF.Views.SimProject
                 await DM.Save();
             }
             _IsNew = false;            
-            SelectedNode = MyRoot.FirstOrDefault();
+            SelectedNode = DM.Root.FirstOrDefault();
         }
         #endregion
     }

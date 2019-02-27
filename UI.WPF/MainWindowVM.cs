@@ -27,7 +27,6 @@ using System.Windows.Media;
 using UI.WPF.Singletons;
 using UI.WPF.Views;
 using UI.WPF.Views.ConnectionBar;
-using UI.WPF.Views.DataGrid;
 using UI.WPF.Views.Settings;
 using UI.WPF.Views.SimProject;
 using HDynamicObject = DataInterface.HDynamicObject;

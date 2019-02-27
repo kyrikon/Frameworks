@@ -13,7 +13,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace UI.UWP
 {
@@ -25,12 +24,16 @@ namespace UI.UWP
         public MainPage()
         {
             this.InitializeComponent();
-            VM = new mainVM();
+            DataContextChanged += (s, e) =>
+            {
+                VM = DataContext as mainVM;
+            };
+            DataContext = new mainVM();
         }
 
         public mainVM VM
         {
-            get;set;
+            get; set;
         }
     }
 }
