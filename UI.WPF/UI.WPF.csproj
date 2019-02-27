@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B9E9D7B8-42D0-48FD-9A9E-9B10C3566D62}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>UI.WPF</RootNamespace>
+    <AssemblyName>UI.WPF</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>5439ACCDBD67D7F316D29F51DF054886992E157A</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>PLEXOS.UI_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Data.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Docs.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Docs.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Mvvm.v17.2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Spreadsheet.v17.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Accordion.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Accordion.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Controls.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.Core.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Diagram.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Diagram.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.Docking.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Grid.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Grid.v17.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v17.2.Extensions, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Grid.v17.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Layout.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Layout.v17.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.LayoutControl.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.LayoutControl.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.NavBar.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.NavBar.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Ribbon.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Ribbon.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Spreadsheet.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Spreadsheet.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Black.v17.2, Version=17.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.Themes.Black.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.ligero.v17.2">
+      <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Themes.ligero.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Oscuro.v17.2, Version=17.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Themes.Oscuro.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
+    <Compile Include="Helpers\BindableExpandingBehavior.cs" />
+    <Compile Include="Helpers\TreeItemTemplateSelector.cs" />
+    <Compile Include="Helpers\ConnectionTemplateSelector.cs" />
+    <Compile Include="Helpers\TreeListExpandedNodesHelper.cs" />
+    <Compile Include="MainWindowVM.cs" />
+    <Compile Include="Models\DataModel.cs" />
+    <Compile Include="Models\HierarchyFactory.cs" />
+    <Compile Include="Models\UIHKeyDictionary.cs" />
+    <Compile Include="Models\UIObservableConcurrentDictionary.cs" />
+    <Compile Include="ResourceDictionaries\BrushResource.xaml.cs">
+      <DependentUpon>BrushResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDictionaries\DataTemplateResource.xaml.cs">
+      <DependentUpon>DataTemplateResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDictionaries\StyleResource.xaml.cs">
+      <DependentUpon>StyleResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Singletons\GlobalLogging.cs" />
+    <Compile Include="Singletons\GlobalSettings.cs" />
+    <Compile Include="Views\ConnectionBar\ConnectionBar.xaml.cs">
+      <DependentUpon>ConnectionBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
+    <Compile Include="Views\Settings\AppSettings.xaml.cs">
+      <DependentUpon>AppSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shell\Blank.xaml.cs">
+      <DependentUpon>Blank.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimProject\CreateProject.xaml.cs">
+      <DependentUpon>CreateProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataGrid\DataGridTest.xaml.cs">
+      <DependentUpon>DataGridTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataGrid\DataGridTestVM.cs" />
+    <Compile Include="Views\Login\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Login\LoginVM.cs" />
+    <Compile Include="Views\Shell\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimProject\ProjectMainView.xaml.cs">
+      <DependentUpon>ProjectMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimProject\SimProjectVM.cs" />
+    <Compile Include="Views\StatusBar\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="ResourceDictionaries\BrushResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionaries\DataTemplateResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionaries\StyleResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ConnectionBar\ConnectionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Settings\AppSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Shell\Blank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimProject\CreateProject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataGrid\DataGridTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Login\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shell\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimProject\ProjectMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\StatusBar\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\FluentWPF-master\FluentWPF\FluentWPF.csproj">
+      <Project>{061b1dd9-815b-437f-8cd6-d20923bc0af4}</Project>
+      <Name>FluentWPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AssetsNet\AssetsNet.csproj">
+      <Project>{4bffda53-6778-4330-8398-3483424a0c57}</Project>
+      <Name>AssetsNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{e76992ee-af66-40a2-afeb-2f864e440190}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataInterface\DataInterface.csproj">
+      <Project>{30fb32f6-ab8d-446c-b867-f483a62fa95f}</Project>
+      <Name>DataInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataSource\DataSource.csproj">
+      <Project>{7b5dfe42-b6ff-415a-b19b-62cf6e8c52eb}</Project>
+      <Name>DataSource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator">
+      <Version>2.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="IdentityModel">
+      <Version>4.0.0-bunnahabhain</Version>
+    </PackageReference>
+    <PackageReference Include="LoadingIndicators.WPF">
+      <Version>0.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Platforms">
+      <Version>3.0.0-preview.19073.11</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Targets.NETFramework">
+      <Version>4.6.1-beta-23516</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Owin.Security.Jwt">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="NETStandard.Library">
+      <Version>2.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+      <Version>5.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reactive">
+      <Version>4.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reactive.Linq">
+      <Version>4.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime">
+      <Version>4.3.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Azure.DocumentDB.1.19.1\build\Microsoft.Azure.DocumentDB.targets" Condition="Exists('..\packages\Microsoft.Azure.DocumentDB.1.19.1\build\Microsoft.Azure.DocumentDB.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+  </Target>
+  <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Import Project="..\packages\Mono.Security.5.4.0.201\build\net45\Mono.Security.targets" Condition="Exists('..\packages\Mono.Security.5.4.0.201\build\net45\Mono.Security.targets')" />
+</Project>

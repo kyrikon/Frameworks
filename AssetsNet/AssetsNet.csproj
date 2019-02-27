@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BFFDA53-6778-4330-8398-3483424A0C57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AssetsNet</RootNamespace>
+    <AssemblyName>AssetsNet</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_add_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_add_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_clear_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_clear_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_library_add_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_playlist_add_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_playlist_add_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_remove_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_remove_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_select_all_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_select_all_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_star_border_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\baseline_star_border_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_add_box_white_18pt_2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_content_copy_white_48pt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_content_cut_white_48pt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_content_paste_white_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_delete_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_delete_sweep_white_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_delete_white_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_save_white_18pt_3x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_save_white_48pt_2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_settings_input_component_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_settings_white_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_star_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_view_list_white_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_folder_open_white_24dp.png" />
+    <Resource Include="Images\ic_folder_white_24dp.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

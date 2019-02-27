@@ -1,0 +1,96 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData.AddActivePage(ManageNavPages.Index);
+}
+
+<h4>@ViewData["Title"]</h4>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                
+        
+
+            @if (User.IsInRole("Admin"))
+            {
+                <label asp-for="Role"></label>                       
+                        @Html.DropDownListFor(n => n.Role, new SelectList(Model.AspNetRoles, "Name", "Name", Model.Role), new { @class = "form-control", @id = "RoleList" })
+            }
+            else
+            {
+                <label asp-for="Role"></label>
+                <input asp-for="Role" class="form-control" disabled />
+            }
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        @if (Model.IsEmailConfirmed)
+        {
+            <div class="input-group">
+                <input asp-for="Email" class="form-control" />
+                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+            </div>
+        }
+        else
+        {
+            <input asp-for="Email" class="form-control" />
+                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+        }
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    @*<div class="form-group">*@
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="checkbox">
+            <label><input asp-for="IsAccountEnabled" class="checkbox" />Account Enabled</label>
+        </div>
+                    <div class="form-horizontal">
+                        <label for="OrgList" class="form-inline">
+                            Organization
+                            @*<select asp-for="@Model.OrganizationID"  asp-items="@(new SelectList(Model.Organizations,"ID","Name",Model.OrganizationID))" class="form-control" />*@
+                            @Html.DropDownListFor(n => n.OrganizationID, new SelectList(Model.Organizations, "ID", "Name", Model.OrganizationID), new { @class = "form-control", @id = "OrgList" })
+                        </label>
+                    </div>
+                        @*<select asp-for="Organization.ID" asp-items="@(new SelectList(Model.Organizations,"ID","Name"))" class="form-control"  />*@
+
+    }
+    else
+    {
+        <div class="form-group">
+            @if (Model.IsAccountEnabled)
+            {
+                <label>Is Account Active</label><span style="padding-left: 15px;" class="glyphicon glyphicon-ok text-success" />
+            }
+            else
+            {
+                <label>Is Account Active</label><span style="padding-left: 15px;" class="glyphicon glyphicon-remove text-danger" />
+            }
+        </div>
+                    <div class="form-horizontal">
+                        <label class="form-inline">
+                            Organization
+                            <input asp-for="Organization.Name" class="form-control" disabled />
+                        </label>
+                    </div>
+    }
+    @Html.HiddenFor(x => x.Organizations)
+    <hr />
+    <button type="submit" class="btn btn-default">Save</button>
+    @*</div>*@
+
+    </form>
+</div>
+
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

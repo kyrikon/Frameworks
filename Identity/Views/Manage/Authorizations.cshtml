@@ -1,0 +1,71 @@
+﻿@using Core.Models
+@model List<UserApiAccess>
+
+@{
+    ViewData["Title"] = "Authorizations";
+    ViewData.AddActivePage(ManageNavPages.Authorizations);
+
+}
+ @Html.Partial("_StatusMessage", ViewData["StatusMessage"])
+<h4>@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" asp-action="Authorizations" role="form">
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+           
+            <div class="form-group">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                API Name
+                            </th>
+                            <th>Access</th>
+                            <th>Hub</th>
+                            <th>Device ID</th>
+                            <th>Device Key</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(int i = 0; i < Model.Count(); i++)
+                        {
+                        <tr>
+                            <th>@Model[i].APIResourceDescription</th>
+                            @if (User.IsInRole("Admin"))
+    {
+                        <th> @Html.DropDownListFor(n => Model[i].ApiAccess, Html.GetEnumSelectList<APIAccess>(), new { @class = "form-control", @id = "RoleList" })</th>
+                        @Html.HiddenFor(x => x[i].APIResourceID)
+                        <th>
+                            @Html.EditorFor(x => x[i].NotificationEndpoint)
+                        </th>
+                        <th>
+                            @Html.EditorFor(x => x[i].DeviceID)
+                        </th>
+                        <th>
+                            @Html.EditorFor(x => x[i].DeviceKey)
+                        </th>
+}
+else
+{
+                        <th>@Model[i].ApiAccess</th>
+}
+
+
+                        </tr>
+
+                        }
+                    </tbody>
+                </table>
+              
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-default">Save</button>
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+

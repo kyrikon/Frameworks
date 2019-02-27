@@ -1,0 +1,66 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:UI.WPF.ResourceDictionaries"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    x:Class="UI.WPF.ResourceDictionaries.BrushResource"
+                    x:ClassModifier="public"
+                    mc:Ignorable="d">
+     
+    <!--#region Brush Styles-->
+    <SolidColorBrush x:Key="SeperatorCol"
+                     Color="NavajoWhite" />
+    <SolidColorBrush x:Key="ButtonBgCol"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="ButtonBorder"
+                     Color="Silver" />
+    <SolidColorBrush x:Key="RedFormHighlight"
+                     Color="#B5433A" />
+    <SolidColorBrush x:Key="LightRedFormHighlight"
+                     Color="#F08575" />
+    <SolidColorBrush x:Key="BlueFormHighlight"
+                     Color="#7194C1" />
+    <SolidColorBrush x:Key="YellowFormHighlight"
+                     Color="#fffa97" />
+    <SolidColorBrush x:Key="OrangeFormHighlight"
+                     Color="#ffd6b1" />
+    <SolidColorBrush x:Key="GreenFormHighlight"
+                     Color="#dde5d0" />
+    <SolidColorBrush x:Key="DarkGreenFormHighlight"
+                     Color="#467563" />
+    <SolidColorBrush x:Key="FormBorderBackGround"
+                     Color="#bfd4ef" />
+    <Color x:Key="ShadowColour">Silver</Color>
+    <Color x:Key="BorderBG">#7194C1</Color> 
+    <!--#endregion-->
+    <!--region Images #E8766D #FF9087-->
+    
+    <BitmapImage x:Key="AddGroup"
+                 UriSource="pack://application:,,/AssetsNet;component/Images/baseline_playlist_add_white_18dp.png" />
+    <BitmapImage x:Key="NewProject"
+                 UriSource="pack://application:,,/AssetsNet;component/Images/baseline_add_white_18dp.png" />
+    <BitmapImage x:Key="FavouritesIcon"            
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_star_white_18dp.png" />
+    <BitmapImage x:Key="DeleteGrpIco"            
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_delete_sweep_white_24dp.png" />
+    <BitmapImage x:Key="DeleteItemIco"           
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_delete_white_24dp.png" />
+    <BitmapImage x:Key="ConnectedIco"            
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_settings_input_component_white_18dp.png" />
+    <BitmapImage x:Key="ConfigIcon"               
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_settings_white_48dp.png" />
+    <BitmapImage x:Key="SaveIcon"                
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_save_white_48pt_2x.png" />
+    <BitmapImage x:Key="SaveAsIcon"            
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_save_white_18pt_3x.png" />
+    <BitmapImage x:Key="CutIcon"                 
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_content_cut_white_48pt.png" />
+    <BitmapImage x:Key="CopyIcon"                
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_content_copy_white_48pt.png" />
+    <BitmapImage x:Key="PasteIcon"               
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_content_paste_white_48dp.png" />
+    <BitmapImage x:Key="FolderIconOpen"
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_folder_open_white_24dp.png" />
+    <BitmapImage x:Key="FolderIconClosed"               
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_folder_white_24dp.png" />
+</ResourceDictionary>

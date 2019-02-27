@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\baseline_add_black_18dp.png" />
+    <None Remove="Images\baseline_add_white_18dp.png" />
+    <None Remove="Images\baseline_clear_black_18dp.png" />
+    <None Remove="Images\baseline_clear_white_18dp.png" />
+    <None Remove="Images\baseline_library_add_black_18dp.png" />
+    <None Remove="Images\baseline_playlist_add_black_18dp.png" />
+    <None Remove="Images\baseline_playlist_add_white_18dp.png" />
+    <None Remove="Images\baseline_remove_black_18dp.png" />
+    <None Remove="Images\baseline_remove_white_18dp.png" />
+    <None Remove="Images\baseline_select_all_black_18dp.png" />
+    <None Remove="Images\baseline_select_all_white_18dp.png" />
+    <None Remove="Images\baseline_star_border_black_18dp.png" />
+    <None Remove="Images\baseline_star_border_white_18dp.png" />
+    <None Remove="Images\ic_add_box_white_18pt_2x.png" />
+    <None Remove="Images\ic_content_copy_white_48pt.png" />
+    <None Remove="Images\ic_content_cut_white_48pt.png" />
+    <None Remove="Images\ic_content_paste_white_48dp.png" />
+    <None Remove="Images\ic_delete_black_18dp.png" />
+    <None Remove="Images\ic_delete_sweep_white_24dp.png" />
+    <None Remove="Images\ic_delete_white_24dp.png" />
+    <None Remove="Images\ic_save_white_18pt_3x.png" />
+    <None Remove="Images\ic_save_white_48pt_2x.png" />
+    <None Remove="Images\ic_settings_input_component_white_18dp.png" />
+    <None Remove="Images\ic_settings_white_48dp.png" />
+    <None Remove="Images\ic_star_white_18dp.png" />
+    <None Remove="Images\ic_view_list_white_24dp.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\baseline_add_black_18dp.png" />
+    <Resource Include="Images\baseline_add_white_18dp.png" />
+    <Resource Include="Images\baseline_clear_black_18dp.png" />
+    <Resource Include="Images\baseline_clear_white_18dp.png" />
+    <Resource Include="Images\baseline_library_add_black_18dp.png" />
+    <Resource Include="Images\baseline_playlist_add_black_18dp.png" />
+    <Resource Include="Images\baseline_playlist_add_white_18dp.png" />
+    <Resource Include="Images\baseline_remove_black_18dp.png" />
+    <Resource Include="Images\baseline_remove_white_18dp.png" />
+    <Resource Include="Images\baseline_select_all_black_18dp.png" />
+    <Resource Include="Images\baseline_select_all_white_18dp.png" />
+    <Resource Include="Images\baseline_star_border_black_18dp.png" />
+    <Resource Include="Images\baseline_star_border_white_18dp.png" />
+    <Resource Include="Images\ic_add_box_white_18pt_2x.png" />
+    <Resource Include="Images\ic_content_copy_white_48pt.png" />
+    <Resource Include="Images\ic_content_cut_white_48pt.png" />
+    <Resource Include="Images\ic_content_paste_white_48dp.png" />
+    <Resource Include="Images\ic_delete_black_18dp.png" />
+    <Resource Include="Images\ic_delete_sweep_white_24dp.png" />
+    <Resource Include="Images\ic_delete_white_24dp.png" />
+    <Resource Include="Images\ic_save_white_18pt_3x.png" />
+    <Resource Include="Images\ic_save_white_48pt_2x.png" />
+    <Resource Include="Images\ic_settings_input_component_white_18dp.png" />
+    <Resource Include="Images\ic_settings_white_48dp.png" />
+    <Resource Include="Images\ic_star_white_18dp.png" />
+    <Resource Include="Images\ic_view_list_white_24dp.png" />
+  </ItemGroup>
+
+</Project>
