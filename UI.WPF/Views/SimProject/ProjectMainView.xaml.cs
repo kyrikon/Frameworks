@@ -32,7 +32,7 @@ namespace UI.WPF.Views.SimProject
 
         private void treeList_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
         {
-
+          
         }
 
         private void view_ShowingEditor(object sender, DevExpress.Xpf.Grid.TreeList.TreeListShowingEditorEventArgs e)

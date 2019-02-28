@@ -211,6 +211,9 @@
       <DependentUpon>ConnectionBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
+    <Compile Include="Views\Forms\DetailsForm.xaml.cs">
+      <DependentUpon>DetailsForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings\AppSettings.xaml.cs">
       <DependentUpon>AppSettings.xaml</DependentUpon>
     </Compile>
@@ -259,6 +262,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConnectionBar\ConnectionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Forms\DetailsForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -7,6 +7,7 @@
                     x:ClassModifier="public"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -130,12 +131,14 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type TextBox}"  x:Key="TextBoxFormStyle">
-
+    <Style TargetType="{x:Type TextBox}"
+           x:Key="TextBoxFormStyle">
         <Setter Property="Margin"
                 Value="2" />
         <Setter Property="Height"
                 Value="30"/>
+        <Setter Property="MaxWidth"
+                Value="350" />
         <Setter Property="FontSize"                
                 Value="{StaticResource FormSize}" />
         <Setter Property="HorizontalAlignment"
@@ -146,7 +149,6 @@
                 Value="Center"/>
     </Style>
     <Style TargetType="{x:Type ComboBox}"  x:Key="ComboBoxFormStyle">
-
         <Setter Property="Padding"
                 Value="2" />
         <Setter Property="Margin"
@@ -160,7 +162,38 @@
         <Setter Property="Height"
                 Value="30"/>
     </Style>
-    
+   
+    <Style TargetType="{x:Type lc:LayoutItemLabel}"
+           x:Key="LabelFormStyle">
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="FontSize"
+                Value="{StaticResource FormLabelSize}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="Height"
+                Value="30" />
+    </Style>
+    <Style TargetType="{x:Type lc:LayoutItem}"
+           x:Key="LayoutItemFormStyle">
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="Margin"
+                Value="2" />
+       
+        <Setter Property="FontSize"
+                Value="{StaticResource HOneSize}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="Height"
+                Value="30" />
+    </Style> 
     <!--#endregion-->
 
    

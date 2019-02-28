@@ -63,4 +63,6 @@
                  UriSource="pack://application:,,/AssetsNet;component/Images/ic_folder_open_white_24dp.png" />
     <BitmapImage x:Key="FolderIconClosed"               
                  UriSource="pack://application:,,/AssetsNet;component/Images/ic_folder_white_24dp.png" />
+    <BitmapImage x:Key="EditIcon"
+                 UriSource="pack://application:,,/AssetsNet;component/Images/ic_edit_white_18pt_2x.png" /> 
 </ResourceDictionary>

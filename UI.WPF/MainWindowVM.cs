@@ -68,7 +68,7 @@ namespace UI.WPF
             AppSettingsCmd = new DelegateCommand(() => AppSettings());
             SaveConfigCmd = new DelegateCommand(() => SaveConfig());
             CancelConfigCmd = new DelegateCommand(() => CancelConfig());
-
+            SaveProjectCmd = new DelegateCommand(() => SaveProject().Wait());
             //set up progress bar 
             BarStyleSetting = new ProgressBarStyleSettings();
             ShowProgress = false;
@@ -89,7 +89,9 @@ namespace UI.WPF
             GlobalLogging.AddLog(LogTypes.Status, "Initialization Complete");
         }
 
-        
+       
+
+
         #endregion
         #region Commands   
 
@@ -123,7 +125,11 @@ namespace UI.WPF
             get;
             private set;
         }
-        
+        public DelegateCommand SaveProjectCmd
+        {
+            get;
+            private set;
+        }
         #endregion
         #region Properties
 
@@ -393,7 +399,10 @@ namespace UI.WPF
             }
             return new DataObject();
         }
-
+        private async Task  SaveProject()
+        {
+            await _Projects[_CurrentProject].DM.Save();
+        }
         #endregion
         #region Event Callbacks        
 

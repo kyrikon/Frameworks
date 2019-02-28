@@ -28,12 +28,14 @@ namespace UI.WPF.Models
         {
             Hierarchy = new DataObjectHierarchy();
             DataSource = DS;
+            KeyValueEnums = new ObservableConcurrentDictionary<string, KeyValueEnum<object>>();
         }
         public DataModel(IDataSource DS, DataObjectHierarchy _Hierarchy)
         {
             Hierarchy = _Hierarchy;
             DataSource = DS;
             Objects = new UIHKeyDictionary();
+            KeyValueEnums = new ObservableConcurrentDictionary<string, KeyValueEnum<object>>();
         }
 
         #endregion
@@ -105,6 +107,21 @@ namespace UI.WPF.Models
                 }
             }
 
+        }
+
+        public ObservableConcurrentDictionary<string, KeyValueEnum<object>> KeyValueEnums
+        {
+            get
+            {
+                return GetPropertyValue<ObservableConcurrentDictionary<string, KeyValueEnum<object>>>();
+            }
+            private set
+            {
+                if (GetPropertyValue<ObservableConcurrentDictionary<string, KeyValueEnum<object>>>() != value)
+                {
+                    SetPropertyValue<ObservableConcurrentDictionary<string, KeyValueEnum<object>>>(value);
+                }
+            }
         }
         #endregion
         #region Methods    
@@ -227,6 +244,10 @@ namespace UI.WPF.Models
                     TreeListExpandedNodesHelper.RegisterBaseObject(itm);
                 });
             }
+        }
+        public void AddEnum()
+        {
+           
         }
         // to be implemented
         // Get from storage

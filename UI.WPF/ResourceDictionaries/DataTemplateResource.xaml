@@ -22,6 +22,7 @@
     <sys:Double x:Key="ButtonWidth">96</sys:Double>
     <sys:Double x:Key="FormSize">14</sys:Double>
     <sys:Double x:Key="FormLabelSize">16</sys:Double>
+    <sys:Double x:Key="HighlightHeight">40</sys:Double>
     <!---->
     
     
@@ -154,4 +155,24 @@
         </StackPanel>
     </DataTemplate>
    
+    <!-- GroupBox DataTemplates-->
+    <DataTemplate x:Key="LayoutGroupHeaderTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource HeaderStyle}"
+                       Text="Details"
+                       Grid.Column="0" />
+            <dx:SimpleButton
+                             Grid.Column="1"
+                             HorizontalAlignment="Right"
+                             Height="22"
+               BorderBrush="Transparent"
+                BorderThickness="0"
+                             Glyph="{StaticResource EditIcon}" />
+        </Grid>
+    </DataTemplate>
+    <!---->
 </ResourceDictionary>

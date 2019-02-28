@@ -125,5 +125,8 @@
     <Resource Include="Images\ic_folder_open_white_24dp.png" />
     <Resource Include="Images\ic_folder_white_24dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_edit_white_18pt_2x.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

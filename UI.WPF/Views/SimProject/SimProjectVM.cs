@@ -21,6 +21,7 @@ using System.Xml.Schema;
 using System.Dynamic;
 using UI.WPF.Helpers;
 using DelegateCommand = DevExpress.Mvvm.DelegateCommand;
+using System.Windows.Media.Imaging;
 
 namespace UI.WPF.Views.SimProject
 {
@@ -109,11 +110,38 @@ namespace UI.WPF.Views.SimProject
                     {
                         GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
                     }
+                    OnPropertyChanged("HasSelectedNode");
+                    OnPropertyChanged("SelectedNodeImage");
                 }
             }
 
         }
-        
+       
+        public bool HasSelectedNode
+        {
+            get
+            {
+                return SelectedNode != null;
+            }
+        }
+        public BitmapImage SelectedNodeImage
+        {
+            get
+            {
+                if (HasSelectedNode)
+                {
+                    if (SelectedNode.HID.IsRoot)
+                    {
+                        return App.Current.TryFindResource("FolderIconClosed") as BitmapImage;
+                    }
+                    else
+                    {
+                        return App.Current.TryFindResource("SaveIcon") as BitmapImage;
+                    }
+                }
+                return  App.Current.TryFindResource("FavouritesIcon") as BitmapImage; 
+            }
+        }
         public string Validation
         {
             get

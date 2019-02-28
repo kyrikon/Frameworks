@@ -28,7 +28,8 @@
                 <dxr:RibbonPage Caption="Home">
                     <dxr:RibbonPageGroup Caption="File">
                         <dxb:BarSplitButtonItem Content="Save"
-                                                GlyphSize="Large"                                      
+                                                GlyphSize="Large"
+                                                Command="{Binding SaveProjectCmd}"
                                                 LargeGlyph="{StaticResource SaveIcon}">
                             <dxb:BarSplitButtonItem.PopupControl>
                                 <dxb:PopupMenu>
