@@ -49,9 +49,15 @@
                     Grid.Row="2"                    
                     Grid.Column="1">
             <Image Source="{Binding SelectedNodeImage}" SourceUpdated="Image_SourceUpdated" Height="32" Width="32"  HorizontalAlignment="Left"/>
-           
+            <TextBlock Style="{StaticResource TextBlockFormStyle}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Key {0}">
+                        <Binding Path="SelectedNode.HID.StrKey" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
             <TextBlock Text="Name"                                
-                   Style="{StaticResource TextBlockFormStyle}" />
+                   Style="{StaticResource TextBlockFormStyle}" Margin="2,10,2,6" />
             <TextBox Text="{Binding SelectedNode.Name}"
                      Style="{StaticResource TextBoxFormStyle}" HorizontalAlignment="Left"
                      Width="{Binding RelativeSource={RelativeSource Self}, Path=MaxWidth}" />

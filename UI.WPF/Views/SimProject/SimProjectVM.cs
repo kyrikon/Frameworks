@@ -112,9 +112,9 @@ namespace UI.WPF.Views.SimProject
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
-                }
+                }                
             }
-
+            
         }
        
         public bool HasSelectedNode
