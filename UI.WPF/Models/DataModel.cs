@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UI.WPF.Helpers;
+using UI.WPF.Singletons;
 
 namespace UI.WPF.Models
 {
@@ -86,7 +87,6 @@ namespace UI.WPF.Models
                     SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
                 }
             }
-
         }
         public HDynamicObject CurrentItem
         {
@@ -293,8 +293,9 @@ namespace UI.WPF.Models
                         }
                     }
                     else
-                    {
-                        Root.Add(e.NewVal.Value);                       
+                    {                        
+                        Root.Add(e.NewVal.Value);
+                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Root Added");
                     }
                     break;
                 case CollectionAction.Remove:
@@ -324,15 +325,12 @@ namespace UI.WPF.Models
         private async void DataSource_DataInitializedEvent(object sender, DataInitializedEventEventArgs args)
         {
             await Task.Run(() =>
-                {
-                    
-                    Objects.AddList(_Rslt.OrderBy(x => x.Key));
-                    
-
+                {                    
+                   Objects.AddList(_Rslt.OrderBy(x => x.Key));
                     Objects.EndEdit(_Rslt);
                 });
            
-            SetCurrenItem(HKey.RootKeyVal);
+           // SetCurrenItem(HKey.RootKeyVal);
             OnModelInitialized(new EventArgs());
         }
         #endregion

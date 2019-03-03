@@ -59,10 +59,10 @@ namespace DataInterface
                 TreeChangedEventArgs<T1,T2> TArgs;
                 if(this.ContainsKey(Key))
                 {
-                    Act = NotifyCollectionChangedAction.Replace;
+                    Act = NotifyCollectionChangedAction.Reset;
                     KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, value);
                     KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(Key, this[Key]);
-                    Args = new NotifyCollectionChangedEventArgs(Act, NewVal, OldVal);
+                    Args = new NotifyCollectionChangedEventArgs(Act);
                     TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace,NewVal = NewVal,OldVal = OldVal };
                 }
                 else
@@ -154,7 +154,7 @@ namespace DataInterface
                 Act = NotifyCollectionChangedAction.Replace;
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, Value);
                 KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(Key, this[Key]);
-                Args = new  NotifyCollectionChangedEventArgs(Act,NewVal,OldVal);
+                Args = new  NotifyCollectionChangedEventArgs(Act,NewVal,OldVal,0);
                 TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, NewVal = NewVal, OldVal = OldVal };
             }
             else
@@ -163,10 +163,11 @@ namespace DataInterface
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, Value);
                 Args =  new NotifyCollectionChangedEventArgs(Act, NewVal);
                 TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
+                OnCollectionChanged(Args);
             }
             T2 RetVal = base.AddOrUpdate(Key, Value, (k, val) => Value);
             OnTreeChanged(TArgs);
-            OnCollectionChanged(Args);            
+                    
             return RetVal;
         }
         public T2 AddOrUpdate(KeyValuePair<T1, T2> KVP)

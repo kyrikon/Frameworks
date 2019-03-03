@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DataInterface
 {
-    public interface IDataObject
+    public interface IDataObject 
     {
 
         #region Events / Delegates
@@ -15,7 +15,6 @@ namespace DataInterface
         bool IsModified { get; }
         bool DeleteDenied { get; }
         string LastFieldEdited { get; }
-        string[] Fields { get; }
         double VersionTimestamp { get; }
         bool IsContainer { get; set; }
         #endregion
@@ -32,8 +31,8 @@ namespace DataInterface
         void RevertChanges(string key);
         void Undo();
         void UndoChange(string key);
-        KeyValuePair<string, Tuple<dynamic, string>>[] ToArray();
-        void FromArray(KeyValuePair<string, dynamic>[] ObjValues);
+        KeyValuePair<string, Tuple<Object, string>>[] ToArray();
+        void FromArray(KeyValuePair<string, Object>[] ObjValues);
 
         void CastProps();
         #endregion

@@ -1,23 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
 using System.Collections.Concurrent;
-using Newtonsoft.Json;
-using Core.Helpers;
-using System.Linq;
-using Core.Extensions;
-using System.Windows.Data;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace DataInterface
 {
     [Serializable]
-    public abstract class DynamicObjectBase : INotifyPropertyChanged, IDataObject, ICustomTypeDescriptor
+    public abstract class ObjectObjectBase : INotifyPropertyChanged, IDataObject, ICustomTypeDescriptor//, IDictionary<string, object>
     {
         // Considerations for base class
-        // 1. Dynamic nature
+        // 1. Object nature
         // 2. (De) Serialization - parameterless constructor
         // 3. Edit Auditing
         // 4. Syncronization with backing data store (multi user)
@@ -29,7 +27,7 @@ namespace DataInterface
         #endregion
 
         #region Constructors
-        protected DynamicObjectBase(bool _Transactional = false)
+        protected ObjectObjectBase(bool _Transactional = false)
         {
             GetPropNames();
             ObjectData = new DataObjectDictionary();
@@ -37,9 +35,9 @@ namespace DataInterface
             ModifiedData = new ObservableConcurrentDictionary<string, ConcurrentStack<ModifiedDataItem>>();
             EditStack = new ConcurrentStack<string>();
             IsTransactional = _Transactional;
-           
+
         }
-        protected DynamicObjectBase(KeyValuePair<string, dynamic>[] InitArray, bool _Transactional = false)
+        protected ObjectObjectBase(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false)
         {
             GetPropNames();
             ObjectData = new DataObjectDictionary();
@@ -54,23 +52,23 @@ namespace DataInterface
         #endregion
         #region Properties
 
-        public dynamic this[string key]
+        public Object this[string key]
         {
             get
             {
-                dynamic tmpItem;
-                ObjectData.TryGetValue(key.ToLower(), out tmpItem);
+                Object tmpItem;
+                ObjectData.TryGetValue(key, out tmpItem);
                 return tmpItem;
             }
             set
             {
 
                 double TimeStamp = DateTime.Now.ToOADate();
-                SetModified(key.ToLower(), TimeStamp);
-                ObjectData.AddOrUpdate(key.ToLower(), value);
-                ObjectType.AddOrUpdate(key.ToLower(), value.GetType().AssemblyQualifiedName);
+                SetModified(key, TimeStamp);
+                ObjectData[key] =  value;
+                ObjectType[key] = value.GetType().AssemblyQualifiedName;
                 OnPropertyChanged(Binding.IndexerName);
-                OnPropertyChanged(key.ToLower());
+                OnPropertyChanged(key);
             }
         }
         [JsonProperty]
@@ -126,6 +124,23 @@ namespace DataInterface
                 return ObjectData.Keys.OrderBy(x => x).ToArray();
             }
         }
+
+        //[JsonIgnore]
+        //public PropertyDetails[] ObjectDetails
+        //{
+        //    get
+        //    {
+        //        PropertyDetails[] GetDetails = new PropertyDetails[ObjectData.Count];
+        //        int ItmCnt = 0;
+        //        foreach (var Itm in ObjectData)
+        //        {
+        //            var ss = ItmCnt.GetType().GetEditor();
+        //            GetDetails[ItmCnt] = new PropertyDetails() { PropName = Itm.Key, PropValue = Itm.Value, PropType = Itm.Value.GetType(), PropEditor = ((Type)Itm.Value.GetType()).GetEditor() };
+        //            ItmCnt++;
+        //        }
+        //        return GetDetails;
+        //    }
+        //}
         [JsonIgnore]
         public string FieldString
         {
@@ -135,7 +150,7 @@ namespace DataInterface
             }
         }
         [JsonProperty]
-        protected DataObjectDictionary ObjectData { get; }
+        public DataObjectDictionary ObjectData { get; }
         [JsonProperty]
         protected DataTypeDictionary ObjectType { get; }
         private ObservableConcurrentDictionary<string, ConcurrentStack<ModifiedDataItem>> ModifiedData { get; }
@@ -237,6 +252,8 @@ namespace DataInterface
                 }
             }
         }
+
+
         #endregion
         #region Methods     
         public T GetValue<T>(string key)
@@ -252,7 +269,7 @@ namespace DataInterface
                 return (T)Convert.ChangeType(tmpItem, typeof(T));
             }
         }
-        public dynamic GetValue(string key)
+        public Object GetValue(string key)
         {
             object tmpItem;
             ObjectData.TryGetValue(key, out tmpItem);
@@ -421,29 +438,29 @@ namespace DataInterface
             return new ModifiedDataItem[] { };
         }
 
-        public KeyValuePair<string, Tuple<dynamic, string>>[] ToArray()
+        public KeyValuePair<string, Tuple<Object, string>>[] ToArray()
         {
-            KeyValuePair<string, Tuple<dynamic, string>>[] Tmp = new KeyValuePair<string, Tuple<dynamic, string>>[ObjectData.Count];
+            KeyValuePair<string, Tuple<Object, string>>[] Tmp = new KeyValuePair<string, Tuple<Object, string>>[ObjectData.Count];
             int lineCnt = 0;
             foreach (var line in ObjectData)
             {
-                Tmp[lineCnt] = new KeyValuePair<string, Tuple<dynamic, string>>(line.Key, new Tuple<dynamic, string>(line.Value, line.GetType().AssemblyQualifiedName));
+                Tmp[lineCnt] = new KeyValuePair<string, Tuple<Object, string>>(line.Key, new Tuple<Object, string>(line.Value, line.GetType().AssemblyQualifiedName));
                 lineCnt++;
             }
             return Tmp;
         }
-        public void FromArray(KeyValuePair<string, dynamic>[] ObjValues)
+        public void FromArray(KeyValuePair<string, Object>[] ObjValues)
         {
-            foreach (KeyValuePair<string, dynamic> Item in ObjValues)
+            foreach (KeyValuePair<string, Object> Item in ObjValues)
             {
-                ObjectData.AddOrUpdate(Item);
-                ObjectType.AddOrUpdate(Item.Key, Item.Value.GetType());
+                ObjectData[Item.Key] = Item.Value;
+                ObjectType[Item.Key] = Item.Value.GetType().AssemblyQualifiedName;
                 OnPropertyChanged(Binding.IndexerName);
             }
         }
         public void CastProps()
         {
-            foreach (KeyValuePair<string, dynamic> Itm in ObjectData)
+            foreach (KeyValuePair<string, Object> Itm in ObjectData)
             {
                 Type ValType = Type.GetType(ObjectType[Itm.Key]);
                 if (ValType != null && !Itm.Value.GetType().Equals(ValType))
@@ -503,16 +520,16 @@ namespace DataInterface
         public PropertyDescriptorCollection GetProperties()
         {
             var attributes = new Attribute[0];
-            List<DynamicPropertyDescriptor> properties = new List<DynamicPropertyDescriptor>();
-            
-            properties.AddRange(ObjectData.Select(pair => new DynamicPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
+            List<ObjectPropertyDescriptor> properties = new List<ObjectPropertyDescriptor>();
+
+            properties.AddRange(ObjectData.Select(pair => new ObjectPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
             return new PropertyDescriptorCollection(properties.ToArray());
         }
 
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
-            List<DynamicPropertyDescriptor> properties = new List<DynamicPropertyDescriptor>();           
-            properties.AddRange(ObjectData.Select(pair => new DynamicPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
+            List<ObjectPropertyDescriptor> properties = new List<ObjectPropertyDescriptor>();
+            properties.AddRange(ObjectData.Select(pair => new ObjectPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
             return new PropertyDescriptorCollection(properties.ToArray());
         }
 
@@ -521,7 +538,7 @@ namespace DataInterface
             return this;
         }
         #endregion
-        #region Dynamic Methods
+        #region Object Methods
         //public override bool TryGetMember(GetMemberBinder binder, out object result)
         //{
         //    string name = binder.Name;
@@ -545,7 +562,7 @@ namespace DataInterface
         //        return true;
         //    }
         //    return false;
-            
+
         //}
         private void GetPropNames()
         {
@@ -593,20 +610,100 @@ namespace DataInterface
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-       
+
+        #endregion
+        #region IDictionary
+        //public ICollection<string> Keys
+        //{
+        //    get
+        //    {
+        //        return ObjectData.Keys;
+        //    }
+        //}
+
+        //public ICollection<object> Values
+        //{
+        //    get
+        //    {
+        //        return ObjectData.Values;
+        //    }
+        //}
+        //public int Count
+        //{
+        //    get
+        //    {
+        //        return ObjectData.Count;
+        //    }            
+        //}
+        //public void Add(string key, object value)
+        //{
+        //    ObjectData.TryAdd(key,value);
+        //}
+
+        //public bool ContainsKey(string key)
+        //{
+        //    return ObjectData.ContainsKey(key);
+        //}
+
+        //public bool Remove(string key)
+        //{
+        //    object tmpObj = new object();
+        //    return ObjectData.TryRemove(key,out tmpObj);
+        //}
+
+        //public bool TryGetValue(string key, out object value)
+        //{           
+        //    return ObjectData.TryGetValue(key,out value);
+        //}
+
+        //public void Add(KeyValuePair<string, object> item)
+        //{
+        //     ObjectData.TryAdd(item);
+        //}
+
+        //public void Clear()
+        //{
+        //    ObjectData.Clear();
+        //}
+
+        //public bool Contains(KeyValuePair<string, object> item)
+        //{
+        //    return ObjectData.Contains(item);
+        //}
+
+        //public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+        //{
+           
+        //}
+
+        //public bool Remove(KeyValuePair<string, object> item)
+        //{
+        //    object tmpObj = new object();
+        //    return ObjectData.TryRemove(item.Key, out tmpObj);
+        //}
+
+        //public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        //{
+        //    return ObjectData.GetEnumerator();
+        //}
+
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return ObjectData.GetEnumerator();
+        //}
         #endregion
     }
 
-    public class DynamicPropertyDescriptor : PropertyDescriptor
+    public class ObjectPropertyDescriptor : PropertyDescriptor
     {
-        private readonly DynamicObjectBase DynamicObjectBaseInst;
+        private readonly ObjectObjectBase ObjectObjectBaseInst;
         private readonly Type propertyType;
 
-        public DynamicPropertyDescriptor(DynamicObjectBase _DynamicObjectBase,
+        public ObjectPropertyDescriptor(ObjectObjectBase _ObjectObjectBase,
             string propertyName, Type propertyType, Attribute[] propertyAttributes)
             : base(propertyName, propertyAttributes)
         {
-            this.DynamicObjectBaseInst = _DynamicObjectBase;
+            this.ObjectObjectBaseInst = _ObjectObjectBase;
             this.propertyType = propertyType;
         }
 
@@ -618,7 +715,7 @@ namespace DataInterface
 
         public override object GetValue(object component)
         {
-            return DynamicObjectBaseInst[Name];
+            return ObjectObjectBaseInst[Name];
         }
 
         public override void ResetValue(object component)
@@ -627,7 +724,7 @@ namespace DataInterface
 
         public override void SetValue(object component, object value)
         {
-            DynamicObjectBaseInst[Name] = value;
+            ObjectObjectBaseInst[Name] = value;
         }
 
         public override bool ShouldSerializeValue(object component)
@@ -637,7 +734,7 @@ namespace DataInterface
 
         public override Type ComponentType
         {
-            get { return typeof(DynamicObjectBase); }
+            get { return typeof(ObjectObjectBase); }
         }
 
         public override bool IsReadOnly
@@ -650,5 +747,13 @@ namespace DataInterface
             get { return propertyType; }
 
         }
+    }
+    public struct PropertyDetails
+    {
+        public string PropName { get; set; }
+        public Type PropType { get; set; }
+        public Object PropValue { get; set; }
+        public ValueType PropEditor { get; set; }
+
     }
 }

@@ -12,10 +12,10 @@ using System.Runtime.Serialization;
 namespace DataInterface
 {
     [Serializable]
-    public class HDynamicObject : DynamicObjectBase,IHDataObject
+    public class HDynamicObject : ObjectObjectBase,IHDataObject
     {
         // Considerations for base class
-        // 1. Dynamic nature
+        // 1. Object nature
         // 2. (De) Serialization
         // 3. Edit Auditing
         // 4. Syncronization with backing data store (multi user)
@@ -73,7 +73,7 @@ namespace DataInterface
             ID = Key;
             _IsInit = false;
         }
-        public HDynamicObject(KeyValuePair<string, dynamic>[] InitArray, bool _Transactional = false) : base(InitArray,_Transactional)
+        public HDynamicObject(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray,_Transactional)
         {
             _IsInit = true;
             ObjectData.CollectionChanged += ObjectData_CollectionChanged;
@@ -82,7 +82,7 @@ namespace DataInterface
             IsExpanded = true;
             _IsInit = false;
         }
-        public HDynamicObject(HKey Key, KeyValuePair<string, dynamic>[] InitArray, bool _Transactional = false) : base(InitArray, _Transactional)
+        public HDynamicObject(HKey Key, KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray, _Transactional)
         {
             _IsInit = true;
             ObjectData.CollectionChanged += ObjectData_CollectionChanged;

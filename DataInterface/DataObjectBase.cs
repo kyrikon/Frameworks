@@ -13,7 +13,7 @@ namespace DataInterface
     public abstract class DataObjectBase : NotifyPropertyChanged, IDataObject
     {
         // Considerations for base class
-        // 1. Dynamic nature
+        // 1. Object nature
         // 2. (De) Serialization - parameterless constructor
         // 3. Edit Auditing
         // 4. Syncronization with backing data store (multi user)
@@ -32,7 +32,7 @@ namespace DataInterface
             EditStack = new ConcurrentStack<string>();
             IsTransactional = _Transactional;          
         }
-        protected DataObjectBase(KeyValuePair<string,dynamic>[] InitArray,bool _Transactional = false)
+        protected DataObjectBase(KeyValuePair<string,Object>[] InitArray,bool _Transactional = false)
         {
             ObjectData = new DataObjectDictionary();
             ObjectType = new DataTypeDictionary();
@@ -46,11 +46,11 @@ namespace DataInterface
         #endregion
         #region Properties
 
-        public dynamic this[string key]
+        public Object this[string key]
         {
             get
             {
-                dynamic tmpItem;
+                Object tmpItem;
                 ObjectData.TryGetValue(key, out tmpItem);
                 return tmpItem;
             }
@@ -59,8 +59,8 @@ namespace DataInterface
                
                 double TimeStamp = DateTime.Now.ToOADate();
                 SetModified(key, TimeStamp);
-                ObjectData.AddOrUpdate(key, value);
-                ObjectType.AddOrUpdate(key, value.GetType().AssemblyQualifiedName);                
+                ObjectData[key] =  value;
+                ObjectType[key] =  value.GetType().AssemblyQualifiedName;                
                 OnPropertyChanged(Binding.IndexerName);               
             }
         }
@@ -242,7 +242,7 @@ namespace DataInterface
                 return (T)Convert.ChangeType(tmpItem, typeof(T));
             }
         }
-        public dynamic GetValue(string key)
+        public Object GetValue(string key)
         {
             object tmpItem;
             ObjectData.TryGetValue(key, out tmpItem);
@@ -409,30 +409,30 @@ namespace DataInterface
             return new ModifiedDataItem[] { };
         }
 
-        public KeyValuePair<string,Tuple<dynamic,string>>[] ToArray()
+        public KeyValuePair<string,Tuple<Object,string>>[] ToArray()
         {
-            KeyValuePair<string, Tuple<dynamic, string>>[] Tmp = new KeyValuePair<string, Tuple<dynamic, string>>[ObjectData.Count];
+            KeyValuePair<string, Tuple<Object, string>>[] Tmp = new KeyValuePair<string, Tuple<Object, string>>[ObjectData.Count];
             int lineCnt = 0;
             foreach (var line in ObjectData)
             {
-                Tmp[lineCnt] = new KeyValuePair<string, Tuple<dynamic, string>>(line.Key, new Tuple<dynamic, string>(line.Value, line.GetType().AssemblyQualifiedName));
+                Tmp[lineCnt] = new KeyValuePair<string, Tuple<Object, string>>(line.Key, new Tuple<Object, string>(line.Value, line.GetType().AssemblyQualifiedName));
                 lineCnt++;
             }
             return Tmp;
         }
-        public void FromArray(KeyValuePair<string, dynamic>[] ObjValues)
+        public void FromArray(KeyValuePair<string, Object>[] ObjValues)
         {
-            foreach(KeyValuePair<string, dynamic> Item in ObjValues)
+            foreach(KeyValuePair<string, Object> Item in ObjValues)
             {
                 ObjectData.AddOrUpdate(Item);
-                ObjectType.AddOrUpdate(Item.Key, Item.Value.GetType());
+                ObjectType.AddOrUpdate(Item.Key, Item.Value.GetType().AssemblyQualifiedName);
                 OnPropertyChanged(Binding.IndexerName);
             }
         }
         
         public void CastProps()
         {
-            foreach(KeyValuePair<string,dynamic> Itm in ObjectData)
+            foreach(KeyValuePair<string,Object> Itm in ObjectData)
             {
                 Type ValType = Type.GetType(ObjectType[Itm.Key]);               
                 if (ValType != null && !Itm.Value.GetType().Equals(ValType))

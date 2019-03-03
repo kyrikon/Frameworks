@@ -94,7 +94,7 @@ namespace UI.WPF.Views.SimProject
                 return _UId;
             }
         }
-                
+        int cnt = 0;
         public HDynamicObject SelectedNode
         {
             get
@@ -108,7 +108,7 @@ namespace UI.WPF.Views.SimProject
                     SetPropertyValue<HDynamicObject>(value);
                     if (SelectedNode != null)
                     {
-                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
+                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");                      
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
@@ -116,7 +116,21 @@ namespace UI.WPF.Views.SimProject
             }
             
         }
-       
+        public ObservableCollection<HDynamicObject> Root
+        {
+            get
+            {
+                return GetPropertyValue<ObservableCollection<HDynamicObject>>();
+            }
+            private set
+            {
+                if (GetPropertyValue<ObservableCollection<HDynamicObject>>() != value)
+                {
+                    SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
+                }
+            }
+        }
+
         public bool HasSelectedNode
         {
             get
@@ -156,6 +170,8 @@ namespace UI.WPF.Views.SimProject
                 }
             }
         }
+
+
         #endregion
         #region Methods     
 
@@ -217,8 +233,8 @@ namespace UI.WPF.Views.SimProject
         private void AddItems()
         {
             // SelectedNode.IsExpanded = !SelectedNode?.IsExpanded ?? false;
-            DM.Objects[new HKey(new int[] { 1, 1 })].IsExpanded = true;
-            SelectedNode = DM.Objects[new HKey(new int[] { 1, 1 })];
+            SelectedNode["hello"] = cnt++;
+            SelectedNode["hello2"] = cnt++;
         }
         private async void DM_ModelInitialized(object sender, EventArgs args)
         {
@@ -229,8 +245,9 @@ namespace UI.WPF.Views.SimProject
             {
                 await DM.Save();
             }
-            _IsNew = false;            
-            SelectedNode = DM.Root.FirstOrDefault();
+            _IsNew = false;
+            Root = DM.Root;
+            SelectedNode = Root.FirstOrDefault();
         }
         #endregion
     }

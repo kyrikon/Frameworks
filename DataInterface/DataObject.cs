@@ -15,7 +15,7 @@ namespace DataInterface
     public class DataObject : DataObjectBase
     {
         // Considerations for base class
-        // 1. Dynamic nature
+        // 1. Object nature
         // 2. (De) Serialization
         // 3. Edit Auditing
         // 4. Syncronization with backing data store (multi user)
@@ -29,7 +29,7 @@ namespace DataInterface
         {               
         }
       
-        public DataObject(KeyValuePair<string, dynamic>[] InitArray) : base(InitArray)
+        public DataObject(KeyValuePair<string, Object>[] InitArray) : base(InitArray)
         {                     
         }
         #endregion

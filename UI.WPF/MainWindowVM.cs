@@ -280,7 +280,7 @@ namespace UI.WPF
             {
                 Configuration = await ReadConfig();
                 Configuration.CastProps();
-                SetTheme(Configuration["Theme"]);
+                SetTheme((ThemeName)Configuration["Theme"]);
             }
 
             Configuration.PropertyChanged += Configuration_PropertyChanged;
@@ -355,7 +355,7 @@ namespace UI.WPF
         {
             if (Configuration.LastFieldEdited.Equals("Theme") && e.PropertyName.Equals("Item[]"))
             {
-                SetTheme(Configuration["Theme"]);                              
+                SetTheme((ThemeName)Configuration["Theme"]);                              
             }
         }
         private void SetTheme(ThemeName Tn)
