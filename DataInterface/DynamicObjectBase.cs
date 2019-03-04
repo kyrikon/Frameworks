@@ -1,9 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Core.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -24,10 +27,12 @@ namespace DataInterface
         #endregion
         #region Fields 
         private string[] _PropNames;
+        private bool _FirePropChange = true;
+        object _lockObj = new object();
         #endregion
 
         #region Constructors
-        protected ObjectObjectBase(bool _Transactional = false)
+        protected ObjectObjectBase(bool _Transactional = true)
         {
             GetPropNames();
             ObjectData = new DataObjectDictionary();
@@ -37,7 +42,7 @@ namespace DataInterface
             IsTransactional = _Transactional;
 
         }
-        protected ObjectObjectBase(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false)
+        protected ObjectObjectBase(KeyValuePair<string, Object>[] InitArray, bool _Transactional = true)
         {
             GetPropNames();
             ObjectData = new DataObjectDictionary();
@@ -69,6 +74,7 @@ namespace DataInterface
                 ObjectType[key] = value.GetType().AssemblyQualifiedName;
                 OnPropertyChanged(Binding.IndexerName);
                 OnPropertyChanged(key);
+                OnPropertyChanged("Properties");
             }
         }
         [JsonProperty]
@@ -150,7 +156,7 @@ namespace DataInterface
             }
         }
         [JsonProperty]
-        public DataObjectDictionary ObjectData { get; }
+        protected DataObjectDictionary ObjectData { get; }
         [JsonProperty]
         protected DataTypeDictionary ObjectType { get; }
         private ObservableConcurrentDictionary<string, ConcurrentStack<ModifiedDataItem>> ModifiedData { get; }
@@ -253,6 +259,69 @@ namespace DataInterface
             }
         }
 
+        [JsonIgnore]
+        public ObservableCollection<PropertyItem> Properties
+        {
+            get
+            {
+                ObservableCollection<PropertyItem> PList = new ObservableCollection<PropertyItem>();
+                foreach (KeyValuePair<string, object> items in ObjectData.ToArray())
+                {
+                    PropertyItem PI = new PropertyItem() { Name = items.Key, Value = items.Value };
+                    PI.PropertyChanged += PI_PropertyChanged;
+                    PList.Add(PI);
+                }
+                return PList;
+            }
+
+        }
+
+        private void PI_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            lock (_lockObj)
+            {
+                if (e.PropertyName.Equals("Value", StringComparison.InvariantCultureIgnoreCase) && _FirePropChange)
+                {
+                    Stopwatch _SW1 = Stopwatch.StartNew();
+                    PropertyItem itm = (PropertyItem)sender;
+
+                    string tmpItemType;
+                    ObjectType.TryGetValue(itm.Name, out tmpItemType);
+
+                    try
+                    {
+                        Type CvrtType = Type.GetType(tmpItemType);
+                        if (CvrtType == null || CvrtType == itm.Value.GetType())
+                        {
+                            this[itm.Name] = itm.Value;
+                        }
+
+                        if (CvrtType.IsEnum)
+                        {
+                            this[itm.Name] = Enum.ToObject(CvrtType, itm.Value);
+                        }
+                        this[itm.Name] = Convert.ChangeType(itm.Value, CvrtType);
+                        _FirePropChange = true;
+                    }
+                    catch (InvalidCastException)
+                    {
+                        itm.Value = this[itm.Name];
+                        _FirePropChange = false;
+                    }
+                    catch (FormatException)
+                    {
+                        itm.Value = this[itm.Name];
+                        _FirePropChange = false;
+                    }
+                    _SW1.Stop();
+                    Console.WriteLine($"Conversion Took {_SW1.Elapsed.TotalSeconds} seconds");
+                }
+                else
+                {
+                    _FirePropChange = true;
+                }
+            }
+        }
 
         #endregion
         #region Methods     
@@ -747,13 +816,30 @@ namespace DataInterface
             get { return propertyType; }
 
         }
-    }
-    public struct PropertyDetails
+    }    
+    public class PropertyItem : NotifyPropertyChanged
     {
-        public string PropName { get; set; }
-        public Type PropType { get; set; }
-        public Object PropValue { get; set; }
-        public ValueType PropEditor { get; set; }
-
+        public string Name
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue<string>(value);
+            }
+        }
+        public object Value
+        {
+            get
+            {
+                return GetPropertyValue<object>();
+            }
+            set
+            {
+                SetPropertyValue<object>(value);
+            }
+        }
     }
 }

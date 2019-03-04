@@ -93,8 +93,6 @@ namespace DataInterface
             _IsInit = false;
         }
         #endregion
-        #region Commands   
-        #endregion
         #region Properties
 
         [JsonProperty]
@@ -124,6 +122,8 @@ namespace DataInterface
 
         }
 
+
+
         [JsonIgnore]
         [IgnoreDataMember]
         public HDynamicObject Parent { get; set; }
@@ -134,7 +134,9 @@ namespace DataInterface
 
         [JsonProperty]
         private ObservableConcurrentDictionary<string, PropertyExtensions> PropertyExtensions { get; }
+
         
+
         public bool IsSelected
         {
             get
@@ -246,4 +248,5 @@ namespace DataInterface
         }
         #endregion
     }   
+    
 }

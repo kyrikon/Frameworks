@@ -20,6 +20,7 @@ namespace DataInterface
         //This notifies the UI. For Big operations disable then raise at the end
         public virtual event NotifyCollectionChangedEventHandler CollectionChanged;
 
+
         //This notifies node changes without triggering a UI update. Useful for automating tree generation on the collection
         public delegate void TreeChangedEventHandler(object sender, TreeChangedEventArgs<T1,T2> args);
         public event TreeChangedEventHandler TreeChanged;
@@ -37,17 +38,16 @@ namespace DataInterface
         {
         }
         #endregion
-        #region Commands   
-        #endregion
         #region Properties
         public new T2 this[T1 Key]
         {
             get
             {
-                try { 
-                return base[Key];
+                try
+                {
+                    return base[Key];
                 }
-                catch(KeyNotFoundException)
+                catch (KeyNotFoundException)
                 {
                     return default(T2);
                 }
@@ -243,9 +243,7 @@ namespace DataInterface
         protected void OnTreeChanged(TreeChangedEventArgs<T1,T2> Args)
         {
             TreeChanged?.Invoke(this, Args);            
-        }
-
-      
+        }      
         #endregion
         #region Callbacks     
         #endregion

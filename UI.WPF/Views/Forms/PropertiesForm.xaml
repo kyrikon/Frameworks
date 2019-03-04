@@ -44,11 +44,11 @@
                        Margin="10,5,2,5"
                        Style="{StaticResource HeaderStyle}" />
         </Border>
-        <ItemsControl ItemsSource="{Binding SelectedNode.ObjectData}" Grid.Row="2" Grid.Column="1">
+        <ItemsControl ItemsSource="{Binding SelectedNode.Properties}" Grid.Row="2" Grid.Column="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Key}" />
+                        <TextBlock Text="{Binding Name}" />
                         <TextBox Text="{Binding Value}" />
                     </StackPanel>
                 </DataTemplate>

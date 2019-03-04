@@ -93,8 +93,7 @@ namespace UI.WPF.Views.SimProject
             {
                 return _UId;
             }
-        }
-        int cnt = 0;
+        }     
         public HDynamicObject SelectedNode
         {
             get
@@ -232,13 +231,11 @@ namespace UI.WPF.Views.SimProject
         }
         private void AddItems()
         {
-            // SelectedNode.IsExpanded = !SelectedNode?.IsExpanded ?? false;
-            SelectedNode["hello"] = cnt++;
-            SelectedNode["hello2"] = cnt++;
+            SelectedNode["hello"] = SelectedNode["hello"] == null ? 0 : ((int)SelectedNode["hello"])+1;
+            SelectedNode["hello2"] = SelectedNode["hello2"] == null ? 0 : ((int)SelectedNode["hello2"]) + 1;
         }
         private async void DM_ModelInitialized(object sender, EventArgs args)
-        {
-            
+        {            
             _SW1.Stop();
             GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
             if (_IsNew)

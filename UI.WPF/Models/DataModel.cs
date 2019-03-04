@@ -202,7 +202,7 @@ namespace UI.WPF.Models
             _Rslt = new List<KeyValuePair<HKey, HDynamicObject>>();
             foreach (var Itm in Hierarchy.OrderBy(x => x.ID))
             {
-                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID) { Name = Itm.Name, IsContainer = true }));
+                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID,true) { Name = Itm.Name, IsContainer = true }));
             }
 
             DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
