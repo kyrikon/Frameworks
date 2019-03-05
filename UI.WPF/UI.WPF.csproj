@@ -188,6 +188,7 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Compile Include="Helpers\BindableExpandingBehavior.cs" />
+    <Compile Include="Helpers\PropertyEditTemplateSelector.cs" />
     <Compile Include="Helpers\TreeItemTemplateSelector.cs" />
     <Compile Include="Helpers\ConnectionTemplateSelector.cs" />
     <Compile Include="Helpers\TreeListExpandedNodesHelper.cs" />
@@ -211,6 +212,9 @@
       <DependentUpon>ConnectionBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
+    <Compile Include="Views\Forms\PropertiesForm.xaml.cs">
+      <DependentUpon>PropertiesForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Forms\DetailsForm.xaml.cs">
       <DependentUpon>DetailsForm.xaml</DependentUpon>
     </Compile>
@@ -262,6 +266,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConnectionBar\ConnectionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Forms\PropertiesForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

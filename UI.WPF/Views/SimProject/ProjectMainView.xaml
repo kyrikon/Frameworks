@@ -64,7 +64,7 @@
                                          ShowBorder="False"
                                          BorderBrush="Transparent"
                                          MaxHeight="1800"
-                                         ItemsSource="{Binding DM.Root}">
+                                         ItemsSource="{Binding Root}">
                         <dxg:TreeListControl.Columns>
                             <dxg:TreeListColumn AllowSorting="True"
                                                 Header="Name"
@@ -119,9 +119,12 @@
                                        Grid.RowSpan="2"
                                        VerticalAlignment="Stretch"
                                        HorizontalAlignment="Stretch"
-                                       Grid.Row="0">
-                        
-                    </Forms:DetailsForm>
+                                       Grid.Row="0" />
+                    <Forms:PropertiesForm Grid.Column="1"
+                                          Grid.RowSpan="2"
+                                          VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Left"
+                                          Grid.Row="0" />
                 </Grid>
                
             </lc:GroupBox>

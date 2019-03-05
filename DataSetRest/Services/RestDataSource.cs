@@ -32,7 +32,7 @@ namespace DataSetRest.Services
                 return _DataSource.Connection;
             }
         }
-        public DataObjectHierarchy Hierarchy
+        public DynamicObjectHierarchy Hierarchy
         {
             get; private set;
         }

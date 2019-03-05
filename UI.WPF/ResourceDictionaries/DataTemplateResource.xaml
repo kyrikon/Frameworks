@@ -13,6 +13,7 @@
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:v4="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -174,5 +175,20 @@
                              Glyph="{StaticResource EditIcon}" />
         </Grid>
     </DataTemplate>
+    <!---->
+      <!-- Editor DataTemplates-->
+    <DataTemplate x:Key="StringEditTemplate">
+        <dxe:TextEdit EditValue="{Binding Path=Value}"
+                       Style="{StaticResource TextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="IntEditTemplate">
+        <dxe:TextEdit  Mask="D0"
+                       MaskType="Numeric"
+                       MaskUseAsDisplayFormat="True"
+                       EditValue="{Binding  Path=Value}"
+                       HorizontalContentAlignment="Right"
+                       Style="{StaticResource TextEditFormStyle}" />
+    </DataTemplate>
+    
     <!---->
 </ResourceDictionary>

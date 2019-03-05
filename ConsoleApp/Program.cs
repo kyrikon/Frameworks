@@ -17,15 +17,11 @@ namespace Testingconsoleapp
         static async Task Main(string[] args)
         {
 
-            dynamic TestSerial = new HDynamicObject();
-            ((HDynamicObject)TestSerial).PropertyChanged += PropChanged;
-            TestSerial.Afield = "A";
-            TestSerial.Bfield = "B";
-            ((HDynamicObject)TestSerial).Name = "A Name";
+            HDynamicObject TestSerial = new HDynamicObject();
 
 
            
-            HKeyDictionary Dict = new HKeyDictionary();
+            HKeyDynamicObjectDictionary Dict = new HKeyDynamicObjectDictionary();
 
           
            // Src.Connection.Connect();

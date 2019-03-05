@@ -49,10 +49,21 @@
                     Grid.Row="2"                    
                     Grid.Column="1">
             <Image Source="{Binding SelectedNodeImage}" SourceUpdated="Image_SourceUpdated" Height="32" Width="32"  HorizontalAlignment="Left"/>
+            <Button Content="Incr"
+                    Command="{Binding AddItemsCmd}"
+                   Style="{StaticResource FormButtonStyle}"
+                   HorizontalAlignment="Left" />
             <TextBlock Style="{StaticResource TextBlockFormStyle}">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}Key {0}">
                         <Binding Path="SelectedNode.HID.StrKey" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Style="{StaticResource TextBlockFormStyle}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} Properties">
+                        <Binding Path="SelectedNode.ObjectDetails.Length" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

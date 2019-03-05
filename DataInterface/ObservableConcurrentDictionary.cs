@@ -20,6 +20,7 @@ namespace DataInterface
         //This notifies the UI. For Big operations disable then raise at the end
         public virtual event NotifyCollectionChangedEventHandler CollectionChanged;
 
+
         //This notifies node changes without triggering a UI update. Useful for automating tree generation on the collection
         public delegate void TreeChangedEventHandler(object sender, TreeChangedEventArgs<T1,T2> args);
         public event TreeChangedEventHandler TreeChanged;
@@ -37,17 +38,16 @@ namespace DataInterface
         {
         }
         #endregion
-        #region Commands   
-        #endregion
         #region Properties
         public new T2 this[T1 Key]
         {
             get
             {
-                try { 
-                return base[Key];
+                try
+                {
+                    return base[Key];
                 }
-                catch(KeyNotFoundException)
+                catch (KeyNotFoundException)
                 {
                     return default(T2);
                 }
@@ -59,10 +59,10 @@ namespace DataInterface
                 TreeChangedEventArgs<T1,T2> TArgs;
                 if(this.ContainsKey(Key))
                 {
-                    Act = NotifyCollectionChangedAction.Replace;
+                    Act = NotifyCollectionChangedAction.Reset;
                     KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, value);
                     KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(Key, this[Key]);
-                    Args = new NotifyCollectionChangedEventArgs(Act, NewVal, OldVal);
+                    Args = new NotifyCollectionChangedEventArgs(Act);
                     TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace,NewVal = NewVal,OldVal = OldVal };
                 }
                 else
@@ -154,7 +154,7 @@ namespace DataInterface
                 Act = NotifyCollectionChangedAction.Replace;
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, Value);
                 KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(Key, this[Key]);
-                Args = new  NotifyCollectionChangedEventArgs(Act,NewVal,OldVal);
+                Args = new  NotifyCollectionChangedEventArgs(Act,NewVal,OldVal,0);
                 TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, NewVal = NewVal, OldVal = OldVal };
             }
             else
@@ -163,10 +163,11 @@ namespace DataInterface
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, Value);
                 Args =  new NotifyCollectionChangedEventArgs(Act, NewVal);
                 TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
+                OnCollectionChanged(Args);
             }
             T2 RetVal = base.AddOrUpdate(Key, Value, (k, val) => Value);
             OnTreeChanged(TArgs);
-            OnCollectionChanged(Args);            
+                    
             return RetVal;
         }
         public T2 AddOrUpdate(KeyValuePair<T1, T2> KVP)
@@ -242,9 +243,7 @@ namespace DataInterface
         protected void OnTreeChanged(TreeChangedEventArgs<T1,T2> Args)
         {
             TreeChanged?.Invoke(this, Args);            
-        }
-
-      
+        }      
         #endregion
         #region Callbacks     
         #endregion

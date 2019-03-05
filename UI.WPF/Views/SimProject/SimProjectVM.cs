@@ -93,8 +93,7 @@ namespace UI.WPF.Views.SimProject
             {
                 return _UId;
             }
-        }
-                
+        }     
         public HDynamicObject SelectedNode
         {
             get
@@ -108,7 +107,7 @@ namespace UI.WPF.Views.SimProject
                     SetPropertyValue<HDynamicObject>(value);
                     if (SelectedNode != null)
                     {
-                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
+                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");                      
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
@@ -116,7 +115,21 @@ namespace UI.WPF.Views.SimProject
             }
             
         }
-       
+        public ObservableCollection<HDynamicObject> Root
+        {
+            get
+            {
+                return GetPropertyValue<ObservableCollection<HDynamicObject>>();
+            }
+            private set
+            {
+                if (GetPropertyValue<ObservableCollection<HDynamicObject>>() != value)
+                {
+                    SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
+                }
+            }
+        }
+
         public bool HasSelectedNode
         {
             get
@@ -156,6 +169,8 @@ namespace UI.WPF.Views.SimProject
                 }
             }
         }
+
+
         #endregion
         #region Methods     
 
@@ -178,7 +193,7 @@ namespace UI.WPF.Views.SimProject
             {
                 Validation = string.Empty;
                 GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Creating Project");
-                DataObjectHierarchy DH = new DataObjectHierarchy();
+                DynamicObjectHierarchy DH = new DynamicObjectHierarchy();
                 HierarchyFactory.GenerateFinance(ref DH);                
                 DM.CreateNewProject(DH);
                 _SW1 = Stopwatch.StartNew();
@@ -216,21 +231,21 @@ namespace UI.WPF.Views.SimProject
         }
         private void AddItems()
         {
-            // SelectedNode.IsExpanded = !SelectedNode?.IsExpanded ?? false;
-            DM.Objects[new HKey(new int[] { 1, 1 })].IsExpanded = true;
-            SelectedNode = DM.Objects[new HKey(new int[] { 1, 1 })];
+            SelectedNode["hello"] = SelectedNode["hello"] == null ? 0 : ((int)SelectedNode["hello"])+1;
+            SelectedNode["hello2"] = SelectedNode["hello2"] == null ? 0 : ((int)SelectedNode["hello2"]) + 1;
+            SelectedNode["hello3"] = "Hello World";
         }
         private async void DM_ModelInitialized(object sender, EventArgs args)
-        {
-            
+        {            
             _SW1.Stop();
             GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
             if (_IsNew)
             {
                 await DM.Save();
             }
-            _IsNew = false;            
-            SelectedNode = DM.Root.FirstOrDefault();
+            _IsNew = false;
+            Root = DM.Root;
+            SelectedNode = Root.FirstOrDefault();
         }
         #endregion
     }

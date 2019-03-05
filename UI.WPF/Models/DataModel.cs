@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UI.WPF.Helpers;
+using UI.WPF.Singletons;
 
 namespace UI.WPF.Models
 {
@@ -26,11 +27,11 @@ namespace UI.WPF.Models
         #region Constructors
         public DataModel(IDataSource DS)
         {
-            Hierarchy = new DataObjectHierarchy();
+            Hierarchy = new DynamicObjectHierarchy();
             DataSource = DS;
             KeyValueEnums = new ObservableConcurrentDictionary<string, KeyValueEnum<object>>();
         }
-        public DataModel(IDataSource DS, DataObjectHierarchy _Hierarchy)
+        public DataModel(IDataSource DS, DynamicObjectHierarchy _Hierarchy)
         {
             Hierarchy = _Hierarchy;
             DataSource = DS;
@@ -42,17 +43,17 @@ namespace UI.WPF.Models
         #region Commands   
         #endregion
         #region Properties
-        public DataObjectHierarchy Hierarchy
+        public DynamicObjectHierarchy Hierarchy
         {
             get
             {
-                return GetPropertyValue<DataObjectHierarchy>();
+                return GetPropertyValue<DynamicObjectHierarchy>();
             }
             private set
             {
-                if (GetPropertyValue<DataObjectHierarchy>() != value)
+                if (GetPropertyValue<DynamicObjectHierarchy>() != value)
                 {
-                    SetPropertyValue<DataObjectHierarchy>(value);
+                    SetPropertyValue<DynamicObjectHierarchy>(value);
                 }
             }
 
@@ -86,7 +87,6 @@ namespace UI.WPF.Models
                     SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
                 }
             }
-
         }
         public HDynamicObject CurrentItem
         {
@@ -185,7 +185,7 @@ namespace UI.WPF.Models
             }
         }
 
-        public void CreateNewProject(DataObjectHierarchy DOH)
+        public void CreateNewProject(DynamicObjectHierarchy DOH)
         {
             Hierarchy = DOH;            
             Hierarchy.FirstOrDefault(x => x.ID.Equals(HKey.RootKeyVal)).Name = DataSource.Connection.ConnectionName;
@@ -202,7 +202,7 @@ namespace UI.WPF.Models
             _Rslt = new List<KeyValuePair<HKey, HDynamicObject>>();
             foreach (var Itm in Hierarchy.OrderBy(x => x.ID))
             {
-                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID) { Name = Itm.Name, IsContainer = true }));
+                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID,true) { Name = Itm.Name, IsContainer = true }));
             }
 
             DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
@@ -293,8 +293,9 @@ namespace UI.WPF.Models
                         }
                     }
                     else
-                    {
-                        Root.Add(e.NewVal.Value);                       
+                    {                        
+                        Root.Add(e.NewVal.Value);
+                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Root Added");
                     }
                     break;
                 case CollectionAction.Remove:
@@ -324,15 +325,12 @@ namespace UI.WPF.Models
         private async void DataSource_DataInitializedEvent(object sender, DataInitializedEventEventArgs args)
         {
             await Task.Run(() =>
-                {
-                    
-                    Objects.AddList(_Rslt.OrderBy(x => x.Key));
-                    
-
+                {                    
+                   Objects.AddList(_Rslt.OrderBy(x => x.Key));
                     Objects.EndEdit(_Rslt);
                 });
            
-            SetCurrenItem(HKey.RootKeyVal);
+           // SetCurrenItem(HKey.RootKeyVal);
             OnModelInitialized(new EventArgs());
         }
         #endregion

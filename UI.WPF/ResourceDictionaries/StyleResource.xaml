@@ -8,6 +8,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -147,6 +148,23 @@
                 Value="Center"/>
         <Setter Property="VerticalContentAlignment"
                 Value="Center"/>
+    </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}"
+           x:Key="TextEditFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="30" />
+        <Setter Property="MaxWidth"
+                Value="350" />
+        <Setter Property="FontSize"
+                Value="{StaticResource FormSize}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
     </Style>
     <Style TargetType="{x:Type ComboBox}"  x:Key="ComboBoxFormStyle">
         <Setter Property="Padding"
