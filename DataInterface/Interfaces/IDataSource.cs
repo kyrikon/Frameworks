@@ -18,14 +18,14 @@ namespace DataInterface
         #endregion
         #region Properties       
         IConnection Connection { get;   }
-        DataObjectHierarchy Hierarchy { get; }
+        DynamicObjectHierarchy Hierarchy { get; }
         #endregion
         #region Methods             
         Tuple<bool, string> ValidateNewConnection();
        
         void CreateNewProject();
         Task<Tuple<bool, string>> SaveProject(object Objects);
-        Task<IObservable<IHDataObject>> LoadProject();
+        Task<IObservable<IHDynamicObject>> LoadProject();
         #endregion
 
     }

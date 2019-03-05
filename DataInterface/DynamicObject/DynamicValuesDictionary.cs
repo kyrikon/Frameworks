@@ -7,9 +7,9 @@ using System.Dynamic;
 
 namespace DataInterface
 {
-    public class DataObjectDictionary : ObservableConcurrentDictionary<string,Object>
+    public class DynamicValuesDictionary : ObservableConcurrentDictionary<string,object>
     {
-
+       
         public byte[] ToBinary()
         {
             KeyValuePair<string, Object>[] Serial = new  KeyValuePair<string, Object>[this.Count];
@@ -21,10 +21,10 @@ namespace DataInterface
             }
             return Serial.ToBinary();
         }
-        public static DataObjectDictionary FromBinary(byte[] Serial)
+        public static DynamicValuesDictionary FromBinary(byte[] Serial)
         {
             KeyValuePair<string, Object>[] DeSerial = Serialization.FromBinary<KeyValuePair<string, Object>[]>(Serial);
-            DataObjectDictionary DoD = new DataObjectDictionary();
+            DynamicValuesDictionary DoD = new DynamicValuesDictionary();
             foreach (KeyValuePair<string, Object> Row in DeSerial.OrderBy(x => x.Key))
             {
                 DoD.TryAdd(Row);
@@ -33,7 +33,7 @@ namespace DataInterface
             return DoD;
         }        
     }
-    public class DataTypeDictionary : ObservableConcurrentDictionary<string, string>
+    public class DynamicTypeDictionary : ObservableConcurrentDictionary<string, string>
     {
         
     }

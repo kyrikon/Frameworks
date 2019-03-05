@@ -2,23 +2,17 @@
 
 namespace DataInterface
 {
-    public interface IHDataObject : IDataObject
+    public interface IHDynamicObject : IDynamicObject
     {
-
-        #region Events / Delegates
-        #endregion
         #region Properties       
         int[] ID { get;  }
         HKey HID
         {
             get;
         }
-        HKeyDictionary Children { get; }
+        HKeyDynamicObjectDictionary Children { get; }
         HDynamicObject Parent { get; set; }
         HDynamicObject Root { get; set; }
-        #endregion
-        #region Methods             
-
         #endregion
     }
 }

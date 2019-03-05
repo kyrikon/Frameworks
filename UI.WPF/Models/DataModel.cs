@@ -27,11 +27,11 @@ namespace UI.WPF.Models
         #region Constructors
         public DataModel(IDataSource DS)
         {
-            Hierarchy = new DataObjectHierarchy();
+            Hierarchy = new DynamicObjectHierarchy();
             DataSource = DS;
             KeyValueEnums = new ObservableConcurrentDictionary<string, KeyValueEnum<object>>();
         }
-        public DataModel(IDataSource DS, DataObjectHierarchy _Hierarchy)
+        public DataModel(IDataSource DS, DynamicObjectHierarchy _Hierarchy)
         {
             Hierarchy = _Hierarchy;
             DataSource = DS;
@@ -43,17 +43,17 @@ namespace UI.WPF.Models
         #region Commands   
         #endregion
         #region Properties
-        public DataObjectHierarchy Hierarchy
+        public DynamicObjectHierarchy Hierarchy
         {
             get
             {
-                return GetPropertyValue<DataObjectHierarchy>();
+                return GetPropertyValue<DynamicObjectHierarchy>();
             }
             private set
             {
-                if (GetPropertyValue<DataObjectHierarchy>() != value)
+                if (GetPropertyValue<DynamicObjectHierarchy>() != value)
                 {
-                    SetPropertyValue<DataObjectHierarchy>(value);
+                    SetPropertyValue<DynamicObjectHierarchy>(value);
                 }
             }
 
@@ -185,7 +185,7 @@ namespace UI.WPF.Models
             }
         }
 
-        public void CreateNewProject(DataObjectHierarchy DOH)
+        public void CreateNewProject(DynamicObjectHierarchy DOH)
         {
             Hierarchy = DOH;            
             Hierarchy.FirstOrDefault(x => x.ID.Equals(HKey.RootKeyVal)).Name = DataSource.Connection.ConnectionName;

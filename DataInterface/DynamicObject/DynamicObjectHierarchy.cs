@@ -7,51 +7,22 @@ using System.Linq;
 
 namespace DataInterface
 {
-    public class DataObjectHierarchy : ConcurrentBag<DataObjectHierarchyItem>
+    public class DynamicObjectHierarchy : ConcurrentBag<DynamicObjectHierarchyItem>
     {
-
-        #region Events / Delegates
-        #endregion
-        #region Fields 
-        #endregion
-        #region Constructors
-        public DataObjectHierarchy()
-        {            
-        }
-        #endregion
-        #region Commands   
-        #endregion
-        #region Properties
-
-        #endregion
         #region Methods 
-        public HKey CreateKey(int[] Vals)
-        {
-            return new HKey(Vals);           
-        }
         public void ClearItems()
         {
             while (!this.IsEmpty)
             {
-                DataObjectHierarchyItem rmv = new DataObjectHierarchyItem();
+                DynamicObjectHierarchyItem rmv = new DynamicObjectHierarchyItem();
                 this.TryTake(out rmv);
             }
         }
-        #endregion
-       
+        #endregion       
     }
 
-    public class DataObjectHierarchyItem : NotifyPropertyChanged
-    {
-
-        #region Events / Delegates
-        #endregion
-        #region Fields 
-        #endregion
-        #region Constructors
-        #endregion
-        #region Commands   
-        #endregion
+    public class DynamicObjectHierarchyItem : NotifyPropertyChanged
+    {       
         #region Properties
         public HKey ID
         {
@@ -89,9 +60,5 @@ namespace DataInterface
             }            
         }        
         #endregion
-        #region Methods     
-        #endregion
-
-
     }
 }

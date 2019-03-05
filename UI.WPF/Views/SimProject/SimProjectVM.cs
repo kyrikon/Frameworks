@@ -193,7 +193,7 @@ namespace UI.WPF.Views.SimProject
             {
                 Validation = string.Empty;
                 GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Creating Project");
-                DataObjectHierarchy DH = new DataObjectHierarchy();
+                DynamicObjectHierarchy DH = new DynamicObjectHierarchy();
                 HierarchyFactory.GenerateFinance(ref DH);                
                 DM.CreateNewProject(DH);
                 _SW1 = Stopwatch.StartNew();

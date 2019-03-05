@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace DataInterface
 {
-    public interface IDataObject 
+    public interface IDynamicObject 
     {
-
-        #region Events / Delegates
-        #endregion
         #region Properties       
         object this[string key] { get; set; }
         bool IsTransactional { get; }
@@ -31,9 +28,8 @@ namespace DataInterface
         void RevertChanges(string key);
         void Undo();
         void UndoChange(string key);
-        KeyValuePair<string, Tuple<Object, string>>[] ToArray();
-        void FromArray(KeyValuePair<string, Object>[] ObjValues);
-
+        KeyValuePair<string, Tuple<object, string>>[] ToArray();
+        void FromArray(KeyValuePair<string, object>[] ObjValues);
         void CastProps();
         #endregion
     }

@@ -24,7 +24,6 @@ namespace UI.WPF.Helpers
                         return element.FindResource("StringEditTemplate") as DataTemplate;
                      default:
                         return   element.FindResource("StringEditTemplate") as DataTemplate;
-
                 }
                
             }

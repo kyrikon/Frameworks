@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 namespace DataInterface
 {
     [Serializable]
-    public class HDynamicObject : ObjectObjectBase,IHDataObject
+    public class HDynamicObject : DynamicObjectBase,IHDynamicObject
     {
         // Considerations for base class
         // 1. Object nature
@@ -37,19 +37,15 @@ namespace DataInterface
         #region Constructors
         public HDynamicObject() :base (false)
         {
-            _IsInit = true;
-            ObjectData.CollectionChanged += ObjectData_CollectionChanged;           
-            Children = new HKeyDictionary();
-            PropertyExtensions = new ObservableConcurrentDictionary<string, PropertyExtensions>();
+            _IsInit = true;      
+            Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             _IsInit = false;
         }
         public HDynamicObject(HKey Key) : base(false)
         {
             _IsInit = true;
-            ObjectData.CollectionChanged += ObjectData_CollectionChanged;
-            Children = new HKeyDictionary();
-            PropertyExtensions = new ObservableConcurrentDictionary<string, PropertyExtensions>();
+            Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -57,18 +53,14 @@ namespace DataInterface
         public HDynamicObject(bool _Transactional = false) : base(_Transactional)
         {
             _IsInit = true;
-            ObjectData.CollectionChanged += ObjectData_CollectionChanged;
-            Children = new HKeyDictionary();
-            PropertyExtensions = new ObservableConcurrentDictionary<string, PropertyExtensions>();
+            Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             _IsInit = false;
         }
         public HDynamicObject(HKey Key,bool _Transactional = false) : base(_Transactional)
         {
             _IsInit = true;
-            ObjectData.CollectionChanged += ObjectData_CollectionChanged;
-            Children = new HKeyDictionary();
-            PropertyExtensions = new ObservableConcurrentDictionary<string, PropertyExtensions>();
+            Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -76,18 +68,14 @@ namespace DataInterface
         public HDynamicObject(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray,_Transactional)
         {
             _IsInit = true;
-            ObjectData.CollectionChanged += ObjectData_CollectionChanged;
-            Children = new HKeyDictionary();
-            PropertyExtensions = new ObservableConcurrentDictionary<string, PropertyExtensions>();
+            Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             _IsInit = false;
         }
         public HDynamicObject(HKey Key, KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray, _Transactional)
         {
             _IsInit = true;
-            ObjectData.CollectionChanged += ObjectData_CollectionChanged;
-            Children = new HKeyDictionary();
-            PropertyExtensions = new ObservableConcurrentDictionary<string, PropertyExtensions>();
+            Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -109,11 +97,11 @@ namespace DataInterface
 
         [JsonIgnore]
         [IgnoreDataMember]
-        public HKeyDictionary Children { get; }
+        public HKeyDynamicObjectDictionary Children { get; }
 
         [JsonIgnore]
         [IgnoreDataMember]
-        public ObservableCollection<HDynamicObject> ChildrenCol
+        public ObservableCollection<HDynamicObject> ChildrenCollection
         {
             get
             {
@@ -122,8 +110,6 @@ namespace DataInterface
 
         }
 
-
-
         [JsonIgnore]
         [IgnoreDataMember]
         public HDynamicObject Parent { get; set; }
@@ -131,12 +117,7 @@ namespace DataInterface
         [JsonIgnore]
         [IgnoreDataMember]
         public HDynamicObject Root { get; set; }
-
-        [JsonProperty]
-        private ObservableConcurrentDictionary<string, PropertyExtensions> PropertyExtensions { get; }
-
-        
-
+       
         public bool IsSelected
         {
             get
@@ -228,24 +209,7 @@ namespace DataInterface
             }
         }
         #endregion
-        #region Callbacks
-        private void ObjectData_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            switch(e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    PropertyExtensions.TryAdd(((KeyValuePair<string, object>)e.NewItems[0]).Key, new PropertyExtensions());
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    PropertyExtensions DelExt = null;
-                    PropertyExtensions.TryRemove(((KeyValuePair<string, object>)e.OldItems[0]).Key,out DelExt);
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    PropertyExtensions.Clear();
-                    break;
-
-            }
-        }
+        #region Callbacks                
         #endregion
     }   
     

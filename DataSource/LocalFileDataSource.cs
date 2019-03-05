@@ -25,7 +25,7 @@ namespace DataSource
         {
             Connection = _Connection;
             Connection.SaveFormat = _SaveFmt;
-            Hierarchy = new DataObjectHierarchy();
+            Hierarchy = new DynamicObjectHierarchy();
         }
         #endregion
         #region Commands   
@@ -36,7 +36,7 @@ namespace DataSource
         {
             get; set;
         }
-        public DataObjectHierarchy Hierarchy
+        public DynamicObjectHierarchy Hierarchy
         {
             get; private set;
         }
@@ -96,7 +96,7 @@ namespace DataSource
             }
             return new Tuple<bool, string>(true,"Save Complete");
         }
-        public async Task<IObservable<IHDataObject>> LoadProject()
+        public async Task<IObservable<IHDynamicObject>> LoadProject()
         {
             List<HDynamicObject> GetData;
             switch (Connection.SaveFormat)

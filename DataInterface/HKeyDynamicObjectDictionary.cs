@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DataInterface
 {
-    public class HKeyDictionary : ObservableConcurrentDictionary<HKey, HDynamicObject>
+    public class HKeyDynamicObjectDictionary : ObservableConcurrentDictionary<HKey, HDynamicObject>
     {
 
         public byte[] ToBinary()
@@ -20,10 +20,10 @@ namespace DataInterface
             }
             return Serial.ToBinary();
         }
-        public static HKeyDictionary FromBinary(byte[] Serial)
+        public static HKeyDynamicObjectDictionary FromBinary(byte[] Serial)
         {
             KeyValuePair<HKey, KeyValuePair<string, Object>[]>[] DeSerial = Serialization.FromBinary<KeyValuePair<HKey, KeyValuePair<string, Object>[]>[]>(Serial);
-            HKeyDictionary DoD = new HKeyDictionary();
+            HKeyDynamicObjectDictionary DoD = new HKeyDynamicObjectDictionary();
             foreach (KeyValuePair<HKey, KeyValuePair<string, object>[]> Row in DeSerial.OrderBy(x => x.Key))
             {
                 DoD.TryAdd(Row.Key, new HDynamicObject(Row.Value));

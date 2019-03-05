@@ -31,6 +31,7 @@ using UI.WPF.Views.Settings;
 using UI.WPF.Views.SimProject;
 using HDynamicObject = DataInterface.HDynamicObject;
 using DelegateCommand =DevExpress.Mvvm.DelegateCommand;
+using DynamicObject = DataInterface.DynamicObject;
 
 namespace UI.WPF
 {
@@ -88,10 +89,6 @@ namespace UI.WPF
 
             GlobalLogging.AddLog(LogTypes.Status, "Initialization Complete");
         }
-
-       
-
-
         #endregion
         #region Commands   
 
@@ -245,7 +242,7 @@ namespace UI.WPF
             }
            
         }
-        public DataObject Configuration
+        public DynamicObject Configuration
         {
             get;private set;
         }
@@ -271,7 +268,7 @@ namespace UI.WPF
             string AppSettingsPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\CFSim";
             if (!File.Exists($"{AppSettingsPath}\\Settings.json"))
             {
-                Configuration = new DataObject();
+                Configuration = new DynamicObject();
                 Configuration["SavePath"] = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\SimProjects";
                 Configuration["Theme"] = ThemeName.Oscuro;
                 await WriteConfig();
@@ -384,7 +381,7 @@ namespace UI.WPF
             }
 
         }
-        private async Task<DataObject> ReadConfig()
+        private async Task<DynamicObject> ReadConfig()
         {
             string AppSettingsPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\CFSim";
             
@@ -394,10 +391,10 @@ namespace UI.WPF
                 {
                     string contents = await sr.ReadToEndAsync();
                     sr.Close();                    
-                    return  Core.Extensions.Serialization.FromJson<DataObject>(contents);
+                    return  Core.Extensions.Serialization.FromJson<DynamicObject>(contents);
                 }
             }
-            return new DataObject();
+            return new DynamicObject();
         }
         private async Task  SaveProject()
         {

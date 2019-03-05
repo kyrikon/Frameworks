@@ -16,16 +16,13 @@ using Core.Extensions;
 namespace DataInterface
 {
     [Serializable]
-    public abstract class ObjectObjectBase : INotifyPropertyChanged, IDataObject, ICustomTypeDescriptor//, IDictionary<string, object>
+    public abstract class DynamicObjectBase : INotifyPropertyChanged, IDynamicObject, ICustomTypeDescriptor
     {
         // Considerations for base class
         // 1. Object nature
-        // 2. (De) Serialization - parameterless constructor
+        // 2. (De) Serialization - parameterless constructor      
         // 3. Edit Auditing
         // 4. Syncronization with backing data store (multi user)
-        #region Events / Delegates
-
-        #endregion
         #region Fields 
         private string[] _PropNames;
         private bool _FirePropChange = true;
@@ -33,31 +30,25 @@ namespace DataInterface
         #endregion
 
         #region Constructors
-        protected ObjectObjectBase(bool _Transactional = true)
+        protected DynamicObjectBase(bool _Transactional = true)
         {
-            GetPropNames();
-            ObjectData = new DataObjectDictionary();
-            ObjectType = new DataTypeDictionary();
+            ObjectData = new DynamicValuesDictionary();
+            ObjectType = new DynamicTypeDictionary();
             ModifiedData = new ObservableConcurrentDictionary<string, ConcurrentStack<ModifiedDataItem>>();
             EditStack = new ConcurrentStack<string>();
             IsTransactional = _Transactional;
-
         }
-        protected ObjectObjectBase(KeyValuePair<string, Object>[] InitArray, bool _Transactional = true)
+        protected DynamicObjectBase(KeyValuePair<string, Object>[] InitArray, bool _Transactional = true)
         {
-            GetPropNames();
-            ObjectData = new DataObjectDictionary();
-            ObjectType = new DataTypeDictionary();
+            ObjectData = new DynamicValuesDictionary();
+            ObjectType = new DynamicTypeDictionary();
             ModifiedData = new ObservableConcurrentDictionary<string, ConcurrentStack<ModifiedDataItem>>();
             EditStack = new ConcurrentStack<string>();
             IsTransactional = _Transactional;
             this.FromArray(InitArray);
         }
         #endregion
-        #region Commands   
-        #endregion
         #region Properties
-
         public Object this[string key]
         {
             get
@@ -131,23 +122,7 @@ namespace DataInterface
                 return ObjectData.Keys.OrderBy(x => x).ToArray();
             }
         }
-
-        //[JsonIgnore]
-        //public PropertyDetails[] ObjectDetails
-        //{
-        //    get
-        //    {
-        //        PropertyDetails[] GetDetails = new PropertyDetails[ObjectData.Count];
-        //        int ItmCnt = 0;
-        //        foreach (var Itm in ObjectData)
-        //        {
-        //            var ss = ItmCnt.GetType().GetEditor();
-        //            GetDetails[ItmCnt] = new PropertyDetails() { PropName = Itm.Key, PropValue = Itm.Value, PropType = Itm.Value.GetType(), PropEditor = ((Type)Itm.Value.GetType()).GetEditor() };
-        //            ItmCnt++;
-        //        }
-        //        return GetDetails;
-        //    }
-        //}
+       
         [JsonIgnore]
         public string FieldString
         {
@@ -157,9 +132,10 @@ namespace DataInterface
             }
         }
         [JsonProperty]
-        protected DataObjectDictionary ObjectData { get; }
+        protected DynamicValuesDictionary ObjectData { get; }
         [JsonProperty]
-        protected DataTypeDictionary ObjectType { get; }
+        protected DynamicTypeDictionary ObjectType { get; }
+        [JsonIgnore]
         private ObservableConcurrentDictionary<string, ConcurrentStack<ModifiedDataItem>> ModifiedData { get; }
         [JsonIgnore]
         private ConcurrentStack<string> EditStack { get; }
@@ -244,7 +220,7 @@ namespace DataInterface
             }
         }
 
-        [JsonIgnore]
+        [JsonProperty]
         public bool IsReadOnly
         {
             get
@@ -275,53 +251,6 @@ namespace DataInterface
                 return PList;
             }
 
-        }
-
-        private void PI_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            lock (_lockObj)
-            {
-                if (e.PropertyName.Equals("Value", StringComparison.InvariantCultureIgnoreCase) && _FirePropChange)
-                {
-                    Stopwatch _SW1 = Stopwatch.StartNew();
-                    PropertyItem itm = (PropertyItem)sender;
-
-                    string tmpItemType;
-                    ObjectType.TryGetValue(itm.Name, out tmpItemType);
-
-                    try
-                    {
-                        Type CvrtType = Type.GetType(tmpItemType);
-                        if (CvrtType == null || CvrtType == itm.Value.GetType())
-                        {
-                            this[itm.Name] = itm.Value;
-                        }
-
-                        if (CvrtType.IsEnum)
-                        {
-                            this[itm.Name] = Enum.ToObject(CvrtType, itm.Value);
-                        }
-                        this[itm.Name] = Convert.ChangeType(itm.Value, CvrtType);
-                        _FirePropChange = true;
-                    }
-                    catch (InvalidCastException)
-                    {
-                        itm.Value = this[itm.Name];
-                        _FirePropChange = false;
-                    }
-                    catch (FormatException)
-                    {
-                        itm.Value = this[itm.Name];
-                        _FirePropChange = false;
-                    }
-                    _SW1.Stop();
-                    Console.WriteLine($"Conversion Took {_SW1.Elapsed.TotalSeconds} seconds");
-                }
-                else
-                {
-                    _FirePropChange = true;
-                }
-            }
         }
 
         #endregion
@@ -356,7 +285,6 @@ namespace DataInterface
                 {
 
                     return Enum.ToObject(CvrtType, tmpItem);
-                    //return Convert.ChangeType(Convert.ToInt32(tmpItem), CvrtType);
                 }
                 return Convert.ChangeType(tmpItem, CvrtType);
             }
@@ -473,7 +401,6 @@ namespace DataInterface
                 UndoChange(LastEditKey);
             }
         }
-
         public void RevertChanges(string key)
         {
             foreach (ConcurrentStack<ModifiedDataItem> ChangeSets in ModifiedData.Values)
@@ -508,7 +435,7 @@ namespace DataInterface
             return new ModifiedDataItem[] { };
         }
 
-        public KeyValuePair<string, Tuple<Object, string>>[] ToArray()
+        public KeyValuePair<string, Tuple<object, string>>[] ToArray()
         {
             KeyValuePair<string, Tuple<Object, string>>[] Tmp = new KeyValuePair<string, Tuple<Object, string>>[ObjectData.Count];
             int lineCnt = 0;
@@ -519,9 +446,9 @@ namespace DataInterface
             }
             return Tmp;
         }
-        public void FromArray(KeyValuePair<string, Object>[] ObjValues)
+        public void FromArray(KeyValuePair<string, object>[] ObjValues)
         {
-            foreach (KeyValuePair<string, Object> Item in ObjValues)
+            foreach (KeyValuePair<string, object> Item in ObjValues)
             {
                 ObjectData[Item.Key] = Item.Value;
                 ObjectType[Item.Key] = Item.Value.GetType().AssemblyQualifiedName;
@@ -530,7 +457,7 @@ namespace DataInterface
         }
         public void CastProps()
         {
-            foreach (KeyValuePair<string, Object> Itm in ObjectData)
+            foreach (KeyValuePair<string, object> Itm in ObjectData)
             {
                 Type ValType = Type.GetType(ObjectType[Itm.Key]);
                 if (ValType != null && !Itm.Value.GetType().Equals(ValType))
@@ -540,6 +467,56 @@ namespace DataInterface
             }
         }
         #endregion
+
+        #region CallBacks
+        private void PI_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            lock (_lockObj)
+            {
+                if (e.PropertyName.Equals("Value", StringComparison.InvariantCultureIgnoreCase) && _FirePropChange)
+                {
+                    Stopwatch _SW1 = Stopwatch.StartNew();
+                    PropertyItem itm = (PropertyItem)sender;
+
+                    string tmpItemType;
+                    ObjectType.TryGetValue(itm.Name, out tmpItemType);
+
+                    try
+                    {
+                        Type CvrtType = Type.GetType(tmpItemType);
+                        if (CvrtType == null || CvrtType == itm.Value.GetType())
+                        {
+                            this[itm.Name] = itm.Value;
+                        }
+
+                        if (CvrtType.IsEnum)
+                        {
+                            this[itm.Name] = Enum.ToObject(CvrtType, itm.Value);
+                        }
+                        this[itm.Name] = Convert.ChangeType(itm.Value, CvrtType);
+                        _FirePropChange = true;
+                    }
+                    catch (InvalidCastException)
+                    {
+                        itm.Value = this[itm.Name];
+                        _FirePropChange = false;
+                    }
+                    catch (FormatException)
+                    {
+                        itm.Value = this[itm.Name];
+                        _FirePropChange = false;
+                    }
+                    _SW1.Stop();
+                    Console.WriteLine($"Conversion Took {_SW1.Elapsed.TotalSeconds} seconds");
+                }
+                else
+                {
+                    _FirePropChange = true;
+                }
+            }
+        } 
+        #endregion
+
         #region ICustomTypeDescriptor
         public AttributeCollection GetAttributes()
         {
@@ -590,59 +567,22 @@ namespace DataInterface
         public PropertyDescriptorCollection GetProperties()
         {
             var attributes = new Attribute[0];
-            List<ObjectPropertyDescriptor> properties = new List<ObjectPropertyDescriptor>();
+            List<DynamicPropertyDescriptor> properties = new List<DynamicPropertyDescriptor>();
 
-            properties.AddRange(ObjectData.Select(pair => new ObjectPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
+            properties.AddRange(ObjectData.Select(pair => new DynamicPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
             return new PropertyDescriptorCollection(properties.ToArray());
         }
 
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
-            List<ObjectPropertyDescriptor> properties = new List<ObjectPropertyDescriptor>();
-            properties.AddRange(ObjectData.Select(pair => new ObjectPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
+            List<DynamicPropertyDescriptor> properties = new List<DynamicPropertyDescriptor>();
+            properties.AddRange(ObjectData.Select(pair => new DynamicPropertyDescriptor(this, pair.Key, pair.Value.GetType(), attributes)));
             return new PropertyDescriptorCollection(properties.ToArray());
         }
 
         public object GetPropertyOwner(PropertyDescriptor pd)
         {
             return this;
-        }
-        #endregion
-        #region Object Methods
-        //public override bool TryGetMember(GetMemberBinder binder, out object result)
-        //{
-        //    string name = binder.Name;
-
-        //    //exclude Properties
-        //    if (!_PropNames.Contains(binder.Name) && ObjectData.ContainsKey(name))
-        //    {
-        //        result = this[name];
-        //        return true;
-        //    }
-        //    result = null;
-        //    return false;
-
-        //}
-        //public override bool TrySetMember(SetMemberBinder binder, object value)
-        //{
-        //    //exclude Properties
-        //    if (!_PropNames.Contains(binder.Name))
-        //    {
-        //        this[binder.Name] = value;
-        //        return true;
-        //    }
-        //    return false;
-
-        //}
-        private void GetPropNames()
-        {
-            _PropNames = new string[this.GetType().GetProperties().Length];
-            int currCnt = 0;
-            foreach (PropertyInfo pinfo in this.GetType().GetProperties())
-            {
-                _PropNames[currCnt] = pinfo.Name;
-                currCnt++;
-            }
         }
         #endregion
         #region NotifyPropertyChanged
@@ -681,111 +621,30 @@ namespace DataInterface
         }
 
 
-        #endregion
-        #region IDictionary
-        //public ICollection<string> Keys
-        //{
-        //    get
-        //    {
-        //        return ObjectData.Keys;
-        //    }
-        //}
-
-        //public ICollection<object> Values
-        //{
-        //    get
-        //    {
-        //        return ObjectData.Values;
-        //    }
-        //}
-        //public int Count
-        //{
-        //    get
-        //    {
-        //        return ObjectData.Count;
-        //    }            
-        //}
-        //public void Add(string key, object value)
-        //{
-        //    ObjectData.TryAdd(key,value);
-        //}
-
-        //public bool ContainsKey(string key)
-        //{
-        //    return ObjectData.ContainsKey(key);
-        //}
-
-        //public bool Remove(string key)
-        //{
-        //    object tmpObj = new object();
-        //    return ObjectData.TryRemove(key,out tmpObj);
-        //}
-
-        //public bool TryGetValue(string key, out object value)
-        //{           
-        //    return ObjectData.TryGetValue(key,out value);
-        //}
-
-        //public void Add(KeyValuePair<string, object> item)
-        //{
-        //     ObjectData.TryAdd(item);
-        //}
-
-        //public void Clear()
-        //{
-        //    ObjectData.Clear();
-        //}
-
-        //public bool Contains(KeyValuePair<string, object> item)
-        //{
-        //    return ObjectData.Contains(item);
-        //}
-
-        //public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
-        //{
-           
-        //}
-
-        //public bool Remove(KeyValuePair<string, object> item)
-        //{
-        //    object tmpObj = new object();
-        //    return ObjectData.TryRemove(item.Key, out tmpObj);
-        //}
-
-        //public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
-        //{
-        //    return ObjectData.GetEnumerator();
-        //}
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return ObjectData.GetEnumerator();
-        //}
-        #endregion
+        #endregion     
     }
 
-    public class ObjectPropertyDescriptor : PropertyDescriptor
+    public class DynamicPropertyDescriptor : PropertyDescriptor
     {
-        private readonly ObjectObjectBase ObjectObjectBaseInst;
+        private readonly DynamicObjectBase DynamicObjectBaseInst;
         private readonly Type propertyType;
 
-        public ObjectPropertyDescriptor(ObjectObjectBase _ObjectObjectBase,
+        public DynamicPropertyDescriptor(DynamicObjectBase _DynamicObjectBase,
             string propertyName, Type propertyType, Attribute[] propertyAttributes)
             : base(propertyName, propertyAttributes)
         {
-            this.ObjectObjectBaseInst = _ObjectObjectBase;
+            this.DynamicObjectBaseInst = _DynamicObjectBase;
             this.propertyType = propertyType;
         }
 
         public override bool CanResetValue(object component)
         {
-
             return true;
         }
 
         public override object GetValue(object component)
         {
-            return ObjectObjectBaseInst[Name];
+            return DynamicObjectBaseInst[Name];
         }
 
         public override void ResetValue(object component)
@@ -794,7 +653,7 @@ namespace DataInterface
 
         public override void SetValue(object component, object value)
         {
-            ObjectObjectBaseInst[Name] = value;
+            DynamicObjectBaseInst[Name] = value;
         }
 
         public override bool ShouldSerializeValue(object component)
@@ -804,7 +663,7 @@ namespace DataInterface
 
         public override Type ComponentType
         {
-            get { return typeof(ObjectObjectBase); }
+            get { return typeof(DynamicObjectBase); }
         }
 
         public override bool IsReadOnly
@@ -815,7 +674,6 @@ namespace DataInterface
         public override Type PropertyType
         {
             get { return propertyType; }
-
         }
     }
     public class PropertyItem : NotifyPropertyChanged
@@ -842,7 +700,17 @@ namespace DataInterface
                 SetPropertyValue<object>(value);
             }
         }
-
+        public string AssemblyType
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue<string>(value);
+            }
+        }
         public ValueType EditorType
         {
             get
@@ -872,5 +740,35 @@ namespace DataInterface
                 SetPropertyValue<object>(value);
             }
         }
+    }
+    public class ModifiedDataItem
+    {
+        public object Value
+        {
+            get; set;
+        }
+        public double TimeStamp
+        {
+            get; set;
+        }
+        public string UserID
+        {
+            get; set;
+        }
+        public T GetValue<T>()
+        {
+            try
+            {
+                return (T)Value;
+            }
+            catch (InvalidCastException)
+            {
+                return (T)Convert.ChangeType(Value, typeof(T));
+            }
+        }
+    }
+    public class DynamicObject: DynamicObjectBase
+    {
+
     }
 }

@@ -76,7 +76,7 @@ namespace UI.WPF.Views.SimProject
         IEnumerable IChildNodesSelector.SelectChildren(object item)
         {
             if(item is DataInterface.HDynamicObject)
-                return (item as DataInterface.HDynamicObject).ChildrenCol;
+                return (item as DataInterface.HDynamicObject).ChildrenCollection;
             return null;
         }
     }
