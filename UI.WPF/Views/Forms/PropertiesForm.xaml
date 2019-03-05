@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:local="clr-namespace:UI.WPF.Views.SimProject"
              xmlns:DS="clr-namespace:DataSource;assembly=DataSource"
              xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
              xmlns:MUExt="clr-namespace:UI.WPF.Extensions"
              xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              mc:Ignorable="d" MinWidth="300"      
              VerticalAlignment="Center"
              HorizontalAlignment="Stretch"
@@ -16,7 +18,7 @@
     
     <UserControl.Resources>
         <ResourceDictionary>
-            <LocalHelpers:ConnectionTemplateSelector x:Key="ConnectionTS" />
+            <LocalHelpers:PropertyEditTemplateSelector x:Key="PropertyTemplate" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="MainGrid">
@@ -44,12 +46,20 @@
                        Margin="10,5,2,5"
                        Style="{StaticResource HeaderStyle}" />
         </Border>
-        <ItemsControl ItemsSource="{Binding SelectedNode.Properties}" Grid.Row="2" Grid.Column="1">
+        <ItemsControl ItemsSource="{Binding SelectedNode.Properties}"
+                      Grid.Row="2"
+                      Grid.Column="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Name}" />
-                        <TextBox Text="{Binding Value}" />
+                        <TextBlock Text="{Binding Name}"
+                                   Style="{StaticResource TextBlockFormStyle}"
+                                   KeyboardNavigation.IsTabStop="False" />
+                        <ContentControl Content="{Binding}"
+                                        ContentTemplateSelector="{StaticResource PropertyTemplate}"
+                                        />
+                       
+                        
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

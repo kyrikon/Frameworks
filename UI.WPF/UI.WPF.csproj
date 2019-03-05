@@ -188,6 +188,7 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Compile Include="Helpers\BindableExpandingBehavior.cs" />
+    <Compile Include="Helpers\PropertyEditTemplateSelector.cs" />
     <Compile Include="Helpers\TreeItemTemplateSelector.cs" />
     <Compile Include="Helpers\ConnectionTemplateSelector.cs" />
     <Compile Include="Helpers\TreeListExpandedNodesHelper.cs" />

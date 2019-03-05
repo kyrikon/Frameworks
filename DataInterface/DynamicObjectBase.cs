@@ -265,7 +265,7 @@ namespace DataInterface
             get
             {
                 ObservableCollection<PropertyItem> PList = new ObservableCollection<PropertyItem>();
-                foreach (KeyValuePair<string, object> items in ObjectData.ToArray())
+                foreach (KeyValuePair<string, object> items in ObjectData.ToArray().OrderBy(x => x.Key))
                 {
                     PropertyItem PI = new PropertyItem() { Name = items.Key, Value = items.Value };
                     PI.PropertyChanged += PI_PropertyChanged;

@@ -233,6 +233,7 @@ namespace UI.WPF.Views.SimProject
         {
             SelectedNode["hello"] = SelectedNode["hello"] == null ? 0 : ((int)SelectedNode["hello"])+1;
             SelectedNode["hello2"] = SelectedNode["hello2"] == null ? 0 : ((int)SelectedNode["hello2"]) + 1;
+            SelectedNode["hello3"] = "Hello World";
         }
         private async void DM_ModelInitialized(object sender, EventArgs args)
         {            
