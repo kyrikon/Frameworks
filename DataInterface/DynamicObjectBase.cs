@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using Core.Extensions;
 
 namespace DataInterface
 {
@@ -816,7 +817,7 @@ namespace DataInterface
             get { return propertyType; }
 
         }
-    }    
+    }
     public class PropertyItem : NotifyPropertyChanged
     {
         public string Name
@@ -837,6 +838,36 @@ namespace DataInterface
                 return GetPropertyValue<object>();
             }
             set
+            {
+                SetPropertyValue<object>(value);
+            }
+        }
+
+        public ValueType EditorType
+        {
+            get
+            {
+                return Value.GetType().GetEditor();
+            }
+        }
+        public string EditorMask
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            private set
+            {
+                SetPropertyValue<string>(value);
+            }
+        }
+        public object DefaultValue
+        {
+            get
+            {
+                return GetPropertyValue<object>();
+            }
+            private set
             {
                 SetPropertyValue<object>(value);
             }
