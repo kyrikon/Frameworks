@@ -21,6 +21,7 @@
                       DockPanel.Dock="Top"
                        ShowApplicationButton="False"
                        ToolbarShowMode="Hide"
+                       IsMinimized="True"
                        IsHiddenRibbonCollapsed="True"
                        PageCategoryAlignment="Left"
                        >

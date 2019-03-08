@@ -5,7 +5,6 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     x:Class="UI.WPF.ResourceDictionaries.DataTemplateResource"
                     x:ClassModifier="public"
-                    xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
@@ -16,6 +15,7 @@
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
                     xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+                    xmlns:LocalForms="clr-namespace:UI.WPF.Views.Forms"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -215,17 +215,7 @@
                             Margin="2">
                 <dxwui:PageView.Items>
                     <dxwui:PageViewItem Header="Children">
-                        <!--<dxprg:PropertyGridControl Margin="24"
-                                                   Grid.Column="1"
-                                                   Grid.Row="2"
-                                                   SelectedObject="{Binding Path=SelectedNode}"
-                                                   ShowCategories="True"
-                                                   HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Stretch"
-                                                   MinWidth="300"
-                                                   MinHeight="400"
-                                                   ShowDescriptionIn="ToolTip"
-                                                   ExpandCategoriesWhenSelectedObjectChanged="True" />-->
+                        <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
                     <dxwui:PageViewItem Header="Custom Enums">
                         <!--<ItemsControl ItemsSource="{Binding SelectedNode.Properties}"
@@ -271,17 +261,7 @@
                             Margin="2">
                 <dxwui:PageView.Items>
                     <dxwui:PageViewItem Header="Children">
-                        <!--<dxprg:PropertyGridControl Margin="24"
-                                                   Grid.Column="1"
-                                                   Grid.Row="2"
-                                                   SelectedObject="{Binding Path=SelectedNode}"
-                                                   ShowCategories="True"
-                                                   HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Stretch"
-                                                   MinWidth="300"
-                                                   MinHeight="400"
-                                                   ShowDescriptionIn="ToolTip"
-                                                   ExpandCategoriesWhenSelectedObjectChanged="True" />-->
+                        <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
                     <dxwui:PageViewItem Header="Available Properties">
                         <!--<ItemsControl ItemsSource="{Binding SelectedNode.Properties}"

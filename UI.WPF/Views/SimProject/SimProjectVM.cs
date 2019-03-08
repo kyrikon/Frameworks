@@ -112,6 +112,12 @@ namespace UI.WPF.Views.SimProject
                     {
                         GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
                         OnPropertyChanged("ObjectCnt");
+                        foreach(HDynamicObject child in SelectedNode.ChildrenCollection)
+                        {
+                            child.RankChangedEvent -= SelectedNode_RankChangedEvent;
+                            child.RankChangedEvent += SelectedNode_RankChangedEvent;
+                        }
+                        
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
@@ -120,6 +126,9 @@ namespace UI.WPF.Views.SimProject
             }
             
         }
+
+       
+
         public ObservableCollection<HDynamicObject> Root
         {
             get
@@ -263,6 +272,13 @@ namespace UI.WPF.Views.SimProject
             _IsNew = false;
             Root = DM.Root;
             SelectedNode = Root.FirstOrDefault();
+        }
+        #endregion
+        #region Callbacks
+        private void SelectedNode_RankChangedEvent(object sender, RankChangedEventArgs args)
+        {
+            args.RankObj.Parent?.RefreshChildOrder();
+            Root = DM.Root;
         }
         #endregion
     }

@@ -219,6 +219,9 @@
     <Compile Include="Views\Forms\PageViewContainer.xaml.cs">
       <DependentUpon>PageViewContainer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Forms\ChildrenForm.xaml.cs">
+      <DependentUpon>ChildrenForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Forms\PropertiesForm.xaml.cs">
       <DependentUpon>PropertiesForm.xaml</DependentUpon>
     </Compile>
@@ -277,6 +280,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Forms\PageViewContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Forms\ChildrenForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -29,6 +29,10 @@ namespace DataInterface
         [field: NonSerialized]
         public event CheckedChangedEventHandler CheckedChangedEvent;
 
+        public delegate void RankChangedEventHandler(object sender, RankChangedEventArgs args);
+        [field: NonSerialized]
+        public event RankChangedEventHandler RankChangedEvent;
+
         #endregion
         #region Fields 
         private bool _IsInit;
@@ -105,7 +109,7 @@ namespace DataInterface
         {
             get
             {
-                return new ObservableCollection<HDynamicObject>(Children.OrderBy(x => x.Key).Select(x => x.Value));
+                return new ObservableCollection<HDynamicObject>(Children.OrderBy(x => x.Key).Select(x => x.Value).OrderBy(x => x.Rank));
             }
 
         }
@@ -121,7 +125,17 @@ namespace DataInterface
         [JsonProperty]
         public int Rank
         {
-            get;  set;
+            get
+            {
+                return GetPropertyValue<int>();
+            }
+            set
+            {
+                SetPropertyValue<int>(value);
+                Parent?.RefreshChildOrder();
+                Root?.RefreshChildOrder();
+                RankChangedEvent?.Invoke(this, new RankChangedEventArgs() { RankObj = this });
+            }
         }
 
         public bool IsSelected
@@ -214,6 +228,12 @@ namespace DataInterface
                 ExpandParents(Obj.Parent);
             }
         }
+        public void RefreshChildOrder()
+        {
+            OnPropertyChanged("Children");
+            OnPropertyChanged("ChildrenCollection");                       
+        }
+       
         #endregion
         #region Callbacks                
         #endregion
