@@ -116,8 +116,14 @@ namespace DataInterface
 
         [JsonIgnore]
         [IgnoreDataMember]
+
         public HDynamicObject Root { get; set; }
-       
+        [JsonProperty]
+        public int Rank
+        {
+            get;  set;
+        }
+
         public bool IsSelected
         {
             get

@@ -45,9 +45,8 @@ namespace UI.WPF.Views.SimProject
             ClearItemsCmd = new DelegateCommand(() => ClearItems());
             CreateCmd = new DelegateCommand(() => CreateProject().Wait());
             AddItemsCmd = new DelegateCommand(() => AddItems());
+            CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());            
         }
-
-        
 
         #endregion
         #region Commands           
@@ -58,8 +57,12 @@ namespace UI.WPF.Views.SimProject
         public DelegateCommand CreateCmd
         {
             get; private set;
-        }        
+        }
 
+        public DelegateCommand CancelCmd
+        {
+            get; private set;
+        }
         public DelegateCommand AddItemsCmd
         {
             get; private set;
@@ -107,10 +110,12 @@ namespace UI.WPF.Views.SimProject
                     SetPropertyValue<HDynamicObject>(value);
                     if (SelectedNode != null)
                     {
-                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");                      
+                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
+                        OnPropertyChanged("ObjectCnt");
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
+                   
                 }                
             }
             
@@ -145,6 +150,10 @@ namespace UI.WPF.Views.SimProject
                 {
                     if (SelectedNode.HID.IsRoot)
                     {
+                        return App.Current.TryFindResource("RootFolderIconClosed") as BitmapImage;
+                    }
+                    else if(SelectedNode.IsContainer)
+                    {
                         return App.Current.TryFindResource("FolderIconClosed") as BitmapImage;
                     }
                     else
@@ -167,6 +176,14 @@ namespace UI.WPF.Views.SimProject
                 {
                     SetPropertyValue<string>(value);                    
                 }
+            }
+        }
+
+        public int ObjectCnt
+        {
+            get
+            {
+                return DM.Objects?.Count ?? 0;
             }
         }
 

@@ -131,6 +131,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.NavBar.v17.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.PropertyGrid.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.PropertyGrid.v17.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Ribbon.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Ribbon.v17.2.dll</HintPath>
@@ -212,6 +216,9 @@
       <DependentUpon>ConnectionBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
+    <Compile Include="Views\Forms\PageViewContainer.xaml.cs">
+      <DependentUpon>PageViewContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Forms\PropertiesForm.xaml.cs">
       <DependentUpon>PropertiesForm.xaml</DependentUpon>
     </Compile>
@@ -266,6 +273,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConnectionBar\ConnectionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Forms\PageViewContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -46,7 +46,8 @@ namespace UI.WPF
         private SolidColorBrush _BlackBrush = new SolidColorBrush(Colors.Black);
         private SolidColorBrush _RedBrush = new SolidColorBrush(Colors.Red);
         private NavigationFrame _ShellNFrame;
-        private Guid _CurrentProject = Guid.Empty;      
+        private Guid _CurrentProject = Guid.Empty;    
+        private Guid _LastProject = Guid.Empty;
         #endregion
         #region Constructors
         public MainWindowVM(NavigationFrame NF)
@@ -63,13 +64,13 @@ namespace UI.WPF
             GlobalSettings.Instance.ShellContext = this;
             // set the commands
 
-            ConnectionChangedCmd = new DelegateCommand<ConnectionBarItem>((x) => ConnectionChanged(x));
+            ConnectionChangedCmd = new DelegateCommand<ConnectionBarItem>(async (x) => await ConnectionChanged(x));
             NewProjectCmd = new DelegateCommand(() => NewProject());
             NavigateProjectCmd = new DelegateCommand(() => NavigateProject());
             AppSettingsCmd = new DelegateCommand(() => AppSettings());
             SaveConfigCmd = new DelegateCommand(() => SaveConfig());
             CancelConfigCmd = new DelegateCommand(() => CancelConfig());
-            SaveProjectCmd = new DelegateCommand(() => SaveProject().Wait());
+            SaveProjectCmd = new DelegateCommand(async () => await SaveProject());
             //set up progress bar 
             BarStyleSetting = new ProgressBarStyleSettings();
             ShowProgress = false;
@@ -322,6 +323,7 @@ namespace UI.WPF
         }
         private void NewProject()
         {
+            _LastProject = _CurrentProject;
             SimProjectVM Proj = new SimProjectVM(DataConnectionFactory.CreateNewConnection(DataSourceType.LocalFile));           
             _Projects.Add(Proj.UID, Proj);
             _CurrentProject = Proj.UID;
@@ -336,6 +338,17 @@ namespace UI.WPF
         private void AppSettings()
         {            
             _ShellNFrame.Navigate(_Views[typeof(AppSettings)]);
+        }
+        public void NavBack()
+        {
+            if(_CurrentProject != _LastProject && _LastProject != Guid.Empty)
+            {
+                _LastProject = _CurrentProject;
+                _Views[typeof(ProjectMainView)].DataContext = _Projects[_CurrentProject];
+             
+            }
+     
+            _ShellNFrame.GoBack();
         }
         private async void SaveConfig()
         {

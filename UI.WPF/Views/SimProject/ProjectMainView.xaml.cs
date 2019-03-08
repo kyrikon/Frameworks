@@ -30,16 +30,6 @@ namespace UI.WPF.Views.SimProject
             InitializeComponent();                   
         }
 
-        private void treeList_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
-        {
-          
-        }
-
-        private void view_ShowingEditor(object sender, DevExpress.Xpf.Grid.TreeList.TreeListShowingEditorEventArgs e)
-        {
-            
-        }
-
         private void View_Loaded(object sender, RoutedEventArgs e)
         {
             view.AutoFilterRowCellStyle = GetFilterStyle();
@@ -50,11 +40,8 @@ namespace UI.WPF.Views.SimProject
             try
             {
                 GridRowThemeKeyExtension themeKey = new GridRowThemeKeyExtension();
-
-
                 themeKey.ResourceKey = GridRowThemeKeys.LightweightCellStyle;
                 themeKey.ThemeName = ThemeManager.GetThemeName(Application.Current.MainWindow);
-
 
              //   s.BasedOn = (Style)FindResource(themeKey);
                 s.TargetType = typeof(FilterCellContentPresenter);
@@ -62,7 +49,6 @@ namespace UI.WPF.Views.SimProject
                 s.Setters.Add(new Setter(FilterCellContentPresenter.BorderThicknessProperty, new Thickness(0)));
                 s.Setters.Add(new Setter(FilterCellContentPresenter.BorderBrushProperty, new SolidColorBrush(Colors.Transparent)));
                 s.Setters.Add(new Setter(FilterCellContentPresenter.MarginProperty, new Thickness(0,2,0,5)));
-                //  s.Setters.Add(new Setter(LightweightCellEditor.ForegroundProperty, New Binding("RowData.Row.values[" & index.ToString() & "].TemplateColor")));
             }
             catch (System.Windows.ResourceReferenceKeyNotFoundException)
             {

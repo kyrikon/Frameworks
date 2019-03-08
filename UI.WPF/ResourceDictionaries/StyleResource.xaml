@@ -166,6 +166,27 @@
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
     </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}"
+           x:Key="MultiLineTextEditFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="AcceptsReturn"
+                Value="True" />
+        <Setter Property="Height"
+                Value="90" />
+        <Setter Property="MaxWidth"
+                Value="350" />
+        <Setter Property="FontSize"
+                Value="{StaticResource FormSize}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Top" />
+        <Setter Property="TextWrapping"
+                Value="Wrap" />
+        <Setter Property="VerticalScrollBarVisibility"
+                Value="Auto" />
+    </Style>
     <Style TargetType="{x:Type ComboBox}"  x:Key="ComboBoxFormStyle">
         <Setter Property="Padding"
                 Value="2" />

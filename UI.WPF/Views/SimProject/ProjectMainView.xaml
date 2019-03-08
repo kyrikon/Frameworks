@@ -28,106 +28,128 @@
             <Hlprs:TreeItemTemplate x:Key="TreeItemSelector" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <lc:DockLayoutControl AllowItemSizing="True">
-            <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
-                         lc:DockLayoutControl.Dock="Left"
-                         ShowShadow="WhenHasMouse"
-                         CornerRadius="2"
-                         TitleVisibility="Collapsed"
-                         DisplayMode="Light"
-                         Width="300"
-                         HorizontalAlignment="Stretch"
-                         VerticalAlignment="Stretch"
-                         Header="Navigation">
-                <StackPanel Orientation="Vertical"
-                            VerticalAlignment="Stretch">
-                    <Border Grid.Row="0"
-                            Grid.Column="0"
-                            CornerRadius="6,6,6,6"
-                            Background="{StaticResource BlueFormHighlight}"
-                            Margin="0,0,0,20">
-                        <TextBlock Style="{StaticResource HeaderStyle}"
-                                   Text="Navigation"
-                                   Margin="10,5,2,5" />
-                    </Border>
-                    <TextBlock Style="{StaticResource TextBlockFormStyle}"
-                               Text="Filter"
-                               Margin="2,5,2,2" />
-                    
-                    <dxg:TreeListControl x:Name="treeList"
-                                         CurrentItem="{Binding SelectedNode,Mode=TwoWay}"
-                                         IsFilterEnabled="True"
-                                         BorderThickness="0"
-                                         VerticalAlignment="Stretch"
-                                         HorizontalAlignment="Stretch"
-                                         ShowBorder="False"
-                                         BorderBrush="Transparent"
-                                         MaxHeight="1800"
-                                         ItemsSource="{Binding Root}">
-                        <dxg:TreeListControl.Columns>
-                            <dxg:TreeListColumn AllowSorting="True"
-                                                Header="Name"
-                                                FieldName="Name"
-                                                ReadOnly="True"
-                                                FilterPopupMode="Excel"
-                                                CellTemplateSelector="{StaticResource TreeItemSelector}" />
-                        </dxg:TreeListControl.Columns>
-                        <dxg:TreeListControl.View>
-                            <dxg:TreeListView x:Name="view"
-                                              Padding="2"
-                                              Hlprs:TreeListExpandedNodesHelper.SynchIsExpanded="True"
-                                              TreeDerivationMode="ChildNodesSelector"
-                                              ChildNodesSelector="{StaticResource childSelector}"
-                                              AllowEditing="False"
-                                              ShowHorizontalLines="False"
-                                              ShowColumnHeaders="False"
-                                              AutoExpandAllNodes="True"
-                                              ShowVerticalLines="False"
-                                              ShowAutoFilterRow="True"
-                                              ShowIndicator="False"
-                                              Loaded="View_Loaded"
-                                              VerticalScrollbarVisibility="Auto"
-                                              VerticalAlignment="Stretch"
-                                              VerticalContentAlignment="Stretch"
-                                              BorderBrush="Transparent"
-                                              BorderThickness="0"
-                                              ShowRootIndent="True"
-                                              FilterMode="Extended"
-                                              AutoWidth="True"
-                                              NavigationStyle="Row" />
-                        </dxg:TreeListControl.View>
-                    </dxg:TreeListControl>
-                </StackPanel>
-            </lc:GroupBox>
-            <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
-                         lc:DockLayoutControl.Dock="Client"
-                         DisplayMode="Light"
-                         TitleVisibility="Collapsed"
-                         Visibility="{Binding HasSelectedNode,Converter={StaticResource b2Vis}}"
-                         Header="Content">
-                <Grid Margin="2,0,2,0" VerticalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="3*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="3*" />
-                    </Grid.RowDefinitions>
-                    <Forms:DetailsForm Grid.Column="0"
-                                       Grid.RowSpan="2"
-                                       VerticalAlignment="Stretch"
-                                       HorizontalAlignment="Stretch"
-                                       Grid.Row="0" />
-                    <Forms:PropertiesForm Grid.Column="1"
-                                          Grid.RowSpan="2"
+    <lc:DockLayoutControl AllowItemSizing="True">
+        <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                     lc:DockLayoutControl.Dock="Left"
+                     ShowShadow="WhenHasMouse"
+                     CornerRadius="2"
+                     TitleVisibility="Collapsed"
+                     DisplayMode="Light"
+                     Width="300"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     Header="Navigation">
+            <StackPanel Orientation="Vertical"
+                        Margin="2,0,2,0"
+                        VerticalAlignment="Stretch">
+                <Border Grid.Row="0"
+                        Grid.Column="0"
+                        CornerRadius="6,6,6,6"
+                        Background="{StaticResource BlueFormHighlight}"
+                        Margin="0,0,0,20">
+                    <TextBlock Style="{StaticResource HeaderStyle}"
+                               Text="Navigation"
+                               Margin="10,5,2,5" />
+                </Border>
+                <TextBlock Style="{StaticResource TextBlockFormStyle}"
+                           Text="Filter"
+                           Margin="2,5,2,2" />
+                <dxg:TreeListControl x:Name="treeList"
+                                     CurrentItem="{Binding SelectedNode,Mode=TwoWay}"
+                                     IsFilterEnabled="True"
+                                     BorderThickness="0"
+                                     VerticalAlignment="Stretch"
+                                     HorizontalAlignment="Stretch"
+                                     ShowBorder="False"
+                                     BorderBrush="Transparent"
+                                     MaxHeight="1800"
+                                     ItemsSource="{Binding Root}">
+                    <dxg:TreeListControl.Columns>
+                        <dxg:TreeListColumn AllowSorting="True"
+                                            Header="Name"
+                                            FieldName="Name"
+                                            ReadOnly="True"
+                                            FilterPopupMode="Excel"
+                                            CellTemplateSelector="{StaticResource TreeItemSelector}" />
+                    </dxg:TreeListControl.Columns>
+                    <dxg:TreeListControl.View>
+                        <dxg:TreeListView x:Name="view"
+                                          Padding="2"
+                                          Hlprs:TreeListExpandedNodesHelper.SynchIsExpanded="True"
+                                          TreeDerivationMode="ChildNodesSelector"
+                                          ChildNodesSelector="{StaticResource childSelector}"
+                                          AllowEditing="False"
+                                          ShowHorizontalLines="False"
+                                          ShowColumnHeaders="False"
+                                          AutoExpandAllNodes="True"
+                                          ShowVerticalLines="False"
+                                          ShowAutoFilterRow="True"
+                                          ShowIndicator="False"
+                                          Loaded="View_Loaded"
+                                          VerticalScrollbarVisibility="Auto"
                                           VerticalAlignment="Stretch"
-                                          HorizontalAlignment="Left"
-                                          Grid.Row="0" />
-                </Grid>
-               
-            </lc:GroupBox>
-        </lc:DockLayoutControl>
-    </Grid>
+                                          VerticalContentAlignment="Stretch"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          ShowRootIndent="True"
+                                          FilterMode="Extended"
+                                          AutoWidth="True"
+                                          NavigationStyle="Row" />
+                    </dxg:TreeListControl.View>
+                </dxg:TreeListControl>
+            </StackPanel>
+        </lc:GroupBox>
+        <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                     lc:DockLayoutControl.Dock="Client"
+                     DisplayMode="Light"
+                     TitleVisibility="Collapsed"
+                     Visibility="{Binding HasSelectedNode,Converter={StaticResource b2Vis}}"
+                     Header="Content">
+            <Grid Margin="2,0,2,0"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        CornerRadius="6,6,6,6"
+                        HorizontalAlignment="Stretch"
+                        Background="{StaticResource BlueFormHighlight}">
+                    <TextBlock Style="{StaticResource HeaderStyle}"
+                               Text="{Binding SelectedNode.Name}"
+                               Margin="10,5,2,5" />
+                </Border>
+                <lc:DockLayoutControl AllowItemSizing="False" 
+                                      Grid.Row="1">
+                    <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                                 lc:DockLayoutControl.Dock="Left"
+                                 BorderBrush="Transparent"
+                                 BorderThickness="0"
+                                 DisplayMode="Light">
+                        <Forms:DetailsForm VerticalAlignment="Stretch"
+                                           HorizontalAlignment="Stretch"
+                                           Grid.Row="1" />
+                    </lc:GroupBox>
+                    <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                                 lc:DockLayoutControl.Dock="Client"                                
+                                 BorderBrush="Transparent"                                 
+                                 BorderThickness="0"
+                                 DisplayMode="Light">
+                        <Forms:PageViewContainer Grid.Column="2"
+                                              Grid.RowSpan="2"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch"
+                                              Grid.Row="1" />
+                    </lc:GroupBox>
+                </lc:DockLayoutControl>
+            </Grid>
+        </lc:GroupBox>
+    </lc:DockLayoutControl>
 </UserControl>
