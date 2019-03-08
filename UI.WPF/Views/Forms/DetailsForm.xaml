@@ -76,7 +76,7 @@
                           Style="{StaticResource MultiLineTextEditFormStyle}"
                         
                           Width="{Binding RelativeSource={RelativeSource Self}, Path=MaxWidth}" />
-            <Button Content="Incr" Visibility="Collapsed"
+            <Button Content="Incr" Visibility="Visible"
                     Command="{Binding AddItemsCmd}"
                     Style="{StaticResource FormButtonStyle}"
                     HorizontalAlignment="Left" />

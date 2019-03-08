@@ -15,6 +15,7 @@
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
                     xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+                    xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
                     xmlns:LocalForms="clr-namespace:UI.WPF.Views.Forms"
                     mc:Ignorable="d">
 
@@ -27,7 +28,7 @@
     <sys:Double x:Key="FormLabelSize">16</sys:Double>
     <sys:Double x:Key="HighlightHeight">40</sys:Double>
     <!---->
-    
+     <LocalHelpers:PropertyEditTemplateSelector x:Key="PropertyTemplate" />
     
     <!--#region Settings DT Styles-->
     <DataTemplate x:Key="LocalFileTemplate">
@@ -264,7 +265,7 @@
                         <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
                     <dxwui:PageViewItem Header="Available Properties">
-                        <!--<ItemsControl ItemsSource="{Binding SelectedNode.Properties}"
+                        <ItemsControl ItemsSource="{Binding Properties}"
                                       Grid.Row="2"
                                       Grid.Column="1">
                             <ItemsControl.ItemTemplate>
@@ -278,7 +279,7 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                        </ItemsControl>-->
+                        </ItemsControl>
                     </dxwui:PageViewItem>
                 </dxwui:PageView.Items>
             </dxwui:PageView>
