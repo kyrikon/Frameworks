@@ -72,87 +72,87 @@
   <ItemGroup>
     <Reference Include="DevExpress.Data.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Data.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Data.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Docs.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Docs.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Docs.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Mvvm.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Mvvm.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\\DevExpress.Mvvm.v17.2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Spreadsheet.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Spreadsheet.v17.2.Core.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Spreadsheet.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Accordion.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Accordion.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Accordion.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Controls.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Controls.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Controls.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Core.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.Core.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Core.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Diagram.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Diagram.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Diagram.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Docking.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.Docking.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Docking.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Grid.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Grid.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Grid.v17.2.Core.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Grid.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v17.2.Extensions, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Grid.v17.2.Extensions.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Grid.v17.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Layout.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.Layout.v17.2.Core.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Layout.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.LayoutControl.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.LayoutControl.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.LayoutControl.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.NavBar.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.NavBar.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.NavBar.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.PropertyGrid.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\DevExpress 17.2\Components\Bin\Framework\DevExpress.Xpf.PropertyGrid.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.PropertyGrid.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Ribbon.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Ribbon.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Ribbon.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Spreadsheet.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Spreadsheet.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Spreadsheet.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Black.v17.2, Version=17.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Projects\PLEXOSCommon\Assemblies\DevExpress.Xpf.Themes.Black.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Themes.Black.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.ligero.v17.2">
-      <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Themes.ligero.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Themes.ligero.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Oscuro.v17.2, Version=17.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\PLEXOSCommon\Assemblies\DevExpress.Xpf.Themes.Oscuro.v17.2.dll</HintPath>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Themes.Oscuro.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

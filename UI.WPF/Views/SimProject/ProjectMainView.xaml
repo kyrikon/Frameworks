@@ -69,6 +69,8 @@
                                             Header="Name"
                                             FieldName="Name"
                                             ReadOnly="True"
+                                            SortFieldName="Rank"
+                                            SortOrder="Ascending"                                           
                                             FilterPopupMode="Excel"
                                             CellTemplateSelector="{StaticResource TreeItemSelector}" />
                     </dxg:TreeListControl.Columns>

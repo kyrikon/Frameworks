@@ -132,9 +132,6 @@ namespace DataInterface
             set
             {
                 SetPropertyValue<int>(value);
-                Parent?.RefreshChildOrder();
-                Root?.RefreshChildOrder();
-                RankChangedEvent?.Invoke(this, new RankChangedEventArgs() { RankObj = this });
             }
         }
 
@@ -228,12 +225,10 @@ namespace DataInterface
                 ExpandParents(Obj.Parent);
             }
         }
-        public void RefreshChildOrder()
-        {
-            OnPropertyChanged("Children");
-            OnPropertyChanged("ChildrenCollection");                       
-        }
-       
+       private void NodeRankChange()
+       {
+
+       }
         #endregion
         #region Callbacks                
         #endregion
