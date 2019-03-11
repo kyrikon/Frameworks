@@ -131,5 +131,13 @@
   <ItemGroup>
     <Resource Include="Images\DarkTheme\ic_folder_special_white_24dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DarkTheme\ic_arrow_downward_white_48pt.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_drop_down_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_drop_up_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_upward_white_48pt.png" />
+    <Resource Include="Images\LightTheme\ic_arrow_downward_48pt.png" />
+    <Resource Include="Images\LightTheme\ic_arrow_drop_down_48pt.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

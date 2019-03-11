@@ -45,8 +45,12 @@ namespace UI.WPF.Views.SimProject
             ClearItemsCmd = new DelegateCommand(() => ClearItems());
             CreateCmd = new DelegateCommand(() => CreateProject().Wait());
             AddItemsCmd = new DelegateCommand(() => AddItems());
-            CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());            
+            CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());
+            MoveUpCmd = new DelegateCommand<HDynamicObject>((x) => MoveUp(x));
+            MoveDownCmd = new DelegateCommand<HDynamicObject>((x) => MoveDown(x));
         }
+
+        
 
         #endregion
         #region Commands           
@@ -67,6 +71,17 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
+
+        public DelegateCommand<HDynamicObject> MoveUpCmd
+        {
+            get; private set;
+        }
+
+        public DelegateCommand<HDynamicObject> MoveDownCmd
+        {
+            get; private set;
+        }
+
         #endregion
         #region Properties
         public DataModel DM
@@ -187,10 +202,8 @@ namespace UI.WPF.Views.SimProject
             }
         }
 
-
         #endregion
         #region Methods     
-
         private void ClearItems()
         {
             if (DM.Root != null)
@@ -264,9 +277,30 @@ namespace UI.WPF.Views.SimProject
             Root = DM.Root;
             SelectedNode = Root.FirstOrDefault();
         }
+        private void MoveDown(HDynamicObject CurrChild)
+        {
+            int CurrIxd = CurrChild.Rank;
+            HDynamicObject MoveUp = CurrChild.Parent.ChildrenCollection.FirstOrDefault(x => x.Rank == CurrIxd + 1);
+            if (MoveUp != null)
+            {
+                MoveUp.Rank = CurrIxd;
+                CurrChild.Rank = CurrIxd + 1;
+            }
+        }
+
+        private void MoveUp(HDynamicObject CurrChild)
+        {
+            int CurrIxd = CurrChild.Rank;
+            HDynamicObject MoveDown = CurrChild.Parent.ChildrenCollection.FirstOrDefault(x => x.Rank == CurrIxd - 1);
+            if (MoveDown != null)
+            {
+                MoveDown.Rank = CurrIxd;
+                CurrChild.Rank = CurrIxd -1;
+            }
+        }
         #endregion
         #region Callbacks
-       
+
         #endregion
     }
    
