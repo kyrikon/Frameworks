@@ -283,7 +283,7 @@ namespace UI.WPF.Views.SimProject
         private void MoveDown(HDynamicObject CurrChild)
         {
             int CurrIxd = CurrChild.Rank;
-            HDynamicObject MoveUp = CurrChild.Parent.ChildrenCollection.FirstOrDefault(x => x.Rank == CurrIxd + 1);
+            HDynamicObject MoveUp = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd + 1);
             if (MoveUp != null)
             {
                 MoveUp.Rank = CurrIxd;
@@ -294,7 +294,7 @@ namespace UI.WPF.Views.SimProject
         private void MoveUp(HDynamicObject CurrChild)
         {
             int CurrIxd = CurrChild.Rank;
-            HDynamicObject MoveDown = CurrChild.Parent.ChildrenCollection.FirstOrDefault(x => x.Rank == CurrIxd - 1);
+            HDynamicObject MoveDown = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd - 1);
             if (MoveDown != null)
             {
                 MoveDown.Rank = CurrIxd;
@@ -304,9 +304,9 @@ namespace UI.WPF.Views.SimProject
         }
         private void AddFldr()
         {
-            HDynamicObject NewFolder = SelectedNode.NewFolder();
+            HDynamicObject NewFolder = SelectedNode.NewFolder();           
             DM.Objects.TryAdd(NewFolder.HID, NewFolder);
-            SelectedNode.NodeRankChange();
+            SelectedNode?.NodeRankChange();
         }
 
         #endregion

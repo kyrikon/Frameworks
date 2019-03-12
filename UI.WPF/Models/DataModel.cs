@@ -289,7 +289,7 @@ namespace UI.WPF.Models
                             //    NewItem.Children.TryAdd(Chldrn.Key, Chldrn.Value);
 
                             //}
-                            bool isok = Objects[NewKey.ParentKey].Children.TryAdd(NewKey, (HDynamicObject)e.NewVal.Value);
+                            Objects[NewKey.ParentKey].Children.Add(e.NewVal.Value);
                         }
                     }
                     else
@@ -306,8 +306,7 @@ namespace UI.WPF.Models
                         HKey ParKey = DelKey.ParentKey;
                         if (Objects.ContainsKey(ParKey))
                         {
-                            HDynamicObject OldItem;
-                            Objects[ParKey].Children.TryRemove(DelKey, out OldItem);
+                            Objects[ParKey].Children.Remove(Objects[DelKey]);                     
                         }
                     }
                     break;

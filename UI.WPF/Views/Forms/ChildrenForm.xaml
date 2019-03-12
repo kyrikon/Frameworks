@@ -27,7 +27,7 @@
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <dxg:GridControl ItemsSource="{Binding ChildrenCollection}" AutoGenerateColumns="None"  Grid.Row="0" x:Name="ChildGrid" FontSize="{StaticResource BdySize}">
+        <dxg:GridControl ItemsSource="{Binding Children}" AutoGenerateColumns="None"  Grid.Row="0" x:Name="ChildGrid" FontSize="{StaticResource BdySize}">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name"  />
                 <dxg:GridColumn FieldName="Description" Width="*"/>
