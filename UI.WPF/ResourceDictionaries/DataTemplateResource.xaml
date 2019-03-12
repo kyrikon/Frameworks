@@ -138,9 +138,15 @@
                       Width="16"
                       VerticalAlignment="Center"
                       Height="16" />
-            <TextBlock Text="{Binding Path=RowData.Row.Name}"                                             
-                       VerticalAlignment="Bottom"
-                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}" />
+            <TextBlock VerticalAlignment="Bottom"
+                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="RowData.Row.Name" />
+                        <Binding Path="RowData.Row.Children.Count" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="TreeItemTemplate">
@@ -153,9 +159,14 @@
                       Width="16"
                       VerticalAlignment="Center"
                       Height="16" />
-            <TextBlock Text="{Binding Path=RowData.Row.Name}"                       
-                       VerticalAlignment="Bottom"
-                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}" />
+            <TextBlock VerticalAlignment="Bottom"
+                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="RowData.Row.Name" />
+                        <Binding Path="RowData.Row.Children.Count" />
+                    </MultiBinding>
+                </TextBlock.Text></TextBlock>
         </StackPanel>
     </DataTemplate>
    

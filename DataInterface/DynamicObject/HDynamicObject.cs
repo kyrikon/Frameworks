@@ -45,7 +45,9 @@ namespace DataInterface
             Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             _IsInit = false;
-        }
+            Children.CollectionChanged += Children_CollectionChanged;
+        }       
+
         public HDynamicObject(HKey Key) : base(false)
         {
             _IsInit = true;
@@ -53,6 +55,7 @@ namespace DataInterface
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
+            Children.CollectionChanged += Children_CollectionChanged;
         }
         public HDynamicObject(bool _Transactional = false) : base(_Transactional)
         {
@@ -60,6 +63,7 @@ namespace DataInterface
             Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             _IsInit = false;
+            Children.CollectionChanged += Children_CollectionChanged;
         }
         public HDynamicObject(HKey Key,bool _Transactional = false) : base(_Transactional)
         {
@@ -68,6 +72,7 @@ namespace DataInterface
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
+            Children.CollectionChanged += Children_CollectionChanged;
         }
         public HDynamicObject(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray,_Transactional)
         {
@@ -75,6 +80,7 @@ namespace DataInterface
             Children = new HKeyDynamicObjectDictionary();
             IsExpanded = true;
             _IsInit = false;
+            Children.CollectionChanged += Children_CollectionChanged;
         }
         public HDynamicObject(HKey Key, KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray, _Transactional)
         {
@@ -83,6 +89,7 @@ namespace DataInterface
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
+            Children.CollectionChanged += Children_CollectionChanged;
         }
         #endregion
         #region Properties
@@ -120,7 +127,6 @@ namespace DataInterface
 
         [JsonIgnore]
         [IgnoreDataMember]
-
         public HDynamicObject Root { get; set; }
         [JsonProperty]
         public int Rank
@@ -229,8 +235,25 @@ namespace DataInterface
        {
             OnPropertyChanged("ChildrenCollection");
        }
+        public HDynamicObject NewFolder()
+        {
+            KeyValuePair<HKey,HDynamicObject> lastObj = this.Children.OrderBy(x => x.Key).LastOrDefault();
+            int[] newKeyRaw = new int[lastObj.Key.Rank];
+            ((int[])lastObj.Key).CopyTo(newKeyRaw, 0);
+            HKey NewKey = new HKey(newKeyRaw);
+            ((int[])NewKey)[NewKey.Rank - 1] = NewKey[NewKey.Rank - 1] + 1;
+
+           
+            HDynamicObject NewFldr = new HDynamicObject(NewKey, true) { Name = "New Folder", IsContainer = true,  Rank = this.ChildrenCollection.Count + 1 };
+            return NewFldr;
+        }
+
         #endregion
-        #region Callbacks                
+        #region Callbacks    
+        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("ChildrenCollection");
+        }
         #endregion
     }   
     

@@ -56,7 +56,7 @@
             <TextBlock Style="{StaticResource TextBlockFormStyle}"
                        Visibility="{Binding SelectedNode.IsContainer,Converter={StaticResource b2Vis}}">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="{}{0} Childeren">
+                    <MultiBinding StringFormat="{}{0} Children">
                         <Binding Path="SelectedNode.Children.Count" />
                     </MultiBinding>
                 </TextBlock.Text>

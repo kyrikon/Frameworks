@@ -41,17 +41,16 @@ namespace UI.WPF.Views.SimProject
             DM = new DataModel(DataConnectionFactory.CreateNewDataSource(Connection));
             DM.ModelInitialized += DM_ModelInitialized;
             _UId = Guid.NewGuid();
-            NewDSType = DataSourceType.LocalFile;           
+            NewDSType = DataSourceType.LocalFile;
             ClearItemsCmd = new DelegateCommand(() => ClearItems());
             CreateCmd = new DelegateCommand(() => CreateProject().Wait());
             AddItemsCmd = new DelegateCommand(() => AddItems());
             CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());
             MoveUpCmd = new DelegateCommand<HDynamicObject>((x) => MoveUp(x));
             MoveDownCmd = new DelegateCommand<HDynamicObject>((x) => MoveDown(x));
+            AddFldrCmd = new DelegateCommand(() => AddFldr());
         }
-
-        
-
+      
         #endregion
         #region Commands           
         public DelegateCommand ClearItemsCmd
@@ -81,7 +80,11 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
-
+        public DelegateCommand AddFldrCmd
+        {
+            get; private set;
+        }
+        
         #endregion
         #region Properties
         public DataModel DM
@@ -288,7 +291,6 @@ namespace UI.WPF.Views.SimProject
                 CurrChild.Parent.NodeRankChange();
             }
         }
-
         private void MoveUp(HDynamicObject CurrChild)
         {
             int CurrIxd = CurrChild.Rank;
@@ -300,10 +302,17 @@ namespace UI.WPF.Views.SimProject
                 CurrChild.Parent.NodeRankChange();
             }
         }
+        private void AddFldr()
+        {
+            HDynamicObject NewFolder = SelectedNode.NewFolder();
+            DM.Objects.TryAdd(NewFolder.HID, NewFolder);
+            SelectedNode.NodeRankChange();
+        }
+
         #endregion
         #region Callbacks
 
         #endregion
     }
-   
+
 }
