@@ -285,6 +285,7 @@ namespace UI.WPF.Views.SimProject
             {
                 MoveUp.Rank = CurrIxd;
                 CurrChild.Rank = CurrIxd + 1;
+                CurrChild.Parent.NodeRankChange();
             }
         }
 
@@ -296,6 +297,7 @@ namespace UI.WPF.Views.SimProject
             {
                 MoveDown.Rank = CurrIxd;
                 CurrChild.Rank = CurrIxd -1;
+                CurrChild.Parent.NodeRankChange();
             }
         }
         #endregion

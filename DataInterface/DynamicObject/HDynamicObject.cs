@@ -225,9 +225,9 @@ namespace DataInterface
                 ExpandParents(Obj.Parent);
             }
         }
-       private void NodeRankChange()
+       public void NodeRankChange()
        {
-
+            OnPropertyChanged("ChildrenCollection");
        }
         #endregion
         #region Callbacks                
