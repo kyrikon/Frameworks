@@ -49,8 +49,9 @@ namespace UI.WPF.Views.SimProject
             MoveUpCmd = new DelegateCommand<HDynamicObject>((x) => MoveUp(x));
             MoveDownCmd = new DelegateCommand<HDynamicObject>((x) => MoveDown(x));
             AddFldrCmd = new DelegateCommand(() => AddFldr());
+            DelFldrCmd = new DelegateCommand(() => DelFldr());
         }
-      
+       
         #endregion
         #region Commands           
         public DelegateCommand ClearItemsCmd
@@ -81,6 +82,10 @@ namespace UI.WPF.Views.SimProject
             get; private set;
         }
         public DelegateCommand AddFldrCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand DelFldrCmd
         {
             get; private set;
         }
@@ -334,7 +339,24 @@ namespace UI.WPF.Views.SimProject
         {
             HDynamicObject NewFolder = SelectedNode.NewFolder();           
             DM.Objects.TryAdd(NewFolder.HID, NewFolder);
+            SelectedNode.IsExpanded = true;
             SelectedNode?.NodeRankChange();
+            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Folder Added", $"Key is {NewFolder.HID.StrKey}");
+        }
+        private void DelFldr()
+        {
+            HDynamicObject OldFolder = new HDynamicObject();
+            if (SelectedNode.Children.Any())
+            {
+                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Folder Must Be empty", $"Key - {SelectedNode.HID.StrKey}");
+            }
+            else
+            {
+                DM.Objects.TryRemove(SelectedNode.HID, out OldFolder);
+                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Folder removed", $"Key - {OldFolder.HID.StrKey}");
+                SelectedNode = OldFolder.Parent;
+            
+            }           
         }
 
         #endregion

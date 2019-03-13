@@ -43,17 +43,20 @@
                      HorizontalAlignment="Right">
             <Button Style="{StaticResource FormButtonStyle}"
                     Content="New Folder"
+                    Visibility="Collapsed"
                     Command="{Binding DataContext.AddFldrCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"/>
             <dxc:SimpleButton Glyph="{StaticResource DropUpIcon}"
                               Margin="0,0,2,0"
                               Height="{StaticResource ButtonHeight}"
                               Width="{StaticResource ButtonHeight}"
+                              Visibility="Collapsed"
                               Command="{Binding DataContext.MoveUpCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                               CommandParameter="{Binding ElementName=ChildGrid,Path=SelectedItem}"
                               ToolTip="Move Up"
                                />
             <dxc:SimpleButton Glyph="{StaticResource DropDownIcon}"
                               Margin="2,0,2,0"
+                              Visibility="Collapsed"
                               Height="{StaticResource ButtonHeight}"
                               Width="{StaticResource ButtonHeight}"
                               Command="{Binding DataContext.MoveDownCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"

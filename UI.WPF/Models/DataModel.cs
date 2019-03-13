@@ -310,7 +310,12 @@ namespace UI.WPF.Models
                         HKey ParKey = DelKey.ParentKey;
                         if (Objects.ContainsKey(ParKey))
                         {
-                            Objects[ParKey].Children.Remove(Objects[DelKey]);                     
+                            var DelItem = Objects[ParKey].Children.FirstOrDefault(x => x.HID.Equals(DelKey));
+                            if(DelItem != null)
+                            {
+                                Objects[ParKey].Children.Remove(DelItem);
+                            }
+                                              
                         }
                     }
                     break;

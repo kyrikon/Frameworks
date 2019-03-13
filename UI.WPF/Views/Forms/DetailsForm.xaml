@@ -79,26 +79,38 @@
             <TextBlock Text="Rank"
                    Style="{StaticResource TextBlockFormStyle}"
                        Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
-        <StackPanel Orientation="Horizontal"
+            
+        <StackPanel Orientation="Horizontal" Margin="0,5"
                         Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
-                    HorizontalAlignment="Left">
-            <TextBlock Text="{Binding SelectedNode.Rank}"
-                       Style="{StaticResource TextBlockFormStyle}" />
-            <dxc:SimpleButton Glyph="{StaticResource DropUpIcon}"
-                              Margin="0,0,2,0"
-                              Height="32"
-                              Width="32"
-                              Command="{Binding MoveUpCmd}"                            
+                    HorizontalAlignment="Right">
+                <TextBlock Text="{Binding SelectedNode.Rank}" x:Name="RankTB"
+                           Style="{StaticResource TextBlockFormStyle}"
+                           Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
+                <dxc:SimpleButton Glyph="{StaticResource DropUpIcon}"
+                              Margin="40,0,2,0"
+                                  Height="32"
+                                  Width="32"
+                                  Command="{Binding MoveUpCmd}"                            
                               ToolTip="Move Up" />
-            <dxc:SimpleButton Glyph="{StaticResource DropDownIcon}"
+                <dxc:SimpleButton Glyph="{StaticResource DropDownIcon}"
                               Margin="2,0,2,0"
                                   Height="32"
                                   Width="32"
                                   Command="{Binding MoveDownCmd}" 
                               ToolTip="Move Down" />
         </StackPanel>
-
-        <Button Content="Incr" Visibility="Visible"
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+            <Button Style="{StaticResource FormButtonStyle}"
+                    Content="New Folder" Margin="0,0,2,0"
+                    Command="{Binding AddFldrCmd}" />
+                <Button Style="{StaticResource FormButtonStyle}"
+                        Margin="2,0,2,0"
+                        Content="Remove"
+                        Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
+                        Command="{Binding DelFldrCmd}" />
+            </StackPanel>
+            <Button Content="Incr" Visibility="Collapsed"
                     Command="{Binding AddItemsCmd}"
                     Style="{StaticResource FormButtonStyle}"
                     HorizontalAlignment="Left" />
