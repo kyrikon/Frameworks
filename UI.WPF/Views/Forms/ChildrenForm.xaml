@@ -31,7 +31,7 @@
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name"  />
                 <dxg:GridColumn FieldName="Description" Width="*"/>
-                <dxg:GridColumn FieldName="Rank" AllowEditing="false" SortOrder="Ascending" AllowSorting="true" Visible="False" SortFieldName="Rank"/>
+                <dxg:GridColumn FieldName="Rank" AllowEditing="false" SortOrder="Ascending" AllowSorting="true" Visible="True" SortFieldName="Rank"/>
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
                 <dxg:TableView  ShowGroupPanel="False"/>

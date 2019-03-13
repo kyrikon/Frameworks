@@ -227,22 +227,16 @@ namespace DataInterface
         public HDynamicObject NewFolder()
         {
             HDynamicObject lastObj = this.Children.OrderBy(x => x.HID).LastOrDefault();
-            int[] newKeyRaw = new int[] { };
+            HKey NewKey = new HKey(new int[]{ 0 });
             if (lastObj != null)
             {
-                newKeyRaw = new int[lastObj.HID.Rank];
-                ((int[])lastObj.HID).CopyTo(newKeyRaw, 0);
-                newKeyRaw[newKeyRaw.Rank - 1] = newKeyRaw[newKeyRaw.Rank - 1] + 1;
-
+                NewKey = this.HID.CreateChildKey(lastObj.HID.Rank + 1);
             }
             else
             {
-                newKeyRaw = new int[this.HID.Rank + 1];
-                ((int[])this.HID).CopyTo(newKeyRaw, 0);
-                newKeyRaw[newKeyRaw.Rank - 1] = 1;
-
+                NewKey = this.HID.CreateChildKey(1);
             }
-            HKey NewKey = new HKey(newKeyRaw);
+            
            
             HDynamicObject NewFldr = new HDynamicObject(NewKey, true) { Name = "New Folder", IsContainer = true,  Rank = this.Children.Count + 1 };
             return NewFldr;

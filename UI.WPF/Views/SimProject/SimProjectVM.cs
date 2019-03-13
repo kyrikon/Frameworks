@@ -282,24 +282,52 @@ namespace UI.WPF.Views.SimProject
         }
         private void MoveDown(HDynamicObject CurrChild)
         {
-            int CurrIxd = CurrChild.Rank;
-            HDynamicObject MoveUp = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd + 1);
-            if (MoveUp != null)
+            if (CurrChild != null)
             {
-                MoveUp.Rank = CurrIxd;
-                CurrChild.Rank = CurrIxd + 1;
-                CurrChild.Parent.NodeRankChange();
+                int CurrIxd = CurrChild.Rank;
+                HDynamicObject MoveUp = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd + 1);
+                if (MoveUp != null)
+                {
+                    MoveUp.Rank = CurrIxd;
+                    CurrChild.Rank = CurrIxd + 1;
+                    CurrChild.Parent.NodeRankChange();
+                }
+            }
+            else
+            {
+                int CurrIxd = SelectedNode.Rank;
+                HDynamicObject MoveUp = SelectedNode.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd + 1);
+                if (MoveUp != null)
+                {
+                    MoveUp.Rank = CurrIxd;
+                    SelectedNode.Rank = CurrIxd + 1;
+                    SelectedNode.Parent.NodeRankChange();
+                }
             }
         }
         private void MoveUp(HDynamicObject CurrChild)
         {
-            int CurrIxd = CurrChild.Rank;
-            HDynamicObject MoveDown = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd - 1);
-            if (MoveDown != null)
+            if (CurrChild != null)
             {
-                MoveDown.Rank = CurrIxd;
-                CurrChild.Rank = CurrIxd -1;
-                CurrChild.Parent.NodeRankChange();
+                int CurrIxd = CurrChild.Rank;
+                HDynamicObject MoveDown = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd - 1);
+                if (MoveDown != null)
+                {
+                    MoveDown.Rank = CurrIxd;
+                    CurrChild.Rank = CurrIxd - 1;
+                    CurrChild.Parent.NodeRankChange();
+                }
+            }
+            else
+            {
+                int CurrIxd = SelectedNode.Rank;
+                HDynamicObject MoveDown = SelectedNode.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd - 1);
+                if (MoveDown != null)
+                {
+                    MoveDown.Rank = CurrIxd;
+                    SelectedNode.Rank = CurrIxd - 1;
+                    SelectedNode.Parent.NodeRankChange();
+                }
             }
         }
         private void AddFldr()
