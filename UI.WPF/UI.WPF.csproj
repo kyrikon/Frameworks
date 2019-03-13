@@ -83,6 +83,10 @@
       <HintPath>..\External Assemblies\\DevExpress.Mvvm.v17.2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External Assemblies\DevExpress.Printing.v17.2.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Spreadsheet.v17.2.Core, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External Assemblies\DevExpress.Spreadsheet.v17.2.Core.dll</HintPath>
@@ -149,6 +153,10 @@
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.ligero.v17.2">
       <HintPath>..\External Assemblies\DevExpress.Xpf.Themes.ligero.v17.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v17.2, Version=17.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External Assemblies\DevExpress.Xpf.Themes.Office2016White.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Oscuro.v17.2, Version=17.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
