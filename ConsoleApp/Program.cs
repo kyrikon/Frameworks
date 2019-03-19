@@ -19,8 +19,14 @@ namespace Testingconsoleapp
 
             HDynamicObject TestSerial = new HDynamicObject();
 
+            DynamicObjectTemplate dmo = new DynamicObjectTemplate();
+            dmo.IsNullable = false;
+            dmo.ValueType = DataInterface.ValueType.Text;
+            dmo.DefaultValue = "hello";
+            dmo.DefaultValue = 0;
+            dmo.DefaultValue = null;
 
-           
+
             HKeyDynamicObjectDictionary Dict = new HKeyDynamicObjectDictionary();
 
           
@@ -48,8 +54,6 @@ namespace Testingconsoleapp
        //     model.ModelInitialized += Model_ModelInitialized;
             Console.WriteLine("Loading Data");
                       
-           
-           
             while(true)
             {
                
