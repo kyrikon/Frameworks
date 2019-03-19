@@ -106,8 +106,9 @@ namespace DataInterface
             bool IsSuccess = base.TryRemove(Key,out RemVal);
             if(IsSuccess)
             {
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new KeyValuePair<T1, T2>(Key, RemVal)));
-                OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Remove, OldVal = new KeyValuePair<T1, T2>(Key, RemVal) });
+                KeyValuePair<T1, T2> RemoveValue = new KeyValuePair<T1, T2>(Key, RemVal);
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, RemoveValue));
+                OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Remove, RemVal = RemoveValue });
             }
             return IsSuccess;
         }

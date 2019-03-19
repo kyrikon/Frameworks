@@ -1,5 +1,6 @@
 ﻿using DataInterface;
 using DevExpress.Xpf.Grid;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,7 +19,7 @@ namespace UI.WPF.Helpers
 
                 if (TreeItem.IsContainer) //container objects
                 {
-                    if (TreeItem.IsExpanded && !TreeItem.Children.IsEmpty)
+                    if (TreeItem.IsExpanded && TreeItem.Children.Any())
                     {
                         return element.FindResource("TreeItemExpandedTemplate") as DataTemplate;
                     }

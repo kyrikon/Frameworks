@@ -41,14 +41,17 @@ namespace UI.WPF.Views.SimProject
             DM = new DataModel(DataConnectionFactory.CreateNewDataSource(Connection));
             DM.ModelInitialized += DM_ModelInitialized;
             _UId = Guid.NewGuid();
-            NewDSType = DataSourceType.LocalFile;           
+            NewDSType = DataSourceType.LocalFile;
             ClearItemsCmd = new DelegateCommand(() => ClearItems());
             CreateCmd = new DelegateCommand(() => CreateProject().Wait());
             AddItemsCmd = new DelegateCommand(() => AddItems());
+            CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());
+            MoveUpCmd = new DelegateCommand<HDynamicObject>((x) => MoveUp(x));
+            MoveDownCmd = new DelegateCommand<HDynamicObject>((x) => MoveDown(x));
+            AddFldrCmd = new DelegateCommand(() => AddFldr());
+            DelFldrCmd = new DelegateCommand(() => DelFldr());
         }
-
-        
-
+       
         #endregion
         #region Commands           
         public DelegateCommand ClearItemsCmd
@@ -58,12 +61,35 @@ namespace UI.WPF.Views.SimProject
         public DelegateCommand CreateCmd
         {
             get; private set;
-        }        
+        }
 
+        public DelegateCommand CancelCmd
+        {
+            get; private set;
+        }
         public DelegateCommand AddItemsCmd
         {
             get; private set;
         }
+
+        public DelegateCommand<HDynamicObject> MoveUpCmd
+        {
+            get; private set;
+        }
+
+        public DelegateCommand<HDynamicObject> MoveDownCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand AddFldrCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand DelFldrCmd
+        {
+            get; private set;
+        }
+        
         #endregion
         #region Properties
         public DataModel DM
@@ -107,10 +133,12 @@ namespace UI.WPF.Views.SimProject
                     SetPropertyValue<HDynamicObject>(value);
                     if (SelectedNode != null)
                     {
-                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");                      
+                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
+                        OnPropertyChanged("ObjectCnt");                        
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
+                   
                 }                
             }
             
@@ -145,6 +173,10 @@ namespace UI.WPF.Views.SimProject
                 {
                     if (SelectedNode.HID.IsRoot)
                     {
+                        return App.Current.TryFindResource("RootFolderIconClosed") as BitmapImage;
+                    }
+                    else if(SelectedNode.IsContainer)
+                    {
                         return App.Current.TryFindResource("FolderIconClosed") as BitmapImage;
                     }
                     else
@@ -170,10 +202,16 @@ namespace UI.WPF.Views.SimProject
             }
         }
 
+        public int ObjectCnt
+        {
+            get
+            {
+                return DM.Objects?.Count ?? 0;
+            }
+        }
 
         #endregion
         #region Methods     
-
         private void ClearItems()
         {
             if (DM.Root != null)
@@ -247,7 +285,84 @@ namespace UI.WPF.Views.SimProject
             Root = DM.Root;
             SelectedNode = Root.FirstOrDefault();
         }
+        private void MoveDown(HDynamicObject CurrChild)
+        {
+            if (CurrChild != null)
+            {
+                int CurrIxd = CurrChild.Rank;
+                HDynamicObject MoveUp = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd + 1);
+                if (MoveUp != null)
+                {
+                    MoveUp.Rank = CurrIxd;
+                    CurrChild.Rank = CurrIxd + 1;
+                    CurrChild.Parent.NodeRankChange();
+                }
+            }
+            else
+            {
+                int CurrIxd = SelectedNode.Rank;
+                HDynamicObject MoveUp = SelectedNode.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd + 1);
+                if (MoveUp != null)
+                {
+                    MoveUp.Rank = CurrIxd;
+                    SelectedNode.Rank = CurrIxd + 1;
+                    SelectedNode.Parent.NodeRankChange();
+                }
+            }
+        }
+        private void MoveUp(HDynamicObject CurrChild)
+        {
+            if (CurrChild != null)
+            {
+                int CurrIxd = CurrChild.Rank;
+                HDynamicObject MoveDown = CurrChild.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd - 1);
+                if (MoveDown != null)
+                {
+                    MoveDown.Rank = CurrIxd;
+                    CurrChild.Rank = CurrIxd - 1;
+                    CurrChild.Parent.NodeRankChange();
+                }
+            }
+            else
+            {
+                int CurrIxd = SelectedNode.Rank;
+                HDynamicObject MoveDown = SelectedNode.Parent.Children.FirstOrDefault(x => x.Rank == CurrIxd - 1);
+                if (MoveDown != null)
+                {
+                    MoveDown.Rank = CurrIxd;
+                    SelectedNode.Rank = CurrIxd - 1;
+                    SelectedNode.Parent.NodeRankChange();
+                }
+            }
+        }
+        private void AddFldr()
+        {
+            HDynamicObject NewFolder = SelectedNode.NewFolder();           
+            DM.Objects.TryAdd(NewFolder.HID, NewFolder);
+            SelectedNode.IsExpanded = true;
+            SelectedNode?.NodeRankChange();
+            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Folder Added", $"Key is {NewFolder.HID.StrKey}");
+        }
+        private void DelFldr()
+        {
+            HDynamicObject OldFolder = new HDynamicObject();
+            if (SelectedNode.Children.Any())
+            {
+                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Folder Must Be empty", $"Key - {SelectedNode.HID.StrKey}");
+            }
+            else
+            {
+                DM.Objects.TryRemove(SelectedNode.HID, out OldFolder);
+                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Folder removed", $"Key - {OldFolder.HID.StrKey}");
+                SelectedNode = OldFolder.Parent;
+            
+            }           
+        }
+
+        #endregion
+        #region Callbacks
+
         #endregion
     }
-   
+
 }

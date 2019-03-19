@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Windows.Data;
 using Core.Extensions;
 
 namespace DataInterface
@@ -27,6 +26,7 @@ namespace DataInterface
         private string[] _PropNames;
         private bool _FirePropChange = true;
         object _lockObj = new object();
+        public const string IndexerName = "Item[]";
         #endregion
 
         #region Constructors
@@ -64,7 +64,7 @@ namespace DataInterface
                 SetModified(key, TimeStamp);
                 ObjectData[key] =  value;
                 ObjectType[key] = value.GetType().AssemblyQualifiedName;
-                OnPropertyChanged(Binding.IndexerName);
+                OnPropertyChanged(IndexerName);
                 OnPropertyChanged(key);
                 OnPropertyChanged("Properties");
             }
@@ -389,7 +389,9 @@ namespace DataInterface
                 if (ModifiedData[key].TryPop(out GetLast))
                 {
                     ObjectData[key] = GetLast.Value;
-                    OnPropertyChanged(Binding.IndexerName);
+                    OnPropertyChanged(IndexerName);
+                    OnPropertyChanged(key);
+                    OnPropertyChanged("Properties");
                 }
             }
         }
@@ -408,7 +410,9 @@ namespace DataInterface
                 if (!ChangeSets.IsEmpty)
                 {
                     ObjectData[key] = ChangeSets.FirstOrDefault().Value;
-                    OnPropertyChanged(Binding.IndexerName);
+                    OnPropertyChanged(IndexerName);
+                    OnPropertyChanged(key);
+                    OnPropertyChanged("Properties");
                     ChangeSets.Clear();
                 }
             }
@@ -452,7 +456,9 @@ namespace DataInterface
             {
                 ObjectData[Item.Key] = Item.Value;
                 ObjectType[Item.Key] = Item.Value.GetType().AssemblyQualifiedName;
-                OnPropertyChanged(Binding.IndexerName);
+                OnPropertyChanged(IndexerName);
+                OnPropertyChanged(Item.Key);
+                OnPropertyChanged("Properties");
             }
         }
         public void CastProps()

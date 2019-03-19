@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
 namespace DataInterface
 {
@@ -10,7 +11,7 @@ namespace DataInterface
         {
             get;
         }
-        HKeyDynamicObjectDictionary Children { get; }
+        ObservableCollection<HDynamicObject> Children { get; }
         HDynamicObject Parent { get; set; }
         HDynamicObject Root { get; set; }
         #endregion

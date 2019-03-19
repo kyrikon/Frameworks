@@ -79,12 +79,19 @@
         <ContentControl Content="{Binding DM.DataSource.Connection}"
                         ContentTemplateSelector="{StaticResource ConnectionTS}"                         
                         Grid.Column="1" Grid.Row="4"/>
-        <Button Content="Create"
-                Grid.Row="5"
-                Grid.Column="1"
-                Margin="2,2,50,2"
-                Style="{StaticResource FormButtonStyle}"
-                Command="{Binding CreateCmd}" />
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="5" HorizontalAlignment="Right"
+                    Margin="2,2,2,2"
+                    Grid.Column="1">
+            <Button Content="Cancel"                    
+                    Style="{StaticResource FormButtonStyle}"
+                    Command="{Binding CancelCmd}" />
+            <Button Content="Create"
+                    Margin="2,2,50,2"
+                    Style="{StaticResource FormButtonStyle}"
+                    Command="{Binding CreateCmd}" />
+        </StackPanel>
+        
         <TextBlock Text="{Binding Validation}" 
                        Grid.Row="6"
                        Grid.Column="1"

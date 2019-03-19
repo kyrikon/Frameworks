@@ -30,7 +30,7 @@
 
                     <dxdo:LayoutPanel x:Name="StatusPanel"
                                       AllowClose="False"
-                                      AutoHidden="False"
+                                      AutoHidden="True"
                                       ItemHeight="200"
                                       MaxHeight="200"
                                       AllowDockToDocumentGroup="False"

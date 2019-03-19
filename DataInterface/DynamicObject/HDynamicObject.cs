@@ -29,6 +29,10 @@ namespace DataInterface
         [field: NonSerialized]
         public event CheckedChangedEventHandler CheckedChangedEvent;
 
+        public delegate void RankChangedEventHandler(object sender, RankChangedEventArgs args);
+        [field: NonSerialized]
+        public event RankChangedEventHandler RankChangedEvent;
+
         #endregion
         #region Fields 
         private bool _IsInit;
@@ -38,14 +42,16 @@ namespace DataInterface
         public HDynamicObject() :base (false)
         {
             _IsInit = true;      
-            Children = new HKeyDynamicObjectDictionary();
+            Children = new ObservableCollection<HDynamicObject>();
             IsExpanded = true;
             _IsInit = false;
-        }
+
+        }       
+
         public HDynamicObject(HKey Key) : base(false)
         {
             _IsInit = true;
-            Children = new HKeyDynamicObjectDictionary();
+            Children = new ObservableCollection<HDynamicObject>();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -53,14 +59,14 @@ namespace DataInterface
         public HDynamicObject(bool _Transactional = false) : base(_Transactional)
         {
             _IsInit = true;
-            Children = new HKeyDynamicObjectDictionary();
+            Children = new ObservableCollection<HDynamicObject>();      
             IsExpanded = true;
             _IsInit = false;
         }
         public HDynamicObject(HKey Key,bool _Transactional = false) : base(_Transactional)
         {
             _IsInit = true;
-            Children = new HKeyDynamicObjectDictionary();
+            Children = new ObservableCollection<HDynamicObject>();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -68,14 +74,14 @@ namespace DataInterface
         public HDynamicObject(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray,_Transactional)
         {
             _IsInit = true;
-            Children = new HKeyDynamicObjectDictionary();
+            Children = new ObservableCollection<HDynamicObject>();
             IsExpanded = true;
             _IsInit = false;
         }
         public HDynamicObject(HKey Key, KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray, _Transactional)
         {
             _IsInit = true;
-            Children = new HKeyDynamicObjectDictionary();
+            Children = new ObservableCollection<HDynamicObject>();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -95,20 +101,14 @@ namespace DataInterface
             }
         }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public HKeyDynamicObjectDictionary Children { get; }
 
         [JsonIgnore]
         [IgnoreDataMember]
-        public ObservableCollection<HDynamicObject> ChildrenCollection
+        public ObservableCollection<HDynamicObject> Children
         {
-            get
-            {
-                return new ObservableCollection<HDynamicObject>(Children.OrderBy(x => x.Key).Select(x => x.Value));
-            }
-
+            get;
         }
+
 
         [JsonIgnore]
         [IgnoreDataMember]
@@ -117,7 +117,19 @@ namespace DataInterface
         [JsonIgnore]
         [IgnoreDataMember]
         public HDynamicObject Root { get; set; }
-       
+        [JsonProperty]
+        public int Rank
+        {
+            get
+            {
+                return GetPropertyValue<int>();
+            }
+            set
+            {
+                SetPropertyValue<int>(value);
+            }
+        }
+
         public bool IsSelected
         {
             get
@@ -208,8 +220,31 @@ namespace DataInterface
                 ExpandParents(Obj.Parent);
             }
         }
+       public void NodeRankChange()
+       {
+            OnPropertyChanged("ChildrenCollection");
+       }
+        public HDynamicObject NewFolder()
+        {
+            HDynamicObject lastObj = this.Children.OrderBy(x => x.HID).LastOrDefault();
+            HKey NewKey = new HKey(new int[]{ 0 });
+            if (lastObj != null)
+            {
+                NewKey = this.HID.CreateChildKey(lastObj.HID.Rank + 1);
+            }
+            else
+            {
+                NewKey = this.HID.CreateChildKey(1);
+            }
+            
+           
+            HDynamicObject NewFldr = new HDynamicObject(NewKey, true) { Name = "New Folder", IsContainer = true,  Rank = this.Children.Count + 1 };
+            return NewFldr;
+        }
+
         #endregion
-        #region Callbacks                
+        #region Callbacks    
+
         #endregion
     }   
     

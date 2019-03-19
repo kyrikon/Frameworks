@@ -5,7 +5,6 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     x:Class="UI.WPF.ResourceDictionaries.DataTemplateResource"
                     x:ClassModifier="public"
-                    xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
@@ -14,6 +13,10 @@
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:v4="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+                    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+                    xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
+                    xmlns:LocalForms="clr-namespace:UI.WPF.Views.Forms"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -25,7 +28,7 @@
     <sys:Double x:Key="FormLabelSize">16</sys:Double>
     <sys:Double x:Key="HighlightHeight">40</sys:Double>
     <!---->
-    
+     <LocalHelpers:PropertyEditTemplateSelector x:Key="PropertyTemplate" />
     
     <!--#region Settings DT Styles-->
     <DataTemplate x:Key="LocalFileTemplate">
@@ -135,9 +138,15 @@
                       Width="16"
                       VerticalAlignment="Center"
                       Height="16" />
-            <TextBlock Text="{Binding Path=RowData.Row.Name}"                                             
-                       VerticalAlignment="Bottom"
-                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}" />
+            <TextBlock VerticalAlignment="Bottom"
+                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="RowData.Row.Name" />
+                        <Binding Path="RowData.Row.Children.Count" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="TreeItemTemplate">
@@ -150,9 +159,14 @@
                       Width="16"
                       VerticalAlignment="Center"
                       Height="16" />
-            <TextBlock Text="{Binding Path=RowData.Row.Name}"                       
-                       VerticalAlignment="Bottom"
-                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}" />
+            <TextBlock VerticalAlignment="Bottom"
+                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="RowData.Row.Name" />
+                        <Binding Path="RowData.Row.Children.Count" />
+                    </MultiBinding>
+                </TextBlock.Text></TextBlock>
         </StackPanel>
     </DataTemplate>
    
@@ -176,7 +190,7 @@
         </Grid>
     </DataTemplate>
     <!---->
-      <!-- Editor DataTemplates-->
+    <!-- Editor DataTemplates-->
     <DataTemplate x:Key="StringEditTemplate">
         <dxe:TextEdit EditValue="{Binding Path=Value}"
                        Style="{StaticResource TextEditFormStyle}" />
@@ -189,6 +203,140 @@
                        HorizontalContentAlignment="Right"
                        Style="{StaticResource TextEditFormStyle}" />
     </DataTemplate>
-    
     <!---->
+    <!-- Root PageView-->
+    <DataTemplate x:Key="RootTemplate">
+        <Grid  HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5" />
+                <RowDefinition />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
+            <dxwui:PageView 
+                            ShowBackButton="False"
+                            PageHeadersLayoutType="Scroll"
+                            PageHeadersAlignment="Top"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="2">
+                <dxwui:PageView.Items>
+                    <dxwui:PageViewItem Header="Children">
+                        <LocalForms:ChildrenForm />
+                    </dxwui:PageViewItem>
+                    <dxwui:PageViewItem Header="Custom Enums">
+                        <!--<ItemsControl ItemsSource="{Binding SelectedNode.Properties}"
+                                      Grid.Row="2"
+                                      Grid.Column="1">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Name}"
+                                                   Style="{StaticResource TextBlockFormStyle}"
+                                                   KeyboardNavigation.IsTabStop="False" />
+                                        <ContentControl Content="{Binding}"
+                                                        ContentTemplateSelector="{StaticResource PropertyTemplate}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>-->
+                    </dxwui:PageViewItem>
+                </dxwui:PageView.Items>
+            </dxwui:PageView>
+        </Grid>
+    </DataTemplate>
+    <!---->
+    <!-- Container PageView-->
+    <DataTemplate x:Key="ContainerTemplate">
+        <Grid  HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5" />
+                <RowDefinition />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
+            <dxwui:PageView ShowBackButton="False"
+                            PageHeadersLayoutType="Scroll"
+                            PageHeadersAlignment="Top"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="2">
+                <dxwui:PageView.Items>
+                    <dxwui:PageViewItem Header="Children">
+                        <LocalForms:ChildrenForm />
+                    </dxwui:PageViewItem>
+                    <dxwui:PageViewItem Header="Available Properties">
+                        <ItemsControl ItemsSource="{Binding Properties}"
+                                      Grid.Row="2"
+                                      Grid.Column="1">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Name}"
+                                                   Style="{StaticResource TextBlockFormStyle}"
+                                                   KeyboardNavigation.IsTabStop="False" />
+                                        <ContentControl Content="{Binding}"
+                                                        ContentTemplateSelector="{StaticResource PropertyTemplate}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </dxwui:PageViewItem>
+                </dxwui:PageView.Items>
+            </dxwui:PageView>
+        </Grid>
+    </DataTemplate>
+    <!---->
+    <!-- Object DataTemplates-->
+    <DataTemplate x:Key="ObjectTemplate">
+        <Grid  HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5" />
+                <RowDefinition />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
+            <dxwui:PageView ShowBackButton="False"
+                            PageHeadersLayoutType="Scroll"
+                            PageHeadersAlignment="Top"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="2">
+                <dxwui:PageView.Items>
+                    <dxwui:PageViewItem Header="Properies">
+                        <!--<dxprg:PropertyGridControl Margin="24"
+                                                   Grid.Column="1"
+                                                   Grid.Row="2"
+                                                   SelectedObject="{Binding Path=SelectedNode}"
+                                                   ShowCategories="True"
+                                                   HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   MinWidth="300"
+                                                   MinHeight="400"
+                                                   ShowDescriptionIn="ToolTip"
+                                                   ExpandCategoriesWhenSelectedObjectChanged="True" />-->
+                    </dxwui:PageViewItem>
+                    
+                </dxwui:PageView.Items>
+            </dxwui:PageView>
+        </Grid>
+    </DataTemplate>
+    <!---->
+     <!-- Editor DataTemplates-->
+     <!---->
 </ResourceDictionary>

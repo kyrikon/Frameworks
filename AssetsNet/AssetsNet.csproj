@@ -44,89 +44,100 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_add_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_add_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_add_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\baseline_add_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_clear_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_clear_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_clear_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\baseline_clear_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_library_add_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_library_add_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_playlist_add_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_playlist_add_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_playlist_add_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\baseline_playlist_add_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_remove_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_remove_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_remove_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\baseline_remove_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_select_all_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_select_all_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_select_all_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\baseline_select_all_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_star_border_black_18dp.png" />
+    <Resource Include="Images\LightTheme\baseline_star_border_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\baseline_star_border_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\baseline_star_border_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_add_box_white_18pt_2x.png" />
+    <Resource Include="Images\DarkTheme\ic_add_box_white_18pt_2x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_content_copy_white_48pt.png" />
+    <Resource Include="Images\DarkTheme\ic_content_copy_white_48pt.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_content_cut_white_48pt.png" />
+    <Resource Include="Images\DarkTheme\ic_content_cut_white_48pt.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_content_paste_white_48dp.png" />
+    <Resource Include="Images\DarkTheme\ic_content_paste_white_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_delete_black_18dp.png" />
+    <Resource Include="Images\LightTheme\ic_delete_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_delete_sweep_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_delete_sweep_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_delete_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_delete_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_save_white_18pt_3x.png" />
+    <Resource Include="Images\DarkTheme\ic_save_white_18pt_3x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_save_white_48pt_2x.png" />
+    <Resource Include="Images\DarkTheme\ic_save_white_48pt_2x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_settings_input_component_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\ic_settings_input_component_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_settings_white_48dp.png" />
+    <Resource Include="Images\DarkTheme\ic_settings_white_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_star_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\ic_star_white_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_view_list_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_view_list_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_folder_open_white_24dp.png" />
-    <Resource Include="Images\ic_folder_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_folder_open_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_folder_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ic_edit_white_18pt_2x.png" />
+    <Resource Include="Images\DarkTheme\ic_edit_white_18pt_2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DarkTheme\ic_folder_special_white_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DarkTheme\ic_arrow_downward_white_48pt.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_drop_down_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_drop_up_white_24dp.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_upward_white_48pt.png" />
+    <Resource Include="Images\LightTheme\ic_arrow_downward_48pt.png" />
+    <Resource Include="Images\LightTheme\ic_arrow_drop_down_48pt.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

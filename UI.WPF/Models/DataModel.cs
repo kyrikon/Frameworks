@@ -202,7 +202,7 @@ namespace UI.WPF.Models
             _Rslt = new List<KeyValuePair<HKey, HDynamicObject>>();
             foreach (var Itm in Hierarchy.OrderBy(x => x.ID))
             {
-                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID,true) { Name = Itm.Name, IsContainer = true }));
+                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID,true) { Name = Itm.Name, IsContainer = true,Rank = Itm.Rank }));
             }
 
             DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
@@ -281,6 +281,10 @@ namespace UI.WPF.Models
                             HDynamicObject NewItem = (HDynamicObject)e.NewVal.Value;
                             NewItem.Parent = Parent;
                             NewItem.Root = (HDynamicObject)Objects[NewKey.RootKey];
+                            if(e.NewVal.Value.Rank == null || e.NewVal.Value.Rank == 0)
+                            {
+                                e.NewVal.Value.Rank = e.NewVal.Key.Rank;
+                            }
                             //Logic to add in all children in case not added in order
                             //foreach(KeyValuePair<HKey, DataObject> Chldrn in Objects.Where(x => x.Key.Contains(NewKey) && !x.Key.Equals(NewKey)))
                             //{
@@ -289,7 +293,7 @@ namespace UI.WPF.Models
                             //    NewItem.Children.TryAdd(Chldrn.Key, Chldrn.Value);
 
                             //}
-                            bool isok = Objects[NewKey.ParentKey].Children.TryAdd(NewKey, (HDynamicObject)e.NewVal.Value);
+                            Objects[NewKey.ParentKey].Children.Add(e.NewVal.Value);
                         }
                     }
                     else
@@ -306,8 +310,12 @@ namespace UI.WPF.Models
                         HKey ParKey = DelKey.ParentKey;
                         if (Objects.ContainsKey(ParKey))
                         {
-                            HDynamicObject OldItem;
-                            Objects[ParKey].Children.TryRemove(DelKey, out OldItem);
+                            var DelItem = Objects[ParKey].Children.FirstOrDefault(x => x.HID.Equals(DelKey));
+                            if(DelItem != null)
+                            {
+                                Objects[ParKey].Children.Remove(DelItem);
+                            }
+                                              
                         }
                     }
                     break;

@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DXMVVM:BooleanToVisibilityConverter x:Key="b2Vis"/>
+            <DXMVVM:BooleanToVisibilityConverter x:Key="b2VisNeg" Inverse="True" />
             <DXMVVM:BooleanNegationConverter x:Key="NegBoolCvrt"/>
         </ResourceDictionary>
     </Application.Resources>

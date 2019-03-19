@@ -26,5 +26,23 @@
         public bool IsChecked { get; }
         #endregion
     }
+    public class RankChangedEventArgs
+    {
+        #region Constructor
+        public RankChangedEventArgs()
+        {
+
+        }
+        #endregion
+
+        #region Properties
+        public HDynamicObject RankObj
+        {
+            get; set;
+
+        }
+        #endregion
+    }
     
+
 }

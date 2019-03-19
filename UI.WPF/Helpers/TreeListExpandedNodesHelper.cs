@@ -61,15 +61,21 @@ namespace UI.WPF.Helpers
 
         public static void RegisterBaseObject(HDynamicObject obj)
         {
-            obj.PropertyChanged += obj_PropertyChanged;
+            if (obj != null)
+            {
+                obj.PropertyChanged += obj_PropertyChanged;
+            }
         }
         public static void DeRegisterBaseObject(HDynamicObject obj)
         {
-            obj.PropertyChanged -= obj_PropertyChanged;
+            if (obj != null)
+            {
+                obj.PropertyChanged -= obj_PropertyChanged;
+            }
         }
         static void obj_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "IsExpanded")
+            if (sender != null && e.PropertyName == "IsExpanded")
             {
                 if (treeListView != null)
                     treeListView.GetNodeByContent(sender).IsExpanded = (sender as HDynamicObject).IsExpanded;

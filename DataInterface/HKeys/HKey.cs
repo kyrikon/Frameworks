@@ -79,6 +79,14 @@ namespace DataInterface
         {
             get
             {
+                return _Key[_Key.Length-1];
+            }
+        }
+        [JsonIgnore]
+        public int Count
+        {
+            get
+            {
                 return _Key.Length;
             }
         }
@@ -152,12 +160,11 @@ namespace DataInterface
           
         }
        public HKey CreateChildKey(int LastKey)
-        {
+       {
             int[] newKey = new int[_Key.Length + 1];
             Array.Copy(_Key, newKey, _Key.Length);
             newKey[newKey.Length -1] = LastKey;
             return new HKey(newKey);
-
         }
 
 
