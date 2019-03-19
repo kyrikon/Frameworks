@@ -21,10 +21,11 @@ namespace Testingconsoleapp
 
             DynamicObjectTemplate dmo = new DynamicObjectTemplate();
             dmo.IsNullable = false;
-            dmo.ValueType = DataInterface.ValueType.Text;
+            dmo.ValueType = DataInterface.ValueType.Integer;
             dmo.DefaultValue = "hello";
+            dmo.Range = "0:1";
             dmo.DefaultValue = 0;
-            dmo.DefaultValue = null;
+            dmo.DefaultValue = 2;
 
 
             HKeyDynamicObjectDictionary Dict = new HKeyDynamicObjectDictionary();
