@@ -20,12 +20,45 @@ namespace Testingconsoleapp
             HDynamicObject TestSerial = new HDynamicObject();
 
             DynamicObjectTemplate dmo = new DynamicObjectTemplate();
-            dmo.IsNullable = false;
-            dmo.ValueType = DataInterface.ValueType.Integer;
-            dmo.DefaultValue = "hello";
-            dmo.Range = "0:1";
+            dmo.ValueType = DataInterface.ValueType.Text;
             dmo.DefaultValue = 0;
             dmo.DefaultValue = 2;
+            StrValidationRules IRule = (StrValidationRules)dmo.Validator.Rules;
+            IRule.MaxLength = 0;
+            dmo.DefaultValue = string.Empty;
+            dmo.DefaultValue = "a";
+            IRule.MinLength = 1;
+            dmo.DefaultValue = string.Empty;
+            IRule.MaxLength = 2;
+            dmo.DefaultValue = "a";
+            dmo.DefaultValue = "ab";
+            dmo.DefaultValue = "abc";          
+            IRule.Nullable = true;
+            dmo.DefaultValue = null;
+            IRule.Nullable = false;
+            dmo.DefaultValue = 0;
+            dmo.DefaultValue = "d";
+            dmo.DefaultValue = null;
+
+            //dmo.ValueType = DataInterface.ValueType.Integer;
+            //dmo.DefaultValue = 0;
+            //dmo.DefaultValue = 2;
+            //IntValidationRules IRule = (IntValidationRules)dmo.Validator.Rules;
+            //IRule.Min = 0;
+            //dmo.DefaultValue = -1;
+            //IRule.Min = 1;
+            //IRule.Max = 2;
+            //dmo.DefaultValue = -1;
+            //dmo.DefaultValue = 0;
+            //dmo.DefaultValue = 1;
+            //dmo.DefaultValue = 2;
+            //dmo.DefaultValue = 3;
+            //IRule.Nullable = true;
+            //dmo.DefaultValue = null;
+            //IRule.Nullable = false;
+            //dmo.DefaultValue = 0;
+            //dmo.DefaultValue = null;
+
 
 
             HKeyDynamicObjectDictionary Dict = new HKeyDynamicObjectDictionary();
