@@ -56,7 +56,25 @@ namespace DataInterface
     }
     public class IntValidationRules : BaseValidationRules
     {
-        public int? Min { get; set; }
-        public int? Max { get; set; }
+        public int? Min {
+            get
+            {
+                return GetPropertyValue<int?>();
+            }
+            set
+            {
+                SetPropertyValue<int?>(value);
+            }
+        }
+        public int? Max {
+            get
+            {
+                return GetPropertyValue<int?>();
+            }
+            set
+            {
+                SetPropertyValue<int?>(value);
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace DataInterface
             RuleFor(x => x.Value).NotNull().When(x => !x.Nullable).WithMessage(x => $"Default Value must not be null");
             RuleFor(x => x).Must(x => x.Value?.GetType() ==typeof(string)).Unless(x => x.Value == null).WithMessage(x => $"Default Value must be Type {typeof(string).Name}");
             RuleFor(x => x).Must(LengthCheck).WithMessage(x => $"Default Value length be  {x.MinLength} to {x.MaxLength} characters");
+            RuleFor(x => (string)x.Value).Matches(x => x.RegExpPattern).When(x => !string.IsNullOrEmpty(x.RegExpPattern)).WithMessage(x => $"Default Value {x.Value} Doesnt match Pattern [{x.RegExpPattern}]");
             Rules = new StrValidationRules();
         }
 
@@ -64,7 +65,38 @@ namespace DataInterface
     }
     public class StrValidationRules : BaseValidationRules
     {
-        public int? MinLength { get; set; }
-        public int? MaxLength { get; set; }
+        public int? MinLength
+        {
+            get
+            {
+                return GetPropertyValue<int?>();
+            }
+            set
+            {
+                SetPropertyValue<int?>(value);
+            }
+        }
+        public int? MaxLength
+        {
+            get
+            {
+                return GetPropertyValue<int?>();
+            }
+            set
+            {
+                SetPropertyValue<int?>(value);
+            }
+        }
+        public string RegExpPattern
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue<string>(value);
+            }
+        }
     }
 }

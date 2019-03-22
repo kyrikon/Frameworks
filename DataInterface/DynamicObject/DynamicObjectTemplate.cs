@@ -11,6 +11,7 @@ namespace DataInterface
         public DynamicObjectTemplate()
         {
             IsNullable = true;
+            AllowValidation = true;
             SetValidator(ValueType.Text);
         }
         public string Name
@@ -68,11 +69,18 @@ namespace DataInterface
             }
             set
             {
-                //new ValidationRuleCheck() { Value = value, ValueType = ValueGetType, Nullable = IsNullable, HasRange = ValueType == ValueType.Integer, Range = Range }
-                VResult = Validator.Validate(value);               
-                Console.WriteLine(ValidationErrors);
-                OnPropertyChanged("ValidationErrors");
-                if (VResult.IsValid)
+                if (AllowValidation)
+                {
+                    VResult = Validator.Validate(value);
+                    Console.WriteLine($"Value {value}");
+                    Console.WriteLine(ValidationErrors);
+                    OnPropertyChanged("ValidationErrors");
+                    if (VResult.IsValid)
+                    {
+                        SetPropertyValue(value);
+                    }
+                }
+                else
                 {
                     SetPropertyValue(value);
                 }
@@ -81,9 +89,9 @@ namespace DataInterface
         public string ValidationErrors
         {
             get
-            {
+            {           
                 StringBuilder sb = new StringBuilder();
-                sb.Append(VResult.IsValid);
+                sb.Append($"Valid {VResult.IsValid}");
                 if (!VResult.IsValid)
                 {
                     sb.Append($"- {VResult.ToString(":")}");
@@ -109,12 +117,11 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
-
-        public string Range
+        public bool AllowValidation
         {
             get
             {
-                return GetPropertyValue<string>();
+                return GetPropertyValue<bool>();
             }
             set
             {
@@ -126,6 +133,7 @@ namespace DataInterface
             get; private set;
         }
 
+        #region Methods
         private void SetValidator(ValueType VT)
         {
             switch (VT)
@@ -137,7 +145,8 @@ namespace DataInterface
                     Validator = new StrValidator();
                     break;
             }
-        }
+        } 
+        #endregion
     }
    
 }

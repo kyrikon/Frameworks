@@ -4,9 +4,29 @@ using System.Text;
 
 namespace DataInterface
 {
-    public abstract class BaseValidationRules : IValidationRules
+    public abstract class BaseValidationRules : Core.Helpers.NotifyPropertyChanged, IValidationRules
     {
-        public  object Value { get; set; }        
-        public  bool Nullable { get; set; }
+        public  object Value
+        {
+            get
+            {
+                return GetPropertyValue<object>();
+            }
+            set
+            {
+                SetPropertyValue<object>(value);
+            }
+        }        
+        public  bool Nullable
+        {
+            get
+            {
+                return GetPropertyValue<bool>();
+            }
+            set
+            {
+                SetPropertyValue<bool>(value);
+            }
+        }
     }
 }

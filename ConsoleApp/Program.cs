@@ -20,22 +20,19 @@ namespace Testingconsoleapp
             HDynamicObject TestSerial = new HDynamicObject();
 
             DynamicObjectTemplate dmo = new DynamicObjectTemplate();
-            dmo.ValueType = DataInterface.ValueType.Text;
-            dmo.DefaultValue = 0;
-            dmo.DefaultValue = 2;
-            StrValidationRules IRule = (StrValidationRules)dmo.Validator.Rules;
-            IRule.MaxLength = 0;
-            dmo.DefaultValue = string.Empty;
-            dmo.DefaultValue = "a";
-            IRule.MinLength = 1;
-            dmo.DefaultValue = string.Empty;
-            IRule.MaxLength = 2;
-            dmo.DefaultValue = "a";
-            dmo.DefaultValue = "ab";
-            dmo.DefaultValue = "abc";          
-            IRule.Nullable = true;
-            dmo.DefaultValue = null;
-            IRule.Nullable = false;
+            dmo.ValueType = DataInterface.ValueType.Text;          
+            StrValidationRules IRule = (StrValidationRules)dmo.Validator.Rules;          
+            IRule.MinLength = null;
+
+            IRule.RegExpPattern = @"[a-zA-Z]+";
+            IRule.MaxLength = 4;
+            dmo.DefaultValue = "A";
+            dmo.DefaultValue = "AC";
+            dmo.DefaultValue = "abc".ToUpper();
+            dmo.DefaultValue = "abc1".ToUpper();
+            dmo.DefaultValue = "12";
+            IRule.RegExpPattern = null ;
+            dmo.DefaultValue = "45";
             dmo.DefaultValue = 0;
             dmo.DefaultValue = "d";
             dmo.DefaultValue = null;
