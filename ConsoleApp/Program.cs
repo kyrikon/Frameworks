@@ -24,7 +24,7 @@ namespace Testingconsoleapp
             StrValidationRules IRule = (StrValidationRules)dmo.Validator.Rules;          
             IRule.MinLength = null;
 
-            IRule.RegExpPattern = @"[a-zA-Z]+";
+            IRule.RegExpPattern = @"^[a-zA-Z]+$";
             IRule.MaxLength = 4;
             dmo.DefaultValue = "A";
             dmo.DefaultValue = "AC";

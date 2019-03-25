@@ -6,28 +6,30 @@ using System.Text;
 
 namespace DataInterface
 {
-    public class IntValidator : AbstractValidator<IntValidationRules>,IValidator
+    public class DecimalValidator : AbstractValidator<DecimalValidationRules>,IValidator
     {
 
-        public IntValidator()
+        public DecimalValidator()
         {
             this.CascadeMode = CascadeMode.StopOnFirstFailure;
             RuleFor(x => x.Value).NotNull().When(x => !x.Nullable).WithMessage(x => $"Default Value must not be null");
-            RuleFor(x => x).Must(x => x.Value?.GetType() == typeof(int)).Unless(x => x.Value == null).WithMessage(x => $"Default Value must be Type {typeof(int).Name}");
+            RuleFor(x => x).Must(x => x.Value?.GetType() == typeof(decimal)).Unless(x => x.Value == null).WithMessage(x => $"Default Value must be Type {typeof(decimal).Name}");
             RuleFor(x => x).Must(MinMaxCheck).WithMessage(x => $"{x.Min} must be less than or equal to {x.Max}");
             RuleFor(x => x).Must(RangeCheck).WithMessage(x => $"Default Value must be in range {x.Min} : {x.Max}");
-            Rules = new IntValidationRules();
+            Rules = new DecimalValidationRules();
         }
 
+       
+
         public IValidationRules Rules { get; set; }
-        public IntValidationRules IntRules
+        public DecimalValidationRules DecimalValidationRules
         {
             get
             {
-                return (IntValidationRules)Rules;
+                return (DecimalValidationRules)Rules;
             }
         }
-        private bool RangeCheck(IntValidationRules CurrItem)
+        private bool RangeCheck(DecimalValidationRules CurrItem)
         {
             if (!CurrItem.Min.HasValue && !CurrItem.Max.HasValue || CurrItem.Value == null)
             {
@@ -35,21 +37,21 @@ namespace DataInterface
             }
             if (CurrItem.Min.HasValue && CurrItem.Max.HasValue)
             {
-                return ((int)CurrItem.Value) >= CurrItem.Min && ((int)CurrItem.Value) <= CurrItem.Max;
+                return ((decimal)CurrItem.Value) >= CurrItem.Min && ((decimal)CurrItem.Value) <= CurrItem.Max;
             }
             if (!CurrItem.Min.HasValue && CurrItem.Max.HasValue)
             {
-                return ((int)CurrItem.Value) <= CurrItem.Max;
+                return ((decimal)CurrItem.Value) <= CurrItem.Max;
             }
             if (CurrItem.Min.HasValue && !CurrItem.Max.HasValue)
             {
-                return ((int)CurrItem.Value) >= CurrItem.Min;
+                return ((decimal)CurrItem.Value) >= CurrItem.Min;
             }
             return true;
 
 
         }
-        private bool MinMaxCheck(IntValidationRules CurrItem)
+        private bool MinMaxCheck(DecimalValidationRules CurrItem)
         {
             if (CurrItem.Min.HasValue && CurrItem.Max.HasValue)
             {
@@ -59,30 +61,30 @@ namespace DataInterface
         }
         public ValidationResult Validate(object Val)
         {
-            IntRules.Value = Val;
-            return base.Validate(IntRules);
+            DecimalValidationRules.Value = Val;
+            return base.Validate(DecimalValidationRules);
         }
     }
-    public class IntValidationRules : BaseValidationRules
+    public class DecimalValidationRules : BaseValidationRules
     {
-        public int? Min {
+        public decimal? Min {
             get
             {
-                return GetPropertyValue<int?>();
+                return GetPropertyValue<decimal?>();
             }
             set
             {
-                SetPropertyValue<int?>(value);
+                SetPropertyValue<decimal?>(value);
             }
         }
-        public int? Max {
+        public decimal? Max {
             get
             {
-                return GetPropertyValue<int?>();
+                return GetPropertyValue<decimal?>();
             }
             set
             {
-                SetPropertyValue<int?>(value);
+                SetPropertyValue<decimal?>(value);
             }
         }
     }
