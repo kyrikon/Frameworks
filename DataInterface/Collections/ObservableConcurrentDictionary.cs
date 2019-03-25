@@ -25,7 +25,6 @@ namespace DataInterface
         public delegate void TreeChangedEventHandler(object sender, TreeChangedEventArgs<T1,T2> args);
         public event TreeChangedEventHandler TreeChanged;
         #endregion
-
         #region Fields 
         protected bool _Notify = true;
         private NotifyCollectionChangedAction _DefferAction;

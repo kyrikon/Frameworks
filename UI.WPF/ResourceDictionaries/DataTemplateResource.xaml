@@ -230,6 +230,7 @@
                         <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
                     <dxwui:PageViewItem Header="Custom Enums">
+                        <LocalForms:CustomEnumsForm />
                         <!--<ItemsControl ItemsSource="{Binding SelectedNode.Properties}"
                                       Grid.Row="2"
                                       Grid.Column="1">
