@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DataInterface
 {
-    public class KeyObjectDictionary<T> : Core.Helpers.NotifyPropertyChanged
+    public class KeyObjectDictionary<T> : Core.Helpers.NotifyPropertyChanged 
     {
 
         #region Fields
@@ -58,6 +58,7 @@ namespace DataInterface
             {
                 string OldValue = SelectedKey;
                 SetPropertyValue(value);
+                OnPropertyChanged("SelectedValue");
                 SelectionChangedEvent?.Invoke(this, new ListSelectionChangedEventArgs(OldValue,value));
             }
         }
@@ -66,9 +67,12 @@ namespace DataInterface
         {
             get
             {
+                if(!Items.ContainsKey(SelectedKey) || string.IsNullOrEmpty(SelectedKey))
+                {
+                    return default(T);
+                }
                 return Items[SelectedKey];
             }
-
         }
         public string DefaultKey
         {
@@ -102,6 +106,7 @@ namespace DataInterface
             Items.TryRemove(Key, out tmpVal);
         }
         #endregion
+
     }
     public class ListSelectionChangedEventArgs
     {
@@ -112,7 +117,6 @@ namespace DataInterface
         }
         public string OldKey { get; internal set; }
         public string NewKey { get; internal set; }
-
-
     }
+    
 }
