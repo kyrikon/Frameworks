@@ -106,7 +106,8 @@ namespace DataInterface
             if(IsSuccess)
             {
                 KeyValuePair<T1, T2> RemoveValue = new KeyValuePair<T1, T2>(Key, RemVal);
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, RemoveValue));
+                //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, RemoveValue));
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Remove, RemVal = RemoveValue });
             }
             return IsSuccess;

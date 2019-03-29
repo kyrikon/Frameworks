@@ -187,14 +187,14 @@ namespace UI.WPF.Models
 
         public void CreateNewProject(DynamicObjectHierarchy DOH)
         {
-            Hierarchy = DOH;            
+            Hierarchy = DOH;
             Hierarchy.FirstOrDefault(x => x.ID.Equals(HKey.RootKeyVal)).Name = DataSource.Connection.ConnectionName;
 
             if (Objects != null)
             {
                 Objects.TreeChanged -= Objects_TreeChanged;
             }
-            Root = new  ObservableCollection<HDynamicObject>();
+            Root = new ObservableCollection<HDynamicObject>();
 
             Objects = new UIHKeyDictionary();
             Objects.TreeChanged += Objects_TreeChanged;
@@ -202,8 +202,9 @@ namespace UI.WPF.Models
             _Rslt = new List<KeyValuePair<HKey, HDynamicObject>>();
             foreach (var Itm in Hierarchy.OrderBy(x => x.ID))
             {
-                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID,true) { Name = Itm.Name, IsContainer = true,Rank = Itm.Rank }));
+                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID, true) { Name = Itm.Name, IsContainer = true, Rank = Itm.Rank }));
             }
+
 
             DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
             DataSource.Connection.ConnectionChangedEvent += Connection_ConnectionChangedEvent;
@@ -299,6 +300,11 @@ namespace UI.WPF.Models
                     else
                     {                        
                         Root.Add(e.NewVal.Value);
+                        if (!Root.FirstOrDefault().HasKey("CustomLists"))
+                        {
+                            Root.FirstOrDefault()["CustomLists"] = new ObservableConcurrentDictionary<string, KeyObjectDictionary<object>>();
+                        }
+                           
                         GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Root Added");
                     }
                     break;
@@ -314,8 +320,7 @@ namespace UI.WPF.Models
                             if(DelItem != null)
                             {
                                 Objects[ParKey].Children.Remove(DelItem);
-                            }
-                                              
+                            }                                              
                         }
                     }
                     break;

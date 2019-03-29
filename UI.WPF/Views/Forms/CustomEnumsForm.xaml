@@ -14,6 +14,7 @@
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
              mc:Ignorable="d"
              MinWidth="300"
              VerticalAlignment="Stretch"
@@ -27,13 +28,69 @@
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-      
+        <lc:DockLayoutControl AllowItemSizing="True">
+            <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                         lc:DockLayoutControl.Dock="Left"
+                         ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
+                         TitleVisibility="Collapsed"
+                         DisplayMode="Light"
+                         Width="300"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Header="Navigation">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <ListView ItemsSource="{Binding [CustomLists]}"
+                              SelectedItem="{Binding DataContext.SelectedCustomList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                              >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Key}"
+                                               Style="{StaticResource TextBlockFormStyle}"                                               
+                                               KeyboardNavigation.IsTabStop="False" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="1">
+                        <dxe:TextEdit Style="{StaticResource  TextEditFormStyle}" MinWidth="100"
+                                 Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                        <Button Content="Add"                           
+                           
+                            Command="{Binding DataContext.AddCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                        <Button Content="remove"
+                              
+                                Command="{Binding DataContext.RemoveCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                    </StackPanel>
+                </Grid>
+                
+            </lc:GroupBox>
+            <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                         lc:DockLayoutControl.Dock="Client"
+                         DisplayMode="Light"
+                         TitleVisibility="Collapsed"                         
+                         Header="Content">
+                <TextBlock Text="List Details">
+                    
+                </TextBlock>
+            </lc:GroupBox>
+        </lc:DockLayoutControl>
+        
         <StackPanel  Grid.Row="1"
                      Orientation="Horizontal"
                      Margin="5"
                      HorizontalAlignment="Right">
-            <TextBlock Text="CUSTOM ENUMS"
-                       Style="{StaticResource HeaderStyle}" />
+            
+           
+           
+            
         </StackPanel>
     </Grid>
 </UserControl>

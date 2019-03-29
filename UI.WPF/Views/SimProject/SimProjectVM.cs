@@ -50,8 +50,12 @@ namespace UI.WPF.Views.SimProject
             MoveDownCmd = new DelegateCommand<HDynamicObject>((x) => MoveDown(x));
             AddFldrCmd = new DelegateCommand(() => AddFldr());
             DelFldrCmd = new DelegateCommand(() => DelFldr());
+            AddCustomListItemCmd = new DelegateCommand(() => AddCustomListItem());
+            RemoveCustomListItemCmd = new DelegateCommand(() => RemoveCustomListItem());
         }
-       
+
+      
+
         #endregion
         #region Commands           
         public DelegateCommand ClearItemsCmd
@@ -86,6 +90,14 @@ namespace UI.WPF.Views.SimProject
             get; private set;
         }
         public DelegateCommand DelFldrCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand AddCustomListItemCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand RemoveCustomListItemCmd
         {
             get; private set;
         }
@@ -210,6 +222,28 @@ namespace UI.WPF.Views.SimProject
             }
         }
 
+        public KeyValuePair<string, KeyObjectDictionary<object>> SelectedCustomList
+        {
+            get
+            {
+                return GetPropertyValue<KeyValuePair<string, KeyObjectDictionary<object>>>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        public string NewCustomListName
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
         #endregion
         #region Methods     
         private void ClearItems()
@@ -358,7 +392,19 @@ namespace UI.WPF.Views.SimProject
             
             }           
         }
-
+        private void AddCustomListItem()
+        {         
+           ((ObservableConcurrentDictionary<string, KeyObjectDictionary<object>>)SelectedNode["CustomLists"]).TryAdd(NewCustomListName, new KeyObjectDictionary<object>());
+        }
+        private void RemoveCustomListItem()
+        {
+            if (SelectedCustomList.Key != null)
+            {
+                KeyObjectDictionary<object> Obj = new KeyObjectDictionary<object>();
+                ((ObservableConcurrentDictionary<string, KeyObjectDictionary<object>>)SelectedNode["CustomLists"]).TryRemove(SelectedCustomList.Key, out Obj);
+            }
+        }
+        
         #endregion
         #region Callbacks
 

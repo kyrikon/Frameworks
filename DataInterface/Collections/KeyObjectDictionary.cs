@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Extensions;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace DataInterface
 {
@@ -48,6 +49,7 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+        [JsonIgnore]
         public string SelectedKey
         {
             get
@@ -62,7 +64,7 @@ namespace DataInterface
                 SelectionChangedEvent?.Invoke(this, new ListSelectionChangedEventArgs(OldValue,value));
             }
         }
-
+        [JsonIgnore]
         public T SelectedValue
         {
             get
@@ -85,6 +87,7 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+        [JsonIgnore]
         public Type ValueType
         {
             get
