@@ -58,16 +58,24 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <StackPanel Orientation="Horizontal"
+                    <StackPanel Orientation="Vertical"
                                 Grid.Row="1">
-                        <dxe:TextEdit Style="{StaticResource  TextEditFormStyle}" MinWidth="100"
+                        <StackPanel Orientation="Horizontal">
+                            <dxe:TextEdit Style="{StaticResource  TextEditFormStyle}" MinWidth="100"
                                  Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                            <ComboBox Style="{StaticResource ComboBoxFormStyle}" 
+                                       ItemsSource="{Binding Source={MUExt:EnumBindingSourceExtension {x:Type DataCnt:ValueType}}}"
+                                      MinWidth="100"
+                                 SelectedItem="{Binding DataContext.ListType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
                         <Button Content="Add"                           
                            
                             Command="{Binding DataContext.AddCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
                         <Button Content="remove"
                               
                                 Command="{Binding DataContext.RemoveCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                    </StackPanel>
                     </StackPanel>
                 </Grid>
                 

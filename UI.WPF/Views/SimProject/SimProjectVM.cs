@@ -244,6 +244,17 @@ namespace UI.WPF.Views.SimProject
                 SetPropertyValue(value);
             }
         }
+        public DataInterface.ValueType ListType
+        {
+            get
+            {
+                return GetPropertyValue<DataInterface.ValueType>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
         #endregion
         #region Methods     
         private void ClearItems()
