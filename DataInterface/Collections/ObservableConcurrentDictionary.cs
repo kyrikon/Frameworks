@@ -12,6 +12,16 @@ using System.Diagnostics;
 
 namespace DataInterface
 {
+    /// <summary>
+    /// This should be changed as to not INotifyCollectionChanged.
+    /// Binding this directly to the UI causes issues because the INotifyCollectionChanged needs Array indexes when updating
+    /// And this being a dictionary doesnt store the data as a list
+    /// The future pattern should be this as an internal store with a list Binding to the UI
+    /// Adding and deleting Key/Values should still be done on the backing Dictionary and the UI refresh should be handled by the Tree changed event
+    /// This also serves as the main Class for storing / retrieving the model
+    /// /// </summary>
+    /// <typeparam name="T1"> Key For Dictionary</typeparam>
+    /// <typeparam name="T2"> Valye Type for dictionary</typeparam>
     [Serializable]
     public class ObservableConcurrentDictionary<T1, T2> : ConcurrentDictionary<T1, T2>, INotifyCollectionChanged
     {

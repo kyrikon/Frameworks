@@ -717,13 +717,13 @@ namespace DataInterface
                 SetPropertyValue<string>(value);
             }
         }
-        public ValueType EditorType
-        {
-            get
-            {
-                return Value.GetType().GetEditor();
-            }
-        }
+        //public ValueType EditorType
+        //{
+        //    get
+        //    {
+        //        return Value.GetType().GetEditor();
+        //    }
+        //}
         public string EditorMask
         {
             get

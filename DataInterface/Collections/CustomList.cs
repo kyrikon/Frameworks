@@ -9,7 +9,7 @@ using Core.Helpers;
 
 namespace DataInterface
 {
-    public class KeyObjectDictionary : Core.Helpers.NotifyPropertyChanged 
+    public class CustomList : Core.Helpers.NotifyPropertyChanged 
     {
 
         #region Fields
@@ -22,7 +22,7 @@ namespace DataInterface
         #endregion
 
         #region Constructor
-        public KeyObjectDictionary()
+        public CustomList()
         {
             SortByValue = false;
             Items = new ObservableConcurrentDictionary<string, object>();
