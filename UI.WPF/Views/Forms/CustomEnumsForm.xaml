@@ -85,9 +85,14 @@
                          DisplayMode="Light"
                          TitleVisibility="Collapsed"                         
                          Header="Content">
-                <TextBlock Text="List Details">
-                    
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="List Details" />
+                    <ComboBox Style="{StaticResource ComboBoxFormStyle}"
+                              ItemsSource="{Binding DataContext.ListItems.Items,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                              DisplayMemberPath="Key"
+                              SelectedValue="{Binding DataContext.ListItems.SelectedItem,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                              />
+                </StackPanel>
             </lc:GroupBox>
         </lc:DockLayoutControl>
         

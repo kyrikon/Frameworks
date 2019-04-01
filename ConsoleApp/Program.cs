@@ -29,6 +29,7 @@ namespace Testingconsoleapp
             dmo.DefaultValue = "A";
             dmo.DefaultValue = "AC";
             dmo.DefaultValue = "abc".ToUpper();
+            dmo.DefaultValue = "abcde".ToUpper();
             dmo.DefaultValue = "abc1".ToUpper();
             dmo.DefaultValue = "12";
             IRule.RegExpPattern = null ;

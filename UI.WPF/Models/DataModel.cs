@@ -302,7 +302,7 @@ namespace UI.WPF.Models
                         Root.Add(e.NewVal.Value);
                         if (!Root.FirstOrDefault().HasKey("CustomLists"))
                         {
-                            Root.FirstOrDefault()["CustomLists"] = new ObservableConcurrentDictionary<string, KeyObjectDictionary<object>>();
+                            Root.FirstOrDefault()["CustomLists"] = new ObservableConcurrentDictionary<string, KeyObjectDictionary>();
                         }
                            
                         GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Root Added");
