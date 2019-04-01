@@ -46,11 +46,7 @@ namespace DataInterface
         [Description("List")]
         KeyValue
 
-    }
-    public class KeyValueEnum<T> : Dictionary<string,object>
-    {
-         
-    }
+    }   
 
     public static class TypeExtensions
     {
