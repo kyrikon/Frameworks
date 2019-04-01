@@ -85,14 +85,9 @@
                          DisplayMode="Light"
                          TitleVisibility="Collapsed"                         
                          Header="Content">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="List Details" />
-                    <ComboBox Style="{StaticResource ComboBoxFormStyle}"
-                              ItemsSource="{Binding DataContext.ListItems.Items,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                              DisplayMemberPath="Key"
-                              SelectedValue="{Binding DataContext.ListItems.SelectedItem,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                              />
-                </StackPanel>
+                <ContentControl Content="{Binding DataContext.SelectedCustomList.Value,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                ContentTemplate="{StaticResource KeyObjectDictionartTemplate}" />
+                
             </lc:GroupBox>
         </lc:DockLayoutControl>
         

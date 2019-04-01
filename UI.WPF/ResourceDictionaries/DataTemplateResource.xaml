@@ -17,6 +17,7 @@
                     xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
                     xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
                     xmlns:LocalForms="clr-namespace:UI.WPF.Views.Forms"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -229,7 +230,7 @@
                     <dxwui:PageViewItem Header="Children">
                         <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
-                    <dxwui:PageViewItem Header="Custom Enums">
+                    <dxwui:PageViewItem Header="Custom Lists">
                         <LocalForms:CustomEnumsForm />
                         
                     </dxwui:PageViewItem>
@@ -326,4 +327,49 @@
     <!---->
      <!-- Editor DataTemplates-->
      <!---->
+    <!-- CustomList DataTemplates-->
+    <DataTemplate x:Key="KeyObjectDictionartTemplate"
+                  DataType="{x:Type DataCnt:KeyObjectDictionary}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="List Details"
+                       Style="{StaticResource HeaderStyle}" />
+            <TextBlock Text="Value Type"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <TextBlock Text="{Binding ValueType}"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <TextBlock Text="Sort By Value"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <CheckBox IsChecked="{Binding SortByValue}" /> 
+            <TextBlock Text="Items"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxg:GridControl ItemsSource="{Binding Items}"
+                             AutoGenerateColumns="None"        
+                             MaxHeight="600"
+                             MaxWidth="800"
+                             FontSize="{StaticResource BdySize}">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="Key" />
+                    <dxg:GridColumn FieldName="Value"
+                                    Width="*" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView  ShowGroupPanel="False" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding NewKey}" MinWidth="100"/>
+                <TextBox Text="{Binding NewValue}" MinWidth="100"/>
+                <Button Command="{Binding AddListItemCmd}" MinWidth="100"/>
+            </StackPanel>
+            <TextBlock Text="Result"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <ComboBox Style="{StaticResource ComboBoxFormStyle}"
+                      MinWidth="200"
+                      ItemsSource="{Binding SortedItems}"
+                      DisplayMemberPath="Key"
+                      SelectedValue="{Binding SelectedItem}" />
+        </StackPanel>
+    </DataTemplate>
+    <!---->
+    
 </ResourceDictionary>

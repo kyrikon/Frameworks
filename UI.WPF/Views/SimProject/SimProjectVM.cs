@@ -53,9 +53,6 @@ namespace UI.WPF.Views.SimProject
             AddCustomListItemCmd = new DelegateCommand(() => AddCustomListItem());
             RemoveCustomListItemCmd = new DelegateCommand(() => RemoveCustomListItem());
 
-            ListItems = new KeyObjectDictionary();
-            ListItems.AddItem("yes",true);
-            ListItems.AddItem("no", false);
         }
 
       
@@ -420,7 +417,7 @@ namespace UI.WPF.Views.SimProject
         }
         private void AddCustomListItem()
         {         
-           ((ObservableConcurrentDictionary<string, KeyObjectDictionary>)SelectedNode["CustomLists"]).TryAdd(NewCustomListName, new KeyObjectDictionary());
+           ((ObservableConcurrentDictionary<string, KeyObjectDictionary>)SelectedNode["CustomLists"]).TryAdd(NewCustomListName, new KeyObjectDictionary() { ValueType = ListType});
         }
         private void RemoveCustomListItem()
         {

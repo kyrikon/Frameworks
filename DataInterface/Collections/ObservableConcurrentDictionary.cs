@@ -237,8 +237,14 @@ namespace DataInterface
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs Args)
         {
             if (_Notify)
-            {              
-                    CollectionChanged?.Invoke(this, Args);                
+            {
+                try { 
+                    CollectionChanged?.Invoke(this, Args);
+                }
+                catch (InvalidOperationException)
+                {
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                }
             }
         }
         protected void OnTreeChanged(TreeChangedEventArgs<T1,T2> Args)

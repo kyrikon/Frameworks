@@ -4,6 +4,8 @@ using System.Text;
 using Core.Extensions;
 using System.Linq;
 using Newtonsoft.Json;
+using Core.Helpers;
+
 
 namespace DataInterface
 {
@@ -22,7 +24,15 @@ namespace DataInterface
         #region Constructor
         public KeyObjectDictionary()
         {
+            SortByValue = false;
             Items = new ObservableConcurrentDictionary<string, object>();
+            AddListItemCmd = new DelegateCommand((x) => AddItem(x));
+        }
+        #endregion
+        #region Commands           
+        public DelegateCommand AddListItemCmd
+        {
+            get; private set;
         }
         #endregion
         #region Properties
@@ -47,40 +57,36 @@ namespace DataInterface
             private set
             {
                 SetPropertyValue(value);
+                OnPropertyChanged("SortedItems");
             }
         }
-        //[JsonIgnore]
-        //public string SelectedKey
-        //{
-        //    get
-        //    {
-        //        return GetPropertyValue<string>();
-        //    }
-        //    set
-        //    {
-        //        string OldValue = SelectedKey;
-        //        SetPropertyValue(value);
-        //        OnPropertyChanged("SelectedValue");
-        //        SelectionChangedEvent?.Invoke(this, new ListSelectionChangedEventArgs(OldValue, value));
-        //    }
-        //}
-        //[JsonIgnore]
-        //public object SelectedValue
-        //{
-        //    get
-        //    {
-        //        return GetPropertyValue<object>();
-        //    }
-        //    set
-        //    {
-        //        object OldValue = SelectedValue;
-        //        SetPropertyValue(value);
-        //        OnPropertyChanged("SelectedKey");
-        //        SelectionChangedEvent?.Invoke(this, new ListSelectionChangedEventArgs(OldValue, value));
-        //    }
-        //}
+        public Dictionary<string, object> SortedItems
+        {
+            get
+            {
+                if (SortByValue)
+                {
+                    return Items.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+                }
+                return Items.OrderBy(x => x.Key).ToDictionary(x => x.Key,x => x.Value);
+            }
+        }
+        
         [JsonIgnore]
-        public KeyValuePair<string,object> SelectedItem
+        public object SelectedValue
+        {
+            get
+            {
+                if(SelectedItem.HasValue)
+                {
+                    return SelectedItem.Value;
+                }
+                return null;
+            }
+            
+        }
+        [JsonIgnore]
+        public KeyValuePair<string,object>? SelectedItem
         {
             get
             {
@@ -88,7 +94,7 @@ namespace DataInterface
             }
             set
             {
-                KeyValuePair<string, object> OldValue = SelectedItem;
+                KeyValuePair<string, object>? OldValue = SelectedItem;
                 SetPropertyValue(value);
                // OnPropertyChanged("SelectedValue");
                 SelectionChangedEvent?.Invoke(this, new ListSelectionChangedEventArgs(OldValue, value));
@@ -105,40 +111,84 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+        
         [JsonIgnore]
-        public Type ValueType
+        public DataInterface.ValueType ValueType
         {
             get
             {
+                return GetPropertyValue<DataInterface.ValueType>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
 
-                return SelectedItem.Value.GetType();
-            }            
+        }
+        public bool SortByValue
+        {
+            get
+            {
+                return GetPropertyValue<bool>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+                OnPropertyChanged("SortedItems");                    
+            }
+
         }
 
+        [JsonIgnore]
+        public string NewKey
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        [JsonIgnore]
+        public object NewValue
+        {
+            get
+            {
+                return GetPropertyValue<object>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
         #endregion
 
         #region Methods
-        public void AddItem(string Key,object Value)
+        public void AddItem(object x)
         {
-            Items.AddOrUpdate(Key, Value);
+            Items.AddOrUpdate(NewKey, NewValue);
         }
         public void RemoveItem(string Key, object Value)
         {
             object tmpVal;
             Items.TryRemove(Key, out tmpVal);
         }
+
+       
         #endregion
 
     }
     public class ListSelectionChangedEventArgs
     {
-        public ListSelectionChangedEventArgs(KeyValuePair<string, object> _oldKey, KeyValuePair<string, object> _newKey)
+        public ListSelectionChangedEventArgs(KeyValuePair<string, object>? _oldKey, KeyValuePair<string, object>? _newKey)
         {
             OldKey = _oldKey;
             NewKey = _newKey;
         }
-        public KeyValuePair<string, object> OldKey { get; internal set; }
-        public KeyValuePair<string, object> NewKey { get; internal set; }
+        public KeyValuePair<string, object>? OldKey { get; internal set; }
+        public KeyValuePair<string, object>? NewKey { get; internal set; }
     }
     
 }
