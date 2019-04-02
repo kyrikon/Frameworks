@@ -207,8 +207,6 @@
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\HierarchyFactory.cs" />
-    <Compile Include="Models\UIHKeyDictionary.cs" />
-    <Compile Include="Models\UIObservableConcurrentDictionary.cs" />
     <Compile Include="ResourceDictionaries\BrushResource.xaml.cs">
       <DependentUpon>BrushResource.xaml</DependentUpon>
     </Compile>
@@ -224,8 +222,8 @@
       <DependentUpon>ConnectionBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
-    <Compile Include="Views\Forms\CustomEnumsForm.xaml.cs">
-      <DependentUpon>CustomEnumsForm.xaml</DependentUpon>
+    <Compile Include="Views\Forms\CustomListsForm.xaml.cs">
+      <DependentUpon>CustomListsForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Forms\PageViewContainer.xaml.cs">
       <DependentUpon>PageViewContainer.xaml</DependentUpon>
@@ -290,7 +288,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Forms\CustomEnumsForm.xaml">
+    <Page Include="Views\Forms\CustomListsForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

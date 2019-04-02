@@ -18,9 +18,9 @@ namespace UI.WPF.Views.Forms
     /// <summary>
     /// Interaction logic for ConnectionEdit.xaml
     /// </summary>
-    public partial class CustomEnumsForm : UserControl
+    public partial class CustomListForm : UserControl
     {
-        public CustomEnumsForm()
+        public CustomListForm()
         {
             InitializeComponent();
         }

@@ -38,6 +38,7 @@ namespace UI.WPF.Views.SimProject
         #region Constructors
         public SimProjectVM(IConnection Connection)
         {
+            ValTypes = new ValueTypes();
             DM = new DataModel(DataConnectionFactory.CreateNewDataSource(Connection));
             DM.ModelInitialized += DM_ModelInitialized;
             _UId = Guid.NewGuid();
@@ -223,11 +224,11 @@ namespace UI.WPF.Views.SimProject
             }
         }
 
-        public KeyValuePair<string, KeyObjectDictionary> SelectedCustomList
+        public KeyValuePair<string, CustomList> SelectedCustomList
         {
             get
             {
-                return GetPropertyValue<KeyValuePair<string, KeyObjectDictionary>>();
+                return GetPropertyValue<KeyValuePair<string, CustomList>>();
             }
             set
             {
@@ -245,11 +246,11 @@ namespace UI.WPF.Views.SimProject
                 SetPropertyValue(value);
             }
         }
-        public KeyObjectDictionary ListItems
+        public CustomList ListItems
         {
             get
             {
-                return GetPropertyValue<KeyObjectDictionary>();
+                return GetPropertyValue<CustomList>();
             }
             set
             {
@@ -267,11 +268,23 @@ namespace UI.WPF.Views.SimProject
                 SetPropertyValue(value);
             }
         }
+
+        public ValueTypes ValTypes
+        {
+            get
+            {
+                return GetPropertyValue<ValueTypes>();
+            }
+            private set
+            {
+                SetPropertyValue(value);
+            }
+        }
         #endregion
         #region Methods     
         private void ClearItems()
         {
-            if (DM.Root != null)
+            if (DM.Objects != null)
             {
                 DM.Clear();
             }
@@ -417,14 +430,14 @@ namespace UI.WPF.Views.SimProject
         }
         private void AddCustomListItem()
         {         
-           ((ObservableConcurrentDictionary<string, KeyObjectDictionary>)SelectedNode["CustomLists"]).TryAdd(NewCustomListName, new KeyObjectDictionary() { ValueType = ListType});
+           ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryAdd(NewCustomListName, new CustomList() { ValueType = ListType});
         }
         private void RemoveCustomListItem()
         {
             if (SelectedCustomList.Key != null)
             {
-                KeyObjectDictionary Obj = new KeyObjectDictionary();
-                ((ObservableConcurrentDictionary<string, KeyObjectDictionary>)SelectedNode["CustomLists"]).TryRemove(SelectedCustomList.Key, out Obj);
+                CustomList Obj = new CustomList();
+                ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryRemove(SelectedCustomList.Key, out Obj);
             }
         }
         

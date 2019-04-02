@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
-
+using System.Collections.ObjectModel;
 
 namespace DataInterface
 {
@@ -23,28 +23,25 @@ namespace DataInterface
     /// <typeparam name="T1"> Key For Dictionary</typeparam>
     /// <typeparam name="T2"> Valye Type for dictionary</typeparam>
     [Serializable]
-    public class ObservableConcurrentDictionary<T1, T2> : ConcurrentDictionary<T1, T2>, INotifyCollectionChanged
+    public class ObservableConcurrentDictionary<T1, T2> : ConcurrentDictionary<T1, T2>
     {
 
         #region Events / Delegates
-        //This notifies the UI. For Big operations disable then raise at the end
-        public virtual event NotifyCollectionChangedEventHandler CollectionChanged;
-
 
         //This notifies node changes without triggering a UI update. Useful for automating tree generation on the collection
-        public delegate void TreeChangedEventHandler(object sender, TreeChangedEventArgs<T1,T2> args);
-        public event TreeChangedEventHandler TreeChanged;
+        public delegate void DictionaryChangedEventHandler(object sender, DictionaryChangedEventArgs<T1,T2> args);
+        public event DictionaryChangedEventHandler DictionaryChanged;
         #endregion
         #region Fields 
+
         protected bool _Notify = true;
-        private NotifyCollectionChangedAction _DefferAction;
+        private ObservableCollection<KeyValuePair<T1, T2>> _ItemList;
+
         #endregion
         #region Constructors
         public ObservableConcurrentDictionary()
         {
-        }
-        public ObservableConcurrentDictionary(SynchronizationContext ctx = null)
-        {
+            ItemList = new ObservableCollection<KeyValuePair<T1, T2>>();
         }
         #endregion
         #region Properties
@@ -63,31 +60,34 @@ namespace DataInterface
             }
             set
             {
-                NotifyCollectionChangedAction Act = NotifyCollectionChangedAction.Add;
-                NotifyCollectionChangedEventArgs Args;
-                TreeChangedEventArgs<T1,T2> TArgs;
+                DictionaryChangedEventArgs<T1,T2> TArgs;
                 if(this.ContainsKey(Key))
                 {
-                    Act = NotifyCollectionChangedAction.Reset;
                     KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, value);
                     KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(Key, this[Key]);
-                    Args = new NotifyCollectionChangedEventArgs(Act);
-                    TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace,NewVal = NewVal,OldVal = OldVal };
+                    TArgs = new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace,NewVal = NewVal,OldVal = OldVal };
                 }
                 else
                 {
-                    Act = NotifyCollectionChangedAction.Add;
                     KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, value);
-                    Args = new NotifyCollectionChangedEventArgs(Act, NewVal);
-                    TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
+                    TArgs = new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
                 }
-                OnTreeChanged(TArgs);
-                OnCollectionChanged(Args);
+                OnDictionaryChanged(TArgs);
                 base[Key] = value;
 
             }
         }
-
+        public ObservableCollection<KeyValuePair<T1,T2>> ItemList
+        {
+            get
+            {
+                return _ItemList;
+            }
+            private set
+            {
+                _ItemList = value;
+            }
+        }
         #endregion
         #region Methods     
         public new bool TryAdd(T1 Key, T2 Value)
@@ -95,8 +95,7 @@ namespace DataInterface
             bool IsSuccess = base.TryAdd(Key, Value);
             if(IsSuccess)
             {               
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,new KeyValuePair<T1, T2>(Key, Value)));
-                OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action   = CollectionAction.Add,NewVal = new KeyValuePair<T1, T2>(Key, Value) });
+                OnDictionaryChanged(new DictionaryChangedEventArgs<T1, T2>() { Action   = CollectionAction.Add,NewVal = new KeyValuePair<T1, T2>(Key, Value) });
             }
             return IsSuccess;
         }
@@ -105,8 +104,7 @@ namespace DataInterface
             bool IsSuccess = base.TryAdd(KVP.Key, KVP.Value);
             if(IsSuccess)
             {
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, KVP));
-                OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = KVP });
+                OnDictionaryChanged(new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = KVP });
             }
             return IsSuccess;
         }
@@ -115,10 +113,8 @@ namespace DataInterface
             bool IsSuccess = base.TryRemove(Key,out RemVal);
             if(IsSuccess)
             {
-                KeyValuePair<T1, T2> RemoveValue = new KeyValuePair<T1, T2>(Key, RemVal);
-                //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, RemoveValue));
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Remove, RemVal = RemoveValue });
+                KeyValuePair<T1, T2> RemoveValue = new KeyValuePair<T1, T2>(Key, RemVal);            
+                OnDictionaryChanged(new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Remove, RemVal = RemoveValue });
             }
             return IsSuccess;
         }
@@ -132,8 +128,7 @@ namespace DataInterface
                 IsSuccess = base.TryUpdate(Key, NewVal, ComparisonVal);
                 if(IsSuccess)
                 {
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, new KeyValuePair<T1, T2>(Key, NewVal), OldVal));
-                    OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, OldVal = OldVal,NewVal = new KeyValuePair<T1, T2>(Key, NewVal)});
+                    OnDictionaryChanged(new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, OldVal = OldVal,NewVal = new KeyValuePair<T1, T2>(Key, NewVal)});
                 }
             }
             return IsSuccess;
@@ -147,71 +142,54 @@ namespace DataInterface
 
                 IsSuccess = base.TryUpdate(KVP.Key, KVP.Value, ComparisonVal);
                 if(IsSuccess)
-                {
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, KVP, OldVal));
-                    OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, OldVal = OldVal, NewVal = KVP });
+                {                    
+                    OnDictionaryChanged(new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, OldVal = OldVal, NewVal = KVP });
                 }
             }
             return IsSuccess;
         }
         public T2 AddOrUpdate(T1 Key, T2 Value)
         {            
-            NotifyCollectionChangedAction Act = NotifyCollectionChangedAction.Add;
-             NotifyCollectionChangedEventArgs Args;
-            TreeChangedEventArgs<T1, T2> TArgs;
-
+            DictionaryChangedEventArgs<T1, T2> TArgs;
             if(this.ContainsKey(Key))
             {
-                Act = NotifyCollectionChangedAction.Replace;
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, Value);
                 KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(Key, this[Key]);
-                Args = new  NotifyCollectionChangedEventArgs(Act,NewVal,OldVal,0);
-                TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, NewVal = NewVal, OldVal = OldVal };
+                TArgs = new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, NewVal = NewVal, OldVal = OldVal };
             }
             else
             {
-                Act = NotifyCollectionChangedAction.Add;
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(Key, Value);
-                Args =  new NotifyCollectionChangedEventArgs(Act, NewVal);
-                TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
-                OnCollectionChanged(Args);
+                TArgs = new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
             }
             T2 RetVal = base.AddOrUpdate(Key, Value, (k, val) => Value);
-            OnTreeChanged(TArgs);
-                    
+            OnDictionaryChanged(TArgs);                    
             return RetVal;
         }
         public T2 AddOrUpdate(KeyValuePair<T1, T2> KVP)
         {
-            NotifyCollectionChangedAction Act = NotifyCollectionChangedAction.Add;
             NotifyCollectionChangedEventArgs Args;
-            TreeChangedEventArgs<T1, T2> TArgs;
+            DictionaryChangedEventArgs<T1, T2> TArgs;
 
             if(this.ContainsKey(KVP.Key))
             {
-                Act = NotifyCollectionChangedAction.Replace;
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(KVP.Key, KVP.Value);
                 KeyValuePair<T1, T2> OldVal = new KeyValuePair<T1, T2>(KVP.Key, this[KVP.Key]);
-                Args = new NotifyCollectionChangedEventArgs(Act, NewVal, OldVal);
-                TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, NewVal = NewVal, OldVal = OldVal };
+                TArgs = new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Replace, NewVal = NewVal, OldVal = OldVal };
             }
             else
             {
-                Act = NotifyCollectionChangedAction.Add;
                 KeyValuePair<T1, T2> NewVal = new KeyValuePair<T1, T2>(KVP.Key, KVP.Value);
-                Args = new NotifyCollectionChangedEventArgs(Act, NewVal);
-                TArgs = new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
+                TArgs = new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Add, NewVal = NewVal };
             }
             T2 RetVal = base.AddOrUpdate(KVP.Key, KVP.Value, (k, val) => KVP.Value);
-            OnTreeChanged(TArgs);
-            OnCollectionChanged(Args);
+            OnDictionaryChanged(TArgs);
             return RetVal;
         }
         public new void Clear()
-        {
+        {           
             base.Clear();
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            OnTreeChanged(new TreeChangedEventArgs<T1, T2>() { Action = CollectionAction.Reset });
+            DictionaryChanged?.Invoke(this, new DictionaryChangedEventArgs<T1, T2>() { Action = CollectionAction.Reset });
         }
         public void AddList(IEnumerable<KeyValuePair<T1,T2>> NewItems,int Parallelism = 16)
         {
@@ -230,36 +208,36 @@ namespace DataInterface
         public void EndInit()
         {
             _Notify = true;
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add));
         }
         public void BeginEdit(NotifyCollectionChangedAction act)
         {
-            _DefferAction = act;
+            //TODO Implement deferred changed Notofication with aggregate events 
             _Notify = false;
         }
         public void EndEdit(IList<KeyValuePair<T1, T2>> itms)
         {
             _Notify = true;           
-            NotifyCollectionChangedEventArgs Args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, itms.ToList());
-            OnCollectionChanged(Args);
         }
+       
+        protected void OnDictionaryChanged(DictionaryChangedEventArgs<T1,T2> Args)
+        {
+            //TODO Implement deferred changed Notofication with aggregate events 
+            DictionaryChanged?.Invoke(this, Args);
 
-        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs Args)
-        {
-            if (_Notify)
+            switch (Args.Action)
             {
-                try { 
-                    CollectionChanged?.Invoke(this, Args);
-                }
-                catch (InvalidOperationException)
-                {
-                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                }
+                case CollectionAction.Add:
+                    ItemList.Add(Args.NewVal);
+                    break;
+                case CollectionAction.Remove:
+                    ItemList.Remove(Args.RemVal);
+                    break;
+                case CollectionAction.Reset:
+                    ItemList.Clear();
+                    break;
+
             }
-        }
-        protected void OnTreeChanged(TreeChangedEventArgs<T1,T2> Args)
-        {
-            TreeChanged?.Invoke(this, Args);            
+            
         }      
         #endregion
         #region Callbacks     
@@ -267,9 +245,9 @@ namespace DataInterface
 
     }
 
-    public class TreeChangedEventArgs<T1,T2>
+    public class DictionaryChangedEventArgs<T1,T2>
     {
-        public TreeChangedEventArgs()
+        public DictionaryChangedEventArgs()
         {
         }
         public CollectionAction Action { get; internal set; }

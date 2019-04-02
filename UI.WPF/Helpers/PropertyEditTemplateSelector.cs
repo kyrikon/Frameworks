@@ -13,15 +13,16 @@ namespace UI.WPF.Helpers
 
             if (element != null && item != null)
             {
+                ValueTypes _Vtypes = new ValueTypes();
                 PropertyItem PI = item as PropertyItem;
                 if (PI != null)
                 {
-                    DataInterface.ValueType ConItem = PI.Value.GetType().GetEditor();
+                    string ConItem = _Vtypes.GetValueType(PI.Value);
                     switch (ConItem)
                     {
-                        case DataInterface.ValueType.Integer:
+                        case DataInterface.ValueTypes.Int:
                             return element.FindResource("IntEditTemplate") as DataTemplate;
-                        case DataInterface.ValueType.Text:
+                        case DataInterface.ValueTypes.Text:
                             return element.FindResource("StringEditTemplate") as DataTemplate;
                         default:
                             return element.FindResource("StringEditTemplate") as DataTemplate;

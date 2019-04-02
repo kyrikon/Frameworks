@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using FluentValidation;
 using FluentValidation.Results;
+using System.Linq;
 
 namespace DataInterface
 {
@@ -60,6 +61,11 @@ namespace DataInterface
             this[Boolean] = new ValueType() { AssemblyTypeName = typeof(bool).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Primative) };
             this[TimePeriod] = new ValueType() { AssemblyTypeName = typeof(DataInterface.TimePeriod).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Enum) };
 
+        }
+
+        public string GetValueType(object Lookup)
+        {
+            return this.FirstOrDefault(x => x.Value.AssemblyTypeName.Equals(Lookup.GetType().AssemblyQualifiedName)).Key;
         }
     }
     public class ValueType

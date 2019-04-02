@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UI.WPF.Views.Forms.CustomEnumsForm"
+﻿<UserControl x:Class="UI.WPF.Views.Forms.CustomListForm"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -63,8 +63,9 @@
                         <StackPanel Orientation="Horizontal">
                             <dxe:TextEdit Style="{StaticResource  TextEditFormStyle}" MinWidth="100"
                                  Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
-                            <ComboBox Style="{StaticResource ComboBoxFormStyle}" 
-                                       ItemsSource="{Binding Source={MUExt:EnumBindingSourceExtension {x:Type DataCnt:ValueType}}}"
+                            <ComboBox Style="{StaticResource ComboBoxFormStyle}"
+                                      ItemsSource="{Binding DataContext.ValTypes,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                      DisplayMemberPath="Key"                                      
                                       MinWidth="100"
                                  SelectedItem="{Binding DataContext.ListType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
                         </StackPanel>
@@ -86,7 +87,7 @@
                          TitleVisibility="Collapsed"                         
                          Header="Content">
                 <ContentControl Content="{Binding DataContext.SelectedCustomList.Value,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                                ContentTemplate="{StaticResource KeyObjectDictionartTemplate}" />
+                                ContentTemplate="{StaticResource CustomListTemplate}" />
                 
             </lc:GroupBox>
         </lc:DockLayoutControl>

@@ -219,8 +219,7 @@
                 <RowDefinition />
                 <RowDefinition Height="5" />
             </Grid.RowDefinitions>
-            <dxwui:PageView 
-                            ShowBackButton="False"
+            <dxwui:PageView ShowBackButton="False"
                             PageHeadersLayoutType="Scroll"
                             PageHeadersAlignment="Top"
                             Grid.Column="1"
@@ -231,7 +230,7 @@
                         <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
                     <dxwui:PageViewItem Header="Custom Lists">
-                        <LocalForms:CustomEnumsForm />
+                        <LocalForms:CustomListForm />
                         
                     </dxwui:PageViewItem>
                 </dxwui:PageView.Items>
@@ -328,8 +327,8 @@
      <!-- Editor DataTemplates-->
      <!---->
     <!-- CustomList DataTemplates-->
-    <DataTemplate x:Key="KeyObjectDictionartTemplate"
-                  DataType="{x:Type DataCnt:KeyObjectDictionary}">
+    <DataTemplate x:Key="CustomListTemplate"
+                  DataType="{x:Type DataCnt:CustomList}">
         <StackPanel Orientation="Vertical">
             <TextBlock Text="List Details"
                        Style="{StaticResource HeaderStyle}" />

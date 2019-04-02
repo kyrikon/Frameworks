@@ -18,25 +18,25 @@ namespace Testingconsoleapp
         {
 
             HDynamicObject TestSerial = new HDynamicObject();
+            ValueTypes VT = new ValueTypes();
 
-            DynamicObjectTemplate dmo = new DynamicObjectTemplate();
-            dmo.ValueType = DataInterface.ValueType.Text;          
-            StrValidationRules IRule = (StrValidationRules)dmo.Validator.Rules;          
+            FieldTemplate NewField = new FieldTemplate(VT[ValueTypes.Text]);                    
+            StrValidationRules IRule = (StrValidationRules)NewField.Validator.Rules;          
             IRule.MinLength = null;
 
             IRule.RegExpPattern = @"^[a-zA-Z]+$";
             IRule.MaxLength = 4;
-            dmo.DefaultValue = "A";
-            dmo.DefaultValue = "AC";
-            dmo.DefaultValue = "abc".ToUpper();
-            dmo.DefaultValue = "abcde".ToUpper();
-            dmo.DefaultValue = "abc1".ToUpper();
-            dmo.DefaultValue = "12";
+            NewField.DefaultValue = "A";
+            NewField.DefaultValue = "AC";
+            NewField.DefaultValue = "abc".ToUpper();
+            NewField.DefaultValue = "abcde".ToUpper();
+            NewField.DefaultValue = "abc1".ToUpper();
+            NewField.DefaultValue = "12";
             IRule.RegExpPattern = null ;
-            dmo.DefaultValue = "45";
-            dmo.DefaultValue = 0;
-            dmo.DefaultValue = "d";
-            dmo.DefaultValue = null;
+            NewField.DefaultValue = "45";
+            NewField.DefaultValue = 0;
+            NewField.DefaultValue = "d";
+            NewField.DefaultValue = null;
 
             //dmo.ValueType = DataInterface.ValueType.Integer;
             //dmo.DefaultValue = 0;
