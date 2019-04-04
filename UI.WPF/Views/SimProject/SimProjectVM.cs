@@ -44,7 +44,7 @@ namespace UI.WPF.Views.SimProject
             _UId = Guid.NewGuid();
             NewDSType = DataSourceType.LocalFile;
             ClearItemsCmd = new DelegateCommand(() => ClearItems());
-            CreateCmd = new DelegateCommand(() => CreateProject().Wait());
+            CreateCmd = new DelegateCommand(async () => await CreateProject());
             AddItemsCmd = new DelegateCommand(() => AddItems());
             CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());
             MoveUpCmd = new DelegateCommand<HDynamicObject>((x) => MoveUp(x));
@@ -291,40 +291,46 @@ namespace UI.WPF.Views.SimProject
         }        
         private async Task CreateProject()
         {
-            _IsNew = true;
-            StringBuilder ConnectionPath = new StringBuilder(GlobalSettings.Instance.ShellContext.Configuration.GetValue<string>("SavePath"));
-            ConnectionPath.Append($"\\{ DM.DataSource.Connection.ConnectionName}\\{ DM.DataSource.Connection.ConnectionName}.{DM.DataSource.Connection.SaveFormat.ToString()}");
-            DM.DataSource.Connection.ConnectionString = ConnectionPath.ToString();
-            Tuple<bool,string> Result = DM.DataSource.ValidateNewConnection();
-            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Validate connection", Result.Item2);
-            if (Result.Item1)
+            bool IsSuccess = false;
+            await Task.Factory.StartNew(() =>
             {
-                Validation = string.Empty;
-                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Creating Project");
-                DynamicObjectHierarchy DH = new DynamicObjectHierarchy();
-                HierarchyFactory.GenerateFinance(ref DH);                
-                DM.CreateNewProject(DH);
-                _SW1 = Stopwatch.StartNew();
-                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Creating New Project", $"{DM.DataSource.Connection.ConnectionName}");
+                _IsNew = true;
+                StringBuilder ConnectionPath = new StringBuilder(GlobalSettings.Instance.ShellContext.Configuration.GetValue<string>("SavePath"));
+                ConnectionPath.Append($"\\{ DM.DataSource.Connection.ConnectionName}\\{ DM.DataSource.Connection.ConnectionName}.{DM.DataSource.Connection.SaveFormat.ToString()}");
+                DM.DataSource.Connection.ConnectionString = ConnectionPath.ToString();
+                Tuple<bool, string> Result = DM.DataSource.ValidateNewConnection();
+                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Validate connection", Result.Item2);
+                IsSuccess = Result.Item1;
+                if (Result.Item1)
+                {
+                    Validation = string.Empty;
+                    GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Creating Project");
+                    DynamicObjectHierarchy DH = new DynamicObjectHierarchy();
+                    HierarchyFactory.GenerateFinance(ref DH);
+                    DM.CreateNewProject(DH);
+                    _SW1 = Stopwatch.StartNew();
+                    GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Creating New Project", $"{DM.DataSource.Connection.ConnectionName}");
+                    GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Project Ready");
+                    GlobalSettings.Instance.ShellContext.NavigateProjectCmd.Execute(null);
 
-                
-                GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ConnectionBarItems.Add(
-                    new ConnectionBar.ConnectionBarItem()
-                    {   GrpID = GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ID,
-                        ID = this.UID,
-                        Connection = DM.DataSource.Connection,
-                        IsFavourite = false,
-                        IsSelected = true
-                    });
-                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Project Ready");
-                GlobalSettings.Instance.ShellContext.NavigateProjectCmd.Execute(null);
-              
-            }
-            else
+                }
+                else
+                {
+                    Validation = $"*{Result.Item2}";
+                }
+            });
+            if (IsSuccess)
             {
-                Validation = $"*{Result.Item2}";
+                GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ConnectionBarItems.Add(
+                       new ConnectionBar.ConnectionBarItem()
+                       {
+                           GrpID = GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ID,
+                           ID = this.UID,
+                           Connection = DM.DataSource.Connection,
+                           IsFavourite = false,
+                           IsSelected = true
+                       });
             }
-           
         }
         public async Task LoadProject()
         {
@@ -342,19 +348,7 @@ namespace UI.WPF.Views.SimProject
             SelectedNode["hello"] = SelectedNode["hello"] == null ? 0 : ((int)SelectedNode["hello"])+1;
             SelectedNode["hello2"] = SelectedNode["hello2"] == null ? 0 : ((int)SelectedNode["hello2"]) + 1;
             SelectedNode["hello3"] = "Hello World";
-        }
-        private async void DM_ModelInitialized(object sender, EventArgs args)
-        {            
-            _SW1.Stop();
-            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
-            if (_IsNew)
-            {
-                await DM.Save();
-            }
-            _IsNew = false;
-            Root = DM.Root;
-            SelectedNode = Root.FirstOrDefault();
-        }
+        }        
         private void MoveDown(HDynamicObject CurrChild)
         {
             if (CurrChild != null)
@@ -429,8 +423,10 @@ namespace UI.WPF.Views.SimProject
             }           
         }
         private void AddCustomListItem()
-        {         
-           ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryAdd(NewCustomListName, new CustomList() { ValueType = ListType});
+        {
+            KeyValuePair<string, CustomList> TmpList = new KeyValuePair<string, CustomList>(NewCustomListName, new CustomList() { ValueType = ListType });
+            ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryAdd(TmpList);
+            SelectedCustomList = TmpList;
         }
         private void RemoveCustomListItem()
         {
@@ -440,10 +436,21 @@ namespace UI.WPF.Views.SimProject
                 ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryRemove(SelectedCustomList.Key, out Obj);
             }
         }
-        
+
         #endregion
         #region Callbacks
-
+        private async void DM_ModelInitialized(object sender, EventArgs args)
+        {
+            _SW1.Stop();
+            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
+            if (_IsNew)
+            {
+                await DM.Save();
+            }
+            _IsNew = false;
+            Root = DM.Root;
+            SelectedNode = Root.FirstOrDefault();
+        }
         #endregion
     }
 

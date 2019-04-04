@@ -168,7 +168,6 @@ namespace DataInterface
         }
         public T2 AddOrUpdate(KeyValuePair<T1, T2> KVP)
         {
-            NotifyCollectionChangedEventArgs Args;
             DictionaryChangedEventArgs<T1, T2> TArgs;
 
             if(this.ContainsKey(KVP.Key))
@@ -218,12 +217,11 @@ namespace DataInterface
         {
             _Notify = true;           
         }
-       
-        protected void OnDictionaryChanged(DictionaryChangedEventArgs<T1,T2> Args)
+        #endregion
+        #region Callbacks     
+        protected void OnDictionaryChanged(DictionaryChangedEventArgs<T1, T2> Args)
         {
             //TODO Implement deferred changed Notofication with aggregate events 
-            DictionaryChanged?.Invoke(this, Args);
-
             switch (Args.Action)
             {
                 case CollectionAction.Add:
@@ -235,12 +233,10 @@ namespace DataInterface
                 case CollectionAction.Reset:
                     ItemList.Clear();
                     break;
-
             }
-            
-        }      
-        #endregion
-        #region Callbacks     
+            DictionaryChanged?.Invoke(this, Args);
+
+        }
         #endregion
 
     }

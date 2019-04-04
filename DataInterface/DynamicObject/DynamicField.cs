@@ -4,6 +4,7 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.Results;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace DataInterface
 {
@@ -31,8 +32,29 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
-
-
+        public string ValidationText
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        //this is an alt name used for column headers or labels
+        public string LebelText
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
     }
 
     #region Field Value Types
@@ -45,7 +67,7 @@ namespace DataInterface
         public const string List = "List";
         public const string Boolean = "Bool";
         public const string TimePeriod = "TimePeriod";
-        //TODO Implement
+        //TODO Implement below 
         public const string Double = "Double";
         public const string Long = "Long";
         public const string Float = "Float";
@@ -53,13 +75,13 @@ namespace DataInterface
 
         public ValueTypes()
         {
-            this[Text] = new ValueType() { AssemblyTypeName = typeof(string).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Text | ValueFlags.Primative), Validator = new StrValidator() };
-            this[Int] = new ValueType() { AssemblyTypeName = typeof(int).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Number | ValueFlags.Primative), Validator = new IntValidator() };
-            this[Date] = new ValueType() { AssemblyTypeName = typeof(DateTime).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.DateTime), Validator = new DateValidator() };
-            this[Decimal] = new ValueType() { AssemblyTypeName = typeof(decimal).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Number | ValueFlags.Primative), Validator = new DecimalValidator() };
-            this[List] = new ValueType() { AssemblyTypeName = typeof(DataInterface.CustomList).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.List) };
-            this[Boolean] = new ValueType() { AssemblyTypeName = typeof(bool).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Primative) };
-            this[TimePeriod] = new ValueType() { AssemblyTypeName = typeof(DataInterface.TimePeriod).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Enum) };
+            this[Text] = new ValueType() { Name = Text, AssemblyTypeName = typeof(string).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Text | ValueFlags.Primative), Validator = new StrValidator() };
+            this[Int] = new ValueType() { Name = Int, AssemblyTypeName = typeof(int).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Number | ValueFlags.Primative), Validator = new IntValidator() };
+            this[Date] = new ValueType() { Name = Date, AssemblyTypeName = typeof(DateTime).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.DateTime), Validator = new DateValidator() };
+            this[Decimal] = new ValueType() { Name = Decimal, AssemblyTypeName = typeof(decimal).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Number | ValueFlags.Primative), Validator = new DecimalValidator() };
+            this[List] = new ValueType() { Name = List, AssemblyTypeName = typeof(DataInterface.CustomList).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.List) };
+            this[Boolean] = new ValueType() { Name = Boolean, AssemblyTypeName = typeof(bool).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Primative) };
+            this[TimePeriod] = new ValueType() { Name = TimePeriod, AssemblyTypeName = typeof(DataInterface.TimePeriod).AssemblyQualifiedName, Nullable = true, Flags = (ValueFlags.Enum) };
 
         }
 
@@ -67,10 +89,18 @@ namespace DataInterface
         {
             return this.FirstOrDefault(x => x.Value.AssemblyTypeName.Equals(Lookup.GetType().AssemblyQualifiedName)).Key;
         }
+        public List<ValueType> Primatives
+        {
+            get
+            {
+                return this.ItemList.Select(x => x.Value).Where(x => x.Flags.HasFlag(ValueFlags.Primative)).ToList();
+            }
+        }
+
     }
     public class ValueType
     {
-
+        public string Name { get; set; }
         public bool Nullable { get; set; }
         public ValueFlags Flags { get; set; }
         public string AssemblyTypeName { get; set; }

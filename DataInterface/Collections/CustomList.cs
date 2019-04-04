@@ -5,7 +5,7 @@ using Core.Extensions;
 using System.Linq;
 using Newtonsoft.Json;
 using Core.Helpers;
-
+using System.Collections.ObjectModel;
 
 namespace DataInterface
 {
@@ -27,7 +27,10 @@ namespace DataInterface
             SortByValue = false;
             Items = new ObservableConcurrentDictionary<string, object>();
             AddListItemCmd = new DelegateCommand((x) => AddItem(x));
+            Items.DictionaryChanged += Items_DictionaryChanged;
         }
+
+       
         #endregion
         #region Commands           
         public DelegateCommand AddListItemCmd
@@ -60,15 +63,18 @@ namespace DataInterface
                 OnPropertyChanged("SortedItems");
             }
         }
-        public Dictionary<string, object> SortedItems
-        {
+
+        [JsonIgnore]
+        public ObservableCollection<KeyValuePair<string, object>> SortedItems
+        {           
             get
             {
                 if (SortByValue)
                 {
-                    return Items.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+                    return new ObservableCollection<KeyValuePair<string, object>>(Items.ItemList.OrderBy(x => x.Value));
                 }
-                return Items.OrderBy(x => x.Key).ToDictionary(x => x.Key,x => x.Value);
+
+                return new ObservableCollection<KeyValuePair<string, object>>(Items.ItemList.OrderBy(x => x.Key));
             }
         }
         
@@ -176,7 +182,13 @@ namespace DataInterface
             Items.TryRemove(Key, out tmpVal);
         }
 
-       
+
+        #endregion
+        #region Callbacks
+        private void Items_DictionaryChanged(object sender, DictionaryChangedEventArgs<string, object> args)
+        {
+            OnPropertyChanged("SortedItems");
+        } 
         #endregion
 
     }

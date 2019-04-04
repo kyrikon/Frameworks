@@ -16,6 +16,8 @@
     <sys:Double x:Key="BdySize">12</sys:Double>
     <sys:Double x:Key="ButtonHeight">48</sys:Double>
     <sys:Double x:Key="ButtonWidth">96</sys:Double>
+    <sys:Double x:Key="SlimButtonHeight">24</sys:Double>
+    <sys:Double x:Key="SlimButtonWidth">72</sys:Double>
     <sys:Double x:Key="FormSize">14</sys:Double>
     <sys:Double x:Key="FormLabelSize">16</sys:Double>
     <!---->
@@ -111,7 +113,24 @@
         <Setter Property="BorderBrush"
                 Value="{StaticResource ButtonBorder}" />
     </Style>
-    
+    <Style TargetType="{x:Type Button}" x:Key="SlimButtonStyle">
+        <Setter Property="FontSize"
+                Value="{StaticResource BdySize}" />
+        <Setter Property="Background"
+                Value="{StaticResource ButtonBgCol}" />
+        <Setter Property="Height"
+                Value="{StaticResource SlimButtonHeight}" />
+        <Setter Property="MinWidth"
+                Value="{StaticResource SlimButtonWidth}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource ButtonBorder}" />
+    </Style>
+
     <Style x:Key="LoginSeparatorStyle"
            TargetType="{x:Type Separator}">
         <Setter Property="Background"
@@ -155,10 +174,23 @@
                 Value="2" />
         <Setter Property="Height"
                 Value="30" />
-        <Setter Property="MaxWidth"
-                Value="350" />
         <Setter Property="FontSize"
                 Value="{StaticResource FormSize}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}"
+           x:Key="SlimTextEditFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="24" />
+        <Setter Property="FontSize"
+                Value="{StaticResource BdySize}" />
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalAlignment"
@@ -174,8 +206,8 @@
                 Value="True" />
         <Setter Property="Height"
                 Value="90" />
-        <Setter Property="MaxWidth"
-                Value="350" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
         <Setter Property="FontSize"
                 Value="{StaticResource FormSize}" />
         <Setter Property="HorizontalContentAlignment"

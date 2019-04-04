@@ -41,43 +41,57 @@
                          Header="Navigation">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition /> <!--7 rows-->
                     </Grid.RowDefinitions>
-                    
-                    <ListView ItemsSource="{Binding [CustomLists]}"
-                              SelectedItem="{Binding DataContext.SelectedCustomList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                              >
+                    <TextBlock Text="List Name"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Grid.Row="0" />
+                    <dxe:TextEdit Style="{StaticResource  SlimTextEditFormStyle}"
+                                  Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                  Grid.Row="1"/>
+                   <TextBlock Text="List Value Type"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Grid.Row="2" />
+                    <ComboBox Style="{StaticResource ComboBoxFormStyle}"
+                              ItemsSource="{Binding DataContext.ValTypes.Primatives,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                              DisplayMemberPath="Name"
+                              Grid.Row="3"
+                              SelectedItem="{Binding DataContext.ListType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="4" Margin="2,6"
+                                HorizontalAlignment="Right">
+                        <Button Content="Add" Style="{StaticResource SlimButtonStyle}"
+                                Command="{Binding DataContext.AddCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                        <Button Content="remove"
+                                Style="{StaticResource SlimButtonStyle}"
+                                Command="{Binding DataContext.RemoveCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                    </StackPanel>
+
+                    <TextBlock Text="Custom Lists"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Grid.Row="5" />
+                    <ListView ItemsSource="{Binding [CustomLists].ItemList}"
+                              Grid.Row="6"
+                              Margin="2,6"
+                              SelectedItem="{Binding DataContext.SelectedCustomList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView},Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Key}"
-                                               Style="{StaticResource TextBlockFormStyle}"                                               
+                                               Style="{StaticResource TextBlockFormStyle}"
                                                KeyboardNavigation.IsTabStop="False" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <StackPanel Orientation="Vertical"
-                                Grid.Row="1">
-                        <StackPanel Orientation="Horizontal">
-                            <dxe:TextEdit Style="{StaticResource  TextEditFormStyle}" MinWidth="100"
-                                 Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
-                            <ComboBox Style="{StaticResource ComboBoxFormStyle}"
-                                      ItemsSource="{Binding DataContext.ValTypes,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                                      DisplayMemberPath="Key"                                      
-                                      MinWidth="100"
-                                 SelectedItem="{Binding DataContext.ListType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                        <Button Content="Add"                           
-                           
-                            Command="{Binding DataContext.AddCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
-                        <Button Content="remove"
-                              
-                                Command="{Binding DataContext.RemoveCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
-                    </StackPanel>
-                    </StackPanel>
                 </Grid>
                 
             </lc:GroupBox>
@@ -92,14 +106,5 @@
             </lc:GroupBox>
         </lc:DockLayoutControl>
         
-        <StackPanel  Grid.Row="1"
-                     Orientation="Horizontal"
-                     Margin="5"
-                     HorizontalAlignment="Right">
-            
-           
-           
-            
-        </StackPanel>
     </Grid>
 </UserControl>

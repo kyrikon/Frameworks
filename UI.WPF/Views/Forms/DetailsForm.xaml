@@ -20,7 +20,7 @@
     <UserControl.Resources>
         <ResourceDictionary></ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
@@ -31,30 +31,45 @@
             <RowDefinition  Height="*" />
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical"
-                    VerticalAlignment="Stretch"
+        <Grid  VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
-                    Grid.Row="1"
+                    Grid.Row="1" 
                     Grid.Column="1">
-            <TextBlock Style="{StaticResource TextBlockFormStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <!--12 Rows-->
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource TextBlockFormStyle}" Grid.Row="0">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}Key {0}">
                         <Binding Path="SelectedNode.HID.StrKey" />
                     </MultiBinding>
-                </TextBlock.Text></TextBlock>
-            <Image Source="{Binding SelectedNodeImage}"
-                   SourceUpdated="Image_SourceUpdated"
+                </TextBlock.Text>
+            </TextBlock>
+            <Image Source="{Binding SelectedNodeImage}" Grid.Row="1"
                    Height="32"
                    Width="32"
                    HorizontalAlignment="Left" />
-            <TextBlock Style="{StaticResource TextBlockFormStyle}"
+            <TextBlock Style="{StaticResource TextBlockFormStyle}" 
+                        Grid.Row="2"
                        Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2Vis}}">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0} Total Objects">
                         <Binding Path="ObjectCnt" />
                     </MultiBinding>
                 </TextBlock.Text></TextBlock>
-            <TextBlock Style="{StaticResource TextBlockFormStyle}"
+            <TextBlock Style="{StaticResource TextBlockFormStyle}"  Grid.Row="3"
                        Visibility="{Binding SelectedNode.IsContainer,Converter={StaticResource b2Vis}}">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0} Children">
@@ -62,63 +77,85 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <TextBlock Text="Name"
+            <TextBlock Text="Name" Grid.Row="4"
                        Style="{StaticResource TextBlockFormStyle}"
                        Margin="2,6,2,6" />
-            <dxe:TextEdit EditValue="{Binding Path=SelectedNode.Name}"
-                          HorizontalAlignment="Left"
+            <dxe:TextEdit EditValue="{Binding Path=SelectedNode.Name}" Grid.Row="5"            
                           Style="{StaticResource TextEditFormStyle}"
                           IsReadOnly="{Binding SelectedNode.IsReadOnly}"
-                          Width="{Binding RelativeSource={RelativeSource Self}, Path=MaxWidth}" />
+                          />
             <TextBlock Text="Description"
-                       Style="{StaticResource TextBlockFormStyle}" />
+                       Style="{StaticResource TextBlockFormStyle}" 
+                       Grid.Row="6"
+                       />
             <dxe:TextEdit EditValue="{Binding Path=SelectedNode.Description}"
-                          HorizontalAlignment="Left"
                           Style="{StaticResource MultiLineTextEditFormStyle}"
-                          Width="{Binding RelativeSource={RelativeSource Self}, Path=MaxWidth}" />
-            <TextBlock Text="Rank"
+                          Grid.Row="7"
+                         />
+            <TextBlock Text="Rank" Grid.Row="8"
                    Style="{StaticResource TextBlockFormStyle}"
                        Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
-            
-        <StackPanel Orientation="Horizontal" Margin="0,5"
+
+            <StackPanel Orientation="Horizontal" Margin="0,5" 
                         Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
-                    HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Grid.Row="9">
                 <TextBlock Text="{Binding SelectedNode.Rank}" x:Name="RankTB"
                            Style="{StaticResource TextBlockFormStyle}"
                            Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
-                <dxc:SimpleButton Glyph="{StaticResource DropUpIcon}"
-                              Margin="40,0,2,0"
-                                  Height="32"
-                                  Width="32"
-                                  Command="{Binding MoveUpCmd}"                            
-                              ToolTip="Move Up" />
-                <dxc:SimpleButton Glyph="{StaticResource DropDownIcon}"
-                              Margin="2,0,2,0"
-                                  Height="32"
-                                  Width="32"
-                                  Command="{Binding MoveDownCmd}" 
-                              ToolTip="Move Down" />
-        </StackPanel>
+                
+                <Button Style="{StaticResource SlimButtonStyle}"
+                        Height="30"
+                        Width="30"
+                        MinWidth="24"
+                        Margin="40,0,2,0"
+                        ToolTip="Move Up"
+                        Command="{Binding MoveUpCmd}">
+                    <Button.Content>
+                        <Grid HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <Image Source="{StaticResource DropUpIcon}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Height="24"
+                                   Width="24" />
+                        </Grid>
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource SlimButtonStyle}"
+                        Height="30"
+                        Width="30"
+                        MinWidth="24"
+                        Margin="40,0,2,0"
+                        ToolTip="Move Down"
+                        Command="{Binding MoveDownCmd}">
+                    <Button.Content>
+                        <Grid HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <Image Source="{StaticResource DropDownIcon}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Height="24"
+                                   Width="24" />
+                        </Grid>
+                    </Button.Content>
+                </Button>
+               
+            </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-            <Button Style="{StaticResource FormButtonStyle}"
-                    Content="New Folder" Margin="0,0,2,0"
+                        HorizontalAlignment="Right"
+                        Grid.Row="10"
+                        >
+                <Button Style="{StaticResource SlimButtonStyle}"
+                    Content="New Folder" 
                     Command="{Binding AddFldrCmd}" />
-                <Button Style="{StaticResource FormButtonStyle}"
-                        Margin="2,0,2,0"
+                <Button Style="{StaticResource SlimButtonStyle}"
                         Content="Remove"
                         Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
                         Command="{Binding DelFldrCmd}" />
             </StackPanel>
-            <Button Content="Incr" Visibility="Collapsed"
-                    Command="{Binding AddItemsCmd}"
-                    Style="{StaticResource FormButtonStyle}"
-                    HorizontalAlignment="Left" />
             <TextBlock Text="{Binding Validation}"
-                       Grid.Row="6"
-                       Grid.Column="1"
+                       Grid.Row="11"
                        Margin="10,10,2,2"
                        Style="{StaticResource TextBlockFormStyleValidation}" />
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -24,12 +24,5 @@ namespace UI.WPF.Views.Forms
         {
             InitializeComponent();
         }
-
-        private void Image_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            //((Image)sender).BeginInit();
-            //((Image)sender).EndInit();
-            
-        }
     }
 }

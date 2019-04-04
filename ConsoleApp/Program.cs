@@ -17,6 +17,37 @@ namespace Testingconsoleapp
         static async Task Main(string[] args)
         {
 
+
+            string test = "A";
+
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "1AC";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "A 1C ";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "A 1C";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "1_AC";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "_AC";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "AC_";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "AC1";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "ab-cde";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "ab_c1";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "12";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "abcd";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+            test = "abc ";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+            test = "ab cds";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+
             HDynamicObject TestSerial = new HDynamicObject();
             ValueTypes VT = new ValueTypes();
 
@@ -24,13 +55,20 @@ namespace Testingconsoleapp
             StrValidationRules IRule = (StrValidationRules)NewField.Validator.Rules;          
             IRule.MinLength = null;
 
-            IRule.RegExpPattern = @"^[a-zA-Z]+$";
-            IRule.MaxLength = 4;
+            IRule.RegExpPattern = @"^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$";
+            //Use this Expression for FieldNames
+            // IRule.RegExpPattern = @"^[a-zA-Z]+$"; //^[a-zA-Z][a-zA-Z0-9_]*$
             NewField.DefaultValue = "A";
-            NewField.DefaultValue = "AC";
-            NewField.DefaultValue = "abc".ToUpper();
-            NewField.DefaultValue = "abcde".ToUpper();
-            NewField.DefaultValue = "abc1".ToUpper();
+            NewField.DefaultValue = "1AC";
+            NewField.DefaultValue = "A 1C ";
+            NewField.DefaultValue = "AC ";
+            NewField.DefaultValue = "1_AC";
+            NewField.DefaultValue = "_AC";
+            NewField.DefaultValue = "A1_C";
+            NewField.DefaultValue = "AC_";
+            NewField.DefaultValue = "AC1".ToUpper();
+            NewField.DefaultValue = "ab-cde".ToUpper();
+            NewField.DefaultValue = "ab_c1".ToUpper();
             NewField.DefaultValue = "12";
             IRule.RegExpPattern = null ;
             NewField.DefaultValue = "45";
