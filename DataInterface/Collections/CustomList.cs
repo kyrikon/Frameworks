@@ -118,7 +118,8 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
-        
+
+     
         public DataInterface.ValueType ValueType
         {
             get

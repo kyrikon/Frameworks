@@ -5,6 +5,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using System.Linq;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace DataInterface
 {
@@ -104,18 +105,20 @@ namespace DataInterface
         public bool Nullable { get; set; }
         public ValueFlags Flags { get; set; }
         public string AssemblyTypeName { get; set; }
+        //TODO: Find a way to serialize this
+        [JsonIgnore]
         public IValidator Validator { get; set; }
     }
 
     [Flags]
     public enum ValueFlags
     {
-        Primative = 0x0,
-        Text = 0x1,
-        Number = 0x2,
-        DateTime = 0x4,
-        List = 0x8,
-        Enum = 0x16
+        Primative = 0x1,
+        Text = 0x2,
+        Number = 0x4,
+        DateTime = 0x8,
+        List = 0x16,
+        Enum = 0x32
 
     } 
     #endregion
