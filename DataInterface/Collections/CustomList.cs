@@ -30,9 +30,10 @@ namespace DataInterface
             Items.DictionaryChanged += Items_DictionaryChanged;
         }
 
-       
+
         #endregion
-        #region Commands           
+        #region Commands        
+        [JsonIgnore]
         public DelegateCommand AddListItemCmd
         {
             get; private set;
@@ -65,16 +66,16 @@ namespace DataInterface
         }
 
         [JsonIgnore]
-        public ObservableCollection<KeyValuePair<string, object>> SortedItems
+        public ReadOnlyObservableCollection<KeyValuePair<string, object>> SortedItems
         {           
             get
             {
                 if (SortByValue)
                 {
-                    return new ObservableCollection<KeyValuePair<string, object>>(Items.ItemList.OrderBy(x => x.Value));
+                    return new ReadOnlyObservableCollection<KeyValuePair<string, object>>(new ObservableCollection<KeyValuePair<string, object>>(Items.ItemList.OrderBy(x => x.Value)));
                 }
 
-                return new ObservableCollection<KeyValuePair<string, object>>(Items.ItemList.OrderBy(x => x.Key));
+                return new ReadOnlyObservableCollection<KeyValuePair<string, object>>(new ObservableCollection<KeyValuePair<string, object>>(Items.ItemList.OrderBy(x => x.Key)));
             }
         }
         
@@ -118,7 +119,6 @@ namespace DataInterface
             }
         }
         
-        [JsonIgnore]
         public DataInterface.ValueType ValueType
         {
             get

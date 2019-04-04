@@ -73,7 +73,7 @@ namespace UI.WPF.Models
 
         }
         
-        public ObservableCollection<HDynamicObject> Root
+        public ReadOnlyObservableCollection<HDynamicObject> Root
         {
             get
             {

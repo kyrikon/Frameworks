@@ -56,8 +56,6 @@ namespace UI.WPF.Views.SimProject
 
         }
 
-      
-
         #endregion
         #region Commands           
         public DelegateCommand ClearItemsCmd
@@ -68,7 +66,6 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
-
         public DelegateCommand CancelCmd
         {
             get; private set;
@@ -77,12 +74,10 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
-
         public DelegateCommand<HDynamicObject> MoveUpCmd
         {
             get; private set;
         }
-
         public DelegateCommand<HDynamicObject> MoveDownCmd
         {
             get; private set;
@@ -111,7 +106,21 @@ namespace UI.WPF.Views.SimProject
             get;
             private set;
 
-        }        
+        }
+        public ReadOnlyObservableCollection<HDynamicObject> Root
+        {
+            get
+            {
+                return GetPropertyValue<ReadOnlyObservableCollection<HDynamicObject>>();
+            }
+            private set
+            {
+                if (GetPropertyValue<ReadOnlyObservableCollection<HDynamicObject>>() != value)
+                {
+                    SetPropertyValue<ReadOnlyObservableCollection<HDynamicObject>>(value);
+                }
+            }
+        }
         public DataSourceType NewDSType
         {
             get
@@ -133,7 +142,19 @@ namespace UI.WPF.Views.SimProject
             {
                 return _UId;
             }
-        }     
+        }
+
+        public ValueTypes ValTypes
+        {
+            get
+            {
+                return GetPropertyValue<ValueTypes>();
+            }
+            private set
+            {
+                SetPropertyValue(value);
+            }
+        }
         public HDynamicObject SelectedNode
         {
             get
@@ -157,21 +178,8 @@ namespace UI.WPF.Views.SimProject
             }
             
         }
-        public ObservableCollection<HDynamicObject> Root
-        {
-            get
-            {
-                return GetPropertyValue<ObservableCollection<HDynamicObject>>();
-            }
-            private set
-            {
-                if (GetPropertyValue<ObservableCollection<HDynamicObject>>() != value)
-                {
-                    SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
-                }
-            }
-        }
-
+     
+       
         public bool HasSelectedNode
         {
             get
@@ -224,6 +232,18 @@ namespace UI.WPF.Views.SimProject
             }
         }
 
+        #region Custom List Members
+        public ObservableConcurrentDictionary<string, CustomList> CustomLists
+        {
+            get
+            {
+                return GetPropertyValue<ObservableConcurrentDictionary<string, CustomList>>();
+            }
+            private set
+            {
+                SetPropertyValue(value);
+            }
+        }
         public KeyValuePair<string, CustomList> SelectedCustomList
         {
             get
@@ -267,19 +287,10 @@ namespace UI.WPF.Views.SimProject
             {
                 SetPropertyValue(value);
             }
-        }
+        } 
+        #endregion
 
-        public ValueTypes ValTypes
-        {
-            get
-            {
-                return GetPropertyValue<ValueTypes>();
-            }
-            private set
-            {
-                SetPropertyValue(value);
-            }
-        }
+       
         #endregion
         #region Methods     
         private void ClearItems()
@@ -449,6 +460,12 @@ namespace UI.WPF.Views.SimProject
             }
             _IsNew = false;
             Root = DM.Root;
+            if (!Root.FirstOrDefault().HasKey("CustomLists") || Root.FirstOrDefault()["CustomLists"] == null)
+            {
+                Root.FirstOrDefault()["CustomLists"] = new ObservableConcurrentDictionary<string, CustomList>();
+            }
+            CustomLists = (ObservableConcurrentDictionary<string, CustomList>)Root.FirstOrDefault()["CustomLists"];
+            CustomLists.RefreshObservable();
             SelectedNode = Root.FirstOrDefault();
         }
         #endregion

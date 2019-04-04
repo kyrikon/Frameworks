@@ -78,7 +78,7 @@
                     <TextBlock Text="Custom Lists"
                                Style="{StaticResource TextBlockFormStyle}"
                                Grid.Row="5" />
-                    <ListView ItemsSource="{Binding [CustomLists].ItemList}"
+                    <ListView ItemsSource="{Binding DataContext.CustomLists.ItemList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                               Grid.Row="6"
                               Margin="2,6"
                               SelectedItem="{Binding DataContext.SelectedCustomList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView},Mode=TwoWay}">

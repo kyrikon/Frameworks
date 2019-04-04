@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace DataInterface
 {
@@ -36,12 +37,13 @@ namespace DataInterface
 
         protected bool _Notify = true;
         private ObservableCollection<KeyValuePair<T1, T2>> _ItemList;
-
+        private ReadOnlyObservableCollection<KeyValuePair<T1, T2>> _ROItemList;
         #endregion
         #region Constructors
         public ObservableConcurrentDictionary()
         {
-            ItemList = new ObservableCollection<KeyValuePair<T1, T2>>();
+            _ItemList = new ObservableCollection<KeyValuePair<T1, T2>>();
+            _ROItemList = new ReadOnlyObservableCollection<KeyValuePair<T1, T2>>(_ItemList);
         }
         #endregion
         #region Properties
@@ -77,16 +79,14 @@ namespace DataInterface
 
             }
         }
-        public ObservableCollection<KeyValuePair<T1,T2>> ItemList
+        [JsonIgnore]
+        public ReadOnlyObservableCollection<KeyValuePair<T1,T2>> ItemList
         {
             get
             {
-                return _ItemList;
+                return _ROItemList;
             }
-            private set
-            {
-                _ItemList = value;
-            }
+
         }
         #endregion
         #region Methods     
@@ -225,17 +225,31 @@ namespace DataInterface
             switch (Args.Action)
             {
                 case CollectionAction.Add:
-                    ItemList.Add(Args.NewVal);
+                    _ItemList.Add(Args.NewVal);
                     break;
                 case CollectionAction.Remove:
-                    ItemList.Remove(Args.RemVal);
+                    _ItemList.Remove(Args.RemVal);
                     break;
                 case CollectionAction.Reset:
-                    ItemList.Clear();
+                    _ItemList.Clear();
                     break;
             }
             DictionaryChanged?.Invoke(this, Args);
 
+        }
+
+        /// <summary>
+        /// This method is Necessary in the case where the dictionary is created via deserialization
+        /// The Items are added internally and the DictionaryChangedEvents are not fired to add existing items
+        /// </summary>
+        public void RefreshObservable()
+        {
+            if(_ItemList.Count != this.Count)
+            {
+                _ItemList.Clear();
+                _ItemList = new ObservableCollection<KeyValuePair<T1,T2>>(this.ToList());            
+                _ROItemList = new ReadOnlyObservableCollection<KeyValuePair<T1, T2>>(_ItemList);
+            }
         }
         #endregion
 

@@ -4,6 +4,7 @@ using System.Text;
 using Core.Extensions;
 using System.Linq;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace DataInterface
 {
@@ -11,29 +12,28 @@ namespace DataInterface
     {
         #region Fields
         private ObservableCollection<HDynamicObject> _Root;
-
+        private ReadOnlyObservableCollection<HDynamicObject> _RORoot;
         #endregion
 
         #region Constructors
         public HKeyDynamicObjectDictionary()
         {
-            Root = new ObservableCollection<HDynamicObject>();
+            _Root = new ObservableCollection<HDynamicObject>();
+            _RORoot= new ReadOnlyObservableCollection<HDynamicObject>(_Root);
             base.DictionaryChanged += HKeyDynamicObjectDictionary_DictionaryChanged;
 
         }
 
         #endregion
         #region Properties
-        public ObservableCollection<HDynamicObject> Root
+        [JsonIgnore]
+        public ReadOnlyObservableCollection<HDynamicObject> Root
         {
             get
             {
-                return _Root;
+                return _RORoot;
             }
-            private set
-            {
-                _Root = value;
-            }
+
         }
         #endregion
         #region Methods
@@ -55,28 +55,17 @@ namespace DataInterface
                             HDynamicObject NewItem = (HDynamicObject)args.NewVal.Value;
                             NewItem.Parent = Parent;
                             NewItem.Root = (HDynamicObject)this[NewKey.RootKey];
-                            if (args.NewVal.Value.Rank == null || args.NewVal.Value.Rank == 0)
+                            if (args.NewVal.Value.Rank == 0)
                             {
                                 args.NewVal.Value.Rank = args.NewVal.Key.Rank;
                             }
-                            //Logic to add in all children in case not added in order
-                            //foreach(KeyValuePair<HKey, DataObject> Chldrn in Objects.Where(x => x.Key.Contains(NewKey) && !x.Key.Equals(NewKey)))
-                            //{
-
-                            //    Chldrn.Valuargs.Parent = NewItem;
-                            //    NewItem.Children.TryAdd(Chldrn.Key, Chldrn.Value);
-
-                            //}
+                            //TODO: Logic to add in all children in case not added in order      
                             this[NewKey.ParentKey].Children.Add(args.NewVal.Value);
                         }
                     }
                     else
                     {
-                        Root.Add(args.NewVal.Value);
-                        if (!Root.FirstOrDefault().HasKey("CustomLists"))
-                        {
-                            Root.FirstOrDefault()["CustomLists"] = new ObservableConcurrentDictionary<string, CustomList>();
-                        }
+                        _Root.Add(args.NewVal.Value);  
                     }
                     break;
                 case CollectionAction.Remove:
