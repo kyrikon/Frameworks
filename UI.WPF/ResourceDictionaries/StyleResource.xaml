@@ -20,6 +20,7 @@
     <sys:Double x:Key="SlimButtonWidth">72</sys:Double>
     <sys:Double x:Key="FormSize">14</sys:Double>
     <sys:Double x:Key="FormLabelSize">16</sys:Double>
+    <sys:Double x:Key="InputMinWidth">200</sys:Double>
     <!---->
     
     <!--Load indicator style keys
@@ -191,8 +192,10 @@
                 Value="24" />
         <Setter Property="FontSize"
                 Value="{StaticResource BdySize}" />
+        <Setter Property="MinWidth"
+                Value="{StaticResource InputMinWidth}" />
         <Setter Property="HorizontalAlignment"
-                Value="Stretch" />
+                Value="Left" />
         <Setter Property="VerticalAlignment"
                 Value="Center" />
         <Setter Property="VerticalContentAlignment"
@@ -227,7 +230,9 @@
         <Setter Property="FontSize"                
                 Value="{StaticResource FormSize}" />
         <Setter Property="HorizontalAlignment"
-                Value="Stretch"/>
+                Value="Left"/>
+        <Setter Property="MinWidth"
+                Value="{StaticResource InputMinWidth}" />
         <Setter Property="VerticalAlignment"
                 Value="Center"/>
         <Setter Property="Height"

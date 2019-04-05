@@ -253,6 +253,8 @@ namespace UI.WPF.Views.SimProject
             set
             {
                 SetPropertyValue(value);
+                SelectedCustomList.Value.Items.RefreshObservable();
+                OnPropertyChanged("HasSelectedList");
             }
         }
         public string NewCustomListName
@@ -277,6 +279,13 @@ namespace UI.WPF.Views.SimProject
                 SetPropertyValue(value);
             }
         }
+        public bool HasSelectedList
+        {
+            get
+            {
+                return SelectedCustomList.Key != null;
+            }
+        }
         public DataInterface.ValueType ListType
         {
             get
@@ -287,10 +296,25 @@ namespace UI.WPF.Views.SimProject
             {
                 SetPropertyValue(value);
             }
-        } 
+        }
+        
+        public string ListNameValidation
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                if (GetPropertyValue<string>() != value)
+                {
+                    SetPropertyValue<string>(value);
+                }
+            }
+        }
         #endregion
 
-       
+
         #endregion
         #region Methods     
         private void ClearItems()
@@ -435,16 +459,33 @@ namespace UI.WPF.Views.SimProject
         }
         private void AddCustomListItem()
         {
+            if(ListType == null)
+            {
+                ListNameValidation = "Must Select Value Type";
+                return;
+            }
+            if (!NewCustomListName.IsFieldRules())
+            {
+                ListNameValidation = "Invalid Name";
+                return;
+            }            
             KeyValuePair<string, CustomList> TmpList = new KeyValuePair<string, CustomList>(NewCustomListName, new CustomList() { ValueType = ListType });
-            ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryAdd(TmpList);
-            SelectedCustomList = TmpList;
+            if (CustomLists.TryAdd(TmpList))
+            {
+                SelectedCustomList = TmpList;
+                ListNameValidation = string.Empty;
+            }
+            else
+            {
+                ListNameValidation = "Already Exists";
+            }     
         }
         private void RemoveCustomListItem()
         {
             if (SelectedCustomList.Key != null)
             {
                 CustomList Obj = new CustomList();
-                ((ObservableConcurrentDictionary<string, CustomList>)SelectedNode["CustomLists"]).TryRemove(SelectedCustomList.Key, out Obj);
+                CustomLists.TryRemove(SelectedCustomList.Key, out Obj);
             }
         }
 

@@ -41,32 +41,51 @@
                          Header="Navigation">
                 <Grid>
                     <Grid.RowDefinitions>
-                        
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition /> <!--7 rows-->
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition /> <!--9 rows-->
                     </Grid.RowDefinitions>
+                    <TextBlock Text="Custom Lists"
+                               Style="{StaticResource HeaderStyle}"
+                               Grid.Row="0" />
                     <TextBlock Text="List Name"
                                Style="{StaticResource TextBlockFormStyle}"
-                               Grid.Row="0" />
+                               Grid.Row="1" />
                     <dxe:TextEdit Style="{StaticResource  SlimTextEditFormStyle}"
                                   Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                                  Grid.Row="1"/>
+                                  Grid.Row="2"/>
                    <TextBlock Text="List Value Type"
                                Style="{StaticResource TextBlockFormStyle}"
-                               Grid.Row="2" />
+                               Grid.Row="3" />
                     <ComboBox Style="{StaticResource ComboBoxFormStyle}"
                               ItemsSource="{Binding DataContext.ValTypes.Primatives,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                               DisplayMemberPath="Name"
-                              Grid.Row="3"
+                              Grid.Row="4"
                               SelectedItem="{Binding DataContext.ListType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
 
                     <StackPanel Orientation="Horizontal"
-                                Grid.Row="4" Margin="2,6"
+                                Grid.Row="5">
+                        <TextBlock Text="Nullable"
+                                   Style="{StaticResource TextBlockFormStyle}" 
+                                   Margin="2,0,6,0"
+                                   />
+                        <dxe:CheckEdit IsChecked="{Binding DataContext.ListType.Nullable,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" 
+                                   Grid.Row="5" />
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding DataContext.ListNameValidation,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                               Style="{StaticResource TextBlockFormStyleValidation}"
+                               Grid.Row="6" />
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="7" Margin="2,6"
                                 HorizontalAlignment="Right">
                         <Button Content="Add" Style="{StaticResource SlimButtonStyle}"
                                 Command="{Binding DataContext.AddCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
@@ -77,16 +96,16 @@
 
                     <TextBlock Text="Custom Lists"
                                Style="{StaticResource TextBlockFormStyle}"
-                               Grid.Row="5" />
+                               Grid.Row="8" />
                     <ListView ItemsSource="{Binding DataContext.CustomLists.ItemList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                              Grid.Row="6"
+                              Grid.Row="9"
                               Margin="2,6"
                               SelectedItem="{Binding DataContext.SelectedCustomList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView},Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Key}"
-                                               Style="{StaticResource TextBlockFormStyle}"
+                                               Style="{StaticResource  TextBlockFormStyle}"
                                                KeyboardNavigation.IsTabStop="False" />
                                 </StackPanel>
                             </DataTemplate>
@@ -101,7 +120,9 @@
                          TitleVisibility="Collapsed"                         
                          Header="Content">
                 <ContentControl Content="{Binding DataContext.SelectedCustomList.Value,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                                ContentTemplate="{StaticResource CustomListTemplate}" />
+                                ContentTemplate="{StaticResource CustomListTemplate}"
+                                Visibility="{Binding DataContext.HasSelectedList,Converter={StaticResource b2Vis},RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                />
                 
             </lc:GroupBox>
         </lc:DockLayoutControl>

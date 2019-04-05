@@ -10,6 +10,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 
 namespace DataInterface
 {
@@ -24,7 +25,7 @@ namespace DataInterface
     /// <typeparam name="T1"> Key For Dictionary</typeparam>
     /// <typeparam name="T2"> Valye Type for dictionary</typeparam>
     [Serializable]
-    public class ObservableConcurrentDictionary<T1, T2> : ConcurrentDictionary<T1, T2>
+    public class ObservableConcurrentDictionary<T1, T2> : ConcurrentDictionary<T1, T2>, INotifyPropertyChanged
     {
 
         #region Events / Delegates
@@ -249,10 +250,47 @@ namespace DataInterface
                 _ItemList.Clear();
                 _ItemList = new ObservableCollection<KeyValuePair<T1,T2>>(this.ToList());            
                 _ROItemList = new ReadOnlyObservableCollection<KeyValuePair<T1, T2>>(_ItemList);
+                OnPropertyChanged("ItemList");
             }
         }
         #endregion
+        #region NotifyPropertyChanged
+        [field: NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        [field: NonSerialized]
+        private readonly Dictionary<string, object> _propertyBackingDictionary = new Dictionary<string, object>();
+
+        protected T GetPropertyValue<T>([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == null) throw new ArgumentNullException("propertyName");
+
+            object value;
+            if (_propertyBackingDictionary.TryGetValue(propertyName, out value))
+            {
+                return (T)value;
+            }
+
+            return default(T);
+        }
+
+        protected bool SetPropertyValue<T>(T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == null) throw new ArgumentNullException("propertyName");
+
+            if (EqualityComparer<T>.Default.Equals(newValue, GetPropertyValue<T>(propertyName))) return false;
+
+            _propertyBackingDictionary[propertyName] = newValue;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        #endregion     
     }
 
     public class DictionaryChangedEventArgs<T1,T2>

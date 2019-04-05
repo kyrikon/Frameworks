@@ -28,7 +28,10 @@ namespace DataInterface
             Items = new ObservableConcurrentDictionary<string, object>();
             AddListItemCmd = new DelegateCommand((x) => AddItem(x));
             Items.DictionaryChanged += Items_DictionaryChanged;
+            Items.PropertyChanged += Items_PropertyChanged;
         }
+
+        
 
 
         #endregion
@@ -107,11 +110,11 @@ namespace DataInterface
                 SelectionChangedEvent?.Invoke(this, new ListSelectionChangedEventArgs(OldValue, value));
             }
         }
-        public string DefaultKey
+        public KeyValuePair<string, object>? DefaultItem
         {
             get
             {
-                return GetPropertyValue<string>();
+                return GetPropertyValue<KeyValuePair<string, object>?>();
             }
             set
             {
@@ -170,12 +173,67 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+
+        [JsonIgnore]
+        public string Validation
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
         #endregion
 
         #region Methods
         public void AddItem(object x)
         {
-            Items.AddOrUpdate(NewKey, NewValue);
+            if (!NewKey.IsFieldRules())
+            {
+                Validation = "Invalid Key Name";
+                return;
+            }
+            if (Items.ContainsKey(NewKey))
+            {
+                Validation = "Key Name Exists";
+                return;
+            }
+            if(NewValue == null)
+            {
+                if (Items.Values.Any(x => x == null))
+                {
+
+                    Validation = "Value Exists";
+                    return;
+                }
+            }
+            else
+            {
+                if (Items.Values.Where(x => x!= null).Any(x => x.Equals(NewValue)))
+                {
+
+                    Validation = "Value Exists";
+                    return;
+                }
+            }
+           
+            if (!ValueType.Nullable && NewValue == null)
+            {
+                Validation = "Value Can't be null";
+                return;
+            }
+            if(NewValue != null && NewValue.GetType().AssemblyQualifiedName != ValueType.AssemblyTypeName)
+            {
+               
+                NewValue = Convert.ChangeType(NewValue, Type.GetType(ValueType.AssemblyTypeName));
+            }
+            if(Items.TryAdd(NewKey, NewValue))
+            {
+                Validation = string.Empty;
+            }
         }
         public void RemoveItem(string Key, object Value)
         {
@@ -189,7 +247,11 @@ namespace DataInterface
         private void Items_DictionaryChanged(object sender, DictionaryChangedEventArgs<string, object> args)
         {
             OnPropertyChanged("SortedItems");
-        } 
+        }
+        private void Items_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("SortedItems");
+        }
         #endregion
 
     }

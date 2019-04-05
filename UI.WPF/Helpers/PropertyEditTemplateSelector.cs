@@ -55,4 +55,34 @@ namespace UI.WPF.Helpers
             return null;
         }
     }
+    public class CustomListTypeTemplateSelector : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            FrameworkElement element = container as FrameworkElement;
+
+            if (element != null && item != null)
+            {
+                ValueTypes _Vtypes = new ValueTypes();
+                CustomList CL = item as CustomList;
+                if (CL != null)
+                {
+                    switch (CL.ValueType.Name)
+                    {
+                        case DataInterface.ValueTypes.Int:
+                            return element.FindResource("IntEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Boolean:
+                            return element.FindResource("BoolEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Decimal:
+                            return element.FindResource("DecEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Text:
+                            return element.FindResource("StringEditTemplate") as DataTemplate;
+                        default:
+                            return element.FindResource("StringEditTemplate") as DataTemplate;
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }

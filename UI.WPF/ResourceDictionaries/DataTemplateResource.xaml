@@ -18,6 +18,8 @@
                     xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
                     xmlns:LocalForms="clr-namespace:UI.WPF.Views.Forms"
                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                    xmlns:DXMVVM="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -32,6 +34,10 @@
     <sys:Double x:Key="HighlightHeight">40</sys:Double>
     <!---->
      <LocalHelpers:PropertyEditTemplateSelector x:Key="PropertyTemplate" />
+     <LocalHelpers:CustomListTypeTemplateSelector x:Key="CustomListTypeTemplate" />
+     <DXMVVM:BooleanToVisibilityConverter x:Key="b2Vis"/>
+     <DXMVVM:BooleanToVisibilityConverter x:Key="b2VisNeg" Inverse="True" />
+     <DXMVVM:BooleanNegationConverter x:Key="NegBoolCvrt"/>
     
     <!--#region Settings DT Styles-->
     <DataTemplate x:Key="LocalFileTemplate">
@@ -195,16 +201,27 @@
     <!---->
     <!-- Editor DataTemplates-->
     <DataTemplate x:Key="StringEditTemplate">
-        <dxe:TextEdit EditValue="{Binding Path=Value}"
-                       Style="{StaticResource TextEditFormStyle}" />
+        <dxe:TextEdit EditValue="{Binding Path=NewValue}"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
     </DataTemplate>
     <DataTemplate x:Key="IntEditTemplate">
         <dxe:TextEdit  Mask="D0"
                        MaskType="Numeric"
                        MaskUseAsDisplayFormat="True"
-                       EditValue="{Binding  Path=Value}"
+                       EditValue="{Binding  Path=NewValue}"
                        HorizontalContentAlignment="Right"
-                       Style="{StaticResource TextEditFormStyle}" />
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DecEditTemplate">
+        <dxe:TextEdit  Mask="D20"
+                       MaskType="Numeric"
+                       MaskUseAsDisplayFormat="True"
+                       EditValue="{Binding  Path=NewValue}"
+                       HorizontalContentAlignment="Right"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="BoolEditTemplate">
+        <dxe:CheckEdit IsChecked="{Binding  Path=NewValue}"/>
     </DataTemplate>
     <!---->
     <!-- Root PageView-->
@@ -331,7 +348,7 @@
     <DataTemplate x:Key="CustomListTemplate"
                   DataType="{x:Type DataCnt:CustomList}">
 
-        <Grid HorizontalAlignment="Left">
+        <Grid HorizontalAlignment="Left" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -350,49 +367,40 @@
                 <!--14 rows-->
             </Grid.RowDefinitions>
             <TextBlock Text="List Details" Grid.Row="0"
-                       Style="{StaticResource HeaderStyle}" />
-            <TextBlock Text="Value Type"
+                       Style="{StaticResource HeaderStyle}" Margin="0,0,0,6" />
+            <TextBlock Text="{Binding ValueType.Name, StringFormat={}Value Type is {0}}"
                        Grid.Row="1"
                        Style="{StaticResource  TextBlockFormStyle}" />
-            <TextBlock Text="{Binding ValueType.Name}"
+
+            <TextBlock Text="{Binding ValueType.Nullable, StringFormat={}Value Nullable is {0}}"
                        Grid.Row="2"
-                       Style="{StaticResource  TextBlockFormStyle}" />
-            <TextBlock Text="Sort By Value"
-                       Grid.Row="3"
-                       Style="{StaticResource  TextBlockFormStyle}" />
-            <CheckBox IsChecked="{Binding SortByValue}"
-                      Grid.Row="4" />
+                       Style="{StaticResource TextBlockFormStyle}"
+                       Margin="0,0,0,6" />
             
-            <TextBlock Text="New Key"
-                       Grid.Row="5"
-                       Style="{StaticResource  TextBlockFormStyle}" />
-            <dxe:TextEdit Text="{Binding NewKey}"
-                          Style="{StaticResource SlimTextEditFormStyle}"
-                          Grid.Row="6"
-                          MaxWidth="350" />
-
-            <TextBlock Text="New Value"
-                       Grid.Row="7"
-                       Style="{StaticResource  TextBlockFormStyle}" />
-
-            <dxe:TextEdit Text="{Binding NewValue}"
-                     MaxWidth="350"
-                         
-                          Style="{StaticResource SlimTextEditFormStyle}"
-                          Grid.Row="8" />
-            <Button Content="Add"
-                    Command="{Binding AddListItemCmd}"
-                    Grid.Row="9" Style="{StaticResource SlimButtonStyle}" />
-
-            
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Sort By Value"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Style="{StaticResource  TextBlockFormStyle}" />
+                <CheckBox IsChecked="{Binding SortByValue}"
+                          HorizontalAlignment="Right"
+                          Margin="0,0,200,0"
+                          Grid.Column="1" />
+            </Grid>
+            <!--End NEW ITEM-->
             <TextBlock Text="Items"
                        Style="{StaticResource  TextBlockFormStyle}"
-                       Grid.Row="10" />
-            
+                       Grid.Row="4" />
             <dxg:GridControl ItemsSource="{Binding Items.ItemList}"
                              HorizontalAlignment="Left"                            
                              AutoGenerateColumns="None"    
-                             Grid.Row="11"
+                             Margin="2,6"
+                             Width="400"
+                             Grid.Row="5"
                              MaxHeight="600"                            
                              FontSize="{StaticResource BdySize}">
                 <dxg:GridControl.Columns>
@@ -405,15 +413,59 @@
                 </dxg:GridControl.View>
             </dxg:GridControl>
            
-            <TextBlock Text="Result"
-                       Grid.Row="12"
+            <TextBlock Text="Default Value"
+                       Grid.Row="6"
                        Style="{StaticResource  TextBlockFormStyle}" />
             <ComboBox Style="{StaticResource ComboBoxFormStyle}"
                       MaxWidth="350"
-                      Grid.Row="13"
+                      Grid.Row="7"
                       ItemsSource="{Binding SortedItems}"
                       DisplayMemberPath="Key"
-                      SelectedValue="{Binding SelectedItem}" />
+                      SelectedValue="{Binding DefaultItem,Mode=TwoWay}" />
+            <!--NEW ITEM-->
+            <lc:GroupBox ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
+                         TitleVisibility="Visible"
+                         DisplayMode="Light"
+                         Grid.Row="8"
+                         Margin="0,12,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Stretch"
+                         Header="New Item">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Key"
+                               Grid.Row="0"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <dxe:TextEdit Text="{Binding NewKey}"
+                                  Style="{StaticResource SlimTextEditFormStyle}"
+                                  Grid.Row="1"
+                                  MaxWidth="350" />
+                    <TextBlock Text="Value"
+                               Grid.Row="2"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplateSelector="{StaticResource CustomListTypeTemplate}"
+                                    Grid.Row="3" />
+                    <Button Content="Add"
+                            Command="{Binding AddListItemCmd}"
+                            Margin="0,12,200,0"
+                            Grid.Row="4"
+                            Style="{StaticResource SlimButtonStyle}" />
+                    <TextBlock Text="{Binding Validation}"
+                               Grid.Row="5"
+                               Style="{StaticResource TextBlockFormStyleValidation}" />
+                </Grid>
+
+            </lc:GroupBox>
         </Grid>
     </DataTemplate>
     <!---->

@@ -90,6 +90,8 @@ namespace DataInterface
         {
             return this.FirstOrDefault(x => x.Value.AssemblyTypeName.Equals(Lookup.GetType().AssemblyQualifiedName)).Key;
         }
+   
+
         public List<ValueType> Primatives
         {
             get
