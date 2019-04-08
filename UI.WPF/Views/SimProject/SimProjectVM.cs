@@ -469,7 +469,7 @@ namespace UI.WPF.Views.SimProject
                 ListNameValidation = "Invalid Name";
                 return;
             }            
-            KeyValuePair<string, CustomList> TmpList = new KeyValuePair<string, CustomList>(NewCustomListName, new CustomList() { ValueType = ListType });
+            KeyValuePair<string, CustomList> TmpList = new KeyValuePair<string, CustomList>(NewCustomListName, new CustomList() { Name = NewCustomListName, ValueType = ListType });
             if (CustomLists.TryAdd(TmpList))
             {
                 SelectedCustomList = TmpList;

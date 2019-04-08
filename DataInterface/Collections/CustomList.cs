@@ -30,10 +30,7 @@ namespace DataInterface
             Items.DictionaryChanged += Items_DictionaryChanged;
             Items.PropertyChanged += Items_PropertyChanged;
         }
-
-        
-
-
+       
         #endregion
         #region Commands        
         [JsonIgnore]
@@ -191,6 +188,7 @@ namespace DataInterface
         #region Methods
         public void AddItem(object x)
         {
+            object _TmpNewVal = new object();
             if (!NewKey.IsFieldRules())
             {
                 Validation = "Invalid Key Name";
@@ -203,10 +201,9 @@ namespace DataInterface
             }
             if(NewValue == null)
             {
-                if (Items.Values.Any(x => x == null))
+                if (Items.Values.Any(x =>  x.CheckNullValRef()))
                 {
-
-                    Validation = "Value Exists";
+                    Validation = "Null Value Exists";
                     return;
                 }
             }
@@ -214,7 +211,6 @@ namespace DataInterface
             {
                 if (Items.Values.Where(x => x!= null).Any(x => x.Equals(NewValue)))
                 {
-
                     Validation = "Value Exists";
                     return;
                 }
@@ -226,11 +222,19 @@ namespace DataInterface
                 return;
             }
             if(NewValue != null && NewValue.GetType().AssemblyQualifiedName != ValueType.AssemblyTypeName)
-            {
-               
+            {               
                 NewValue = Convert.ChangeType(NewValue, Type.GetType(ValueType.AssemblyTypeName));
             }
-            if(Items.TryAdd(NewKey, NewValue))
+            if(NewValue == null)
+            {
+                _TmpNewVal = Core.Models.NullValueRef.NullRefVal();
+            }
+            else
+            {
+                _TmpNewVal = NewValue;
+
+            }
+            if(Items.TryAdd(NewKey, _TmpNewVal))
             {
                 Validation = string.Empty;
             }

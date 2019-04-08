@@ -17,7 +17,7 @@ namespace Core.Extensions
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(myObject, Formatting.Indented, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Include,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.All
             });

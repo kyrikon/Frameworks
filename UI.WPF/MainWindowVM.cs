@@ -57,7 +57,7 @@ namespace UI.WPF
             GlobalLogging.Instance.ProgressValChanged += Instance_ProgressValChanged;
             GlobalLogging.Instance.MaxProgressValChanged += Instance_MaxProgressValChanged;
             GlobalLogging.Instance.BarStyleChanged += Instance_BarStyleChanged;
-            GlobalLogging.Instance.ShowProgressChanged += Instance_ShowProgressChanged; ;
+            GlobalLogging.Instance.ShowProgressChanged += Instance_ShowProgressChanged;
 
             // set global Context to this
 
