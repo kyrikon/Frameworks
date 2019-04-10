@@ -17,7 +17,7 @@ namespace UI.WPF.Helpers
             {
                 HDynamicObject TreeItem =  ((LightweightCellEditor)container).RowData.Row as HDynamicObject;
 
-                if (TreeItem.IsContainer) //container objects
+                if (TreeItem != null && TreeItem.IsContainer) //container objects
                 {
                     if (TreeItem.IsExpanded && TreeItem.Children.Any())
                     {

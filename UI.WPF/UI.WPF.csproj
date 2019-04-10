@@ -207,13 +207,23 @@
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\HierarchyFactory.cs" />
-    <Compile Include="Models\UIHKeyDictionary.cs" />
-    <Compile Include="Models\UIObservableConcurrentDictionary.cs" />
     <Compile Include="ResourceDictionaries\BrushResource.xaml.cs">
       <DependentUpon>BrushResource.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResourceDictionaries\DataTemplateResource.xaml.cs">
-      <DependentUpon>DataTemplateResource.xaml</DependentUpon>
+    <Compile Include="ResourceDictionaries\DataTemplates\CustomListsDataTemplates.xaml.cs">
+      <DependentUpon>CustomListsDataTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDictionaries\DataTemplates\DataSourceDataTemplates.xaml.cs">
+      <DependentUpon>DataSourceDataTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDictionaries\DataTemplates\TreeDataTemplates.xaml.cs">
+      <DependentUpon>TreeDataTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDictionaries\DataTemplates\EditorDataTemplates.xaml.cs">
+      <DependentUpon>EditorDataTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceDictionaries\DataTemplates\ContainerResources.xaml.cs">
+      <DependentUpon>ContainerResources.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResourceDictionaries\StyleResource.xaml.cs">
       <DependentUpon>StyleResource.xaml</DependentUpon>
@@ -224,6 +234,9 @@
       <DependentUpon>ConnectionBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
+    <Compile Include="Views\Forms\CustomListsForm.xaml.cs">
+      <DependentUpon>CustomListsForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Forms\PageViewContainer.xaml.cs">
       <DependentUpon>PageViewContainer.xaml</DependentUpon>
     </Compile>
@@ -275,7 +288,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResourceDictionaries\DataTemplateResource.xaml">
+    <Page Include="ResourceDictionaries\DataTemplates\CustomListsDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionaries\DataTemplates\DataSourceDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionaries\DataTemplates\TreeDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionaries\DataTemplates\EditorDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionaries\DataTemplates\ContainerResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -284,6 +313,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConnectionBar\ConnectionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Forms\CustomListsForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

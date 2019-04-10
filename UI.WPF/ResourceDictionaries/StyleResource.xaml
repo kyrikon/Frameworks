@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="using:UI.WPF.ResourceDictionaries"
+                    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                    xmlns:DXMVVM="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
                     x:Class="UI.WPF.ResourceDictionaries.StyleResource"
                     x:ClassModifier="public"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     mc:Ignorable="d">
 
     <!--#region Constants -->
@@ -16,10 +17,21 @@
     <sys:Double x:Key="BdySize">12</sys:Double>
     <sys:Double x:Key="ButtonHeight">48</sys:Double>
     <sys:Double x:Key="ButtonWidth">96</sys:Double>
+    <sys:Double x:Key="SlimButtonHeight">24</sys:Double>
+    <sys:Double x:Key="SlimButtonWidth">72</sys:Double>
     <sys:Double x:Key="FormSize">14</sys:Double>
     <sys:Double x:Key="FormLabelSize">16</sys:Double>
-    <!---->
-    
+    <sys:Double x:Key="InputMinWidth">200</sys:Double>
+    <!--#endregion-->
+
+    <!--#region Helpers and Converters -->
+     <LocalHelpers:PropertyEditTemplateSelector x:Key="PropertyTemplate" />
+     <LocalHelpers:CustomListTypeTemplateSelector x:Key="CustomListTypeTemplate" />
+     <DXMVVM:BooleanToVisibilityConverter x:Key="b2Vis"/>
+     <DXMVVM:BooleanToVisibilityConverter x:Key="b2VisNeg" Inverse="True" />
+     <DXMVVM:BooleanNegationConverter x:Key="NegBoolCvrt" />
+    <!--#endregion-->
+
     <!--Load indicator style keys
     <Style x:Key="LoadingIndicatorArcsStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorArcsStyleKey}"/>
     <Style x:Key="LoadingIndicatorArcsRingStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorArcsRingStyleKey}"/>
@@ -31,7 +43,10 @@
     <Style x:Key="LoadingIndicatorWaveStyle" TargetType="{x:Type controls:LoadingIndicator}" BasedOn="{StaticResource LoadingIndicatorWaveStyleKey}"/>
     
     -->
+    
     <!--#region Control Styles-->
+   
+    <!--#region Windows -->
     <Style TargetType="{x:Type Window}">
         <Setter Property="FontSize"
                 Value="12" />
@@ -40,46 +55,51 @@
     <Setter Property="FontSize"
             Value="12" />
     </Style>
+    <!--#endregion-->
 
+    <!--#region TextBlock -->
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily"
                 Value="SegoeUI" />
         <Setter Property="FontSize"
                 Value="{StaticResource BdySize}" />
     </Style>
-    
     <Style x:Key="HeaderStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize"
                 Value="{StaticResource HOneSize}" />
     </Style>
-    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockFormStyle">
+    <Style TargetType="{x:Type TextBlock}"
+           x:Key="TextBlockFormStyle">
         <Setter Property="FontFamily"
                 Value="SegoeUI" />
         <Setter Property="FontSize"
-                Value="{StaticResource FormLabelSize}"/>
+                Value="{StaticResource FormLabelSize}" />
         <Setter Property="HorizontalAlignment"
-                Value="Left"/>
+                Value="Left" />
         <Setter Property="VerticalAlignment"
-                Value="Center"/>
+                Value="Center" />
         <Setter Property="Margin"
-                Value="2,6"/>
+                Value="2,6" />
     </Style>
-    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockFormStyleValidation">
+    <Style TargetType="{x:Type TextBlock}"
+           x:Key="TextBlockFormStyleValidation">
         <Setter Property="FontFamily"
                 Value="SegoeUI" />
         <Setter Property="FontSize"
-                Value="{StaticResource FormLabelSize}"/>
+                Value="{StaticResource FormLabelSize}" />
         <Setter Property="HorizontalAlignment"
-                Value="Left"/>
+                Value="Left" />
         <Setter Property="Foreground"
-                Value="{StaticResource LightRedFormHighlight}"/>
+                Value="{StaticResource LightRedFormHighlight}" />
         <Setter Property="VerticalAlignment"
-                Value="Center"/>
+                Value="Center" />
         <Setter Property="Margin"
-                Value="2,6"/>
+                Value="2,6" />
     </Style>
+    <!--#endregion-->
     
+    <!--#region Button -->
     <Style TargetType="{x:Type Button}">
         <Setter Property="FontSize"
                 Value="{StaticResource BdySize}" />
@@ -94,7 +114,8 @@
         <Setter Property="BorderBrush"
                 Value="{StaticResource ButtonBorder}" />
     </Style>
-    <Style TargetType="{x:Type Button}" x:Key="FormButtonStyle">
+    <Style TargetType="{x:Type Button}"
+           x:Key="FormButtonStyle">
         <Setter Property="FontSize"
                 Value="{StaticResource FormSize}" />
         <Setter Property="Background"
@@ -105,13 +126,107 @@
                 Value="{StaticResource ButtonWidth}" />
         <Setter Property="BorderThickness"
                 Value="1" />
-        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="HorizontalAlignment"
+                Value="Right" />
         <Setter Property="Margin"
                 Value="2" />
         <Setter Property="BorderBrush"
                 Value="{StaticResource ButtonBorder}" />
     </Style>
+    <Style TargetType="{x:Type Button}"
+           x:Key="SlimButtonStyle">
+        <Setter Property="FontSize"
+                Value="{StaticResource BdySize}" />
+        <Setter Property="Background"
+                Value="{StaticResource ButtonBgCol}" />
+        <Setter Property="Height"
+                Value="{StaticResource SlimButtonHeight}" />
+        <Setter Property="MinWidth"
+                Value="{StaticResource SlimButtonWidth}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="HorizontalAlignment"
+                Value="Right" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource ButtonBorder}" />
+    </Style>
+    <!--#endregion-->
     
+    <!--#region TextBox / TextEdit -->
+    <Style TargetType="{x:Type TextBox}"
+           x:Key="TextBoxFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="30" />
+        <Setter Property="MaxWidth"
+                Value="350" />
+        <Setter Property="FontSize"
+                Value="{StaticResource FormSize}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}"
+           x:Key="TextEditFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="30" />
+        <Setter Property="FontSize"
+                Value="{StaticResource FormSize}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}"
+           x:Key="SlimTextEditFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="Height"
+                Value="24" />
+        <Setter Property="FontSize"
+                Value="{StaticResource BdySize}" />
+        <Setter Property="MinWidth"
+                Value="{StaticResource InputMinWidth}" />
+        <Setter Property="HorizontalAlignment"
+                Value="Left" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}"
+           x:Key="MultiLineTextEditFormStyle">
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="AcceptsReturn"
+                Value="True" />
+        <Setter Property="Height"
+                Value="90" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="FontSize"
+                Value="{StaticResource FormSize}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Top" />
+        <Setter Property="TextWrapping"
+                Value="Wrap" />
+        <Setter Property="VerticalScrollBarVisibility"
+                Value="Auto" />
+    </Style>
+    <!--#endregion-->
+    <!--#region LogIn -->
     <Style x:Key="LoginSeparatorStyle"
            TargetType="{x:Type Separator}">
         <Setter Property="Background"
@@ -132,76 +247,29 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type TextBox}"
-           x:Key="TextBoxFormStyle">
-        <Setter Property="Margin"
-                Value="2" />
-        <Setter Property="Height"
-                Value="30"/>
-        <Setter Property="MaxWidth"
-                Value="350" />
-        <Setter Property="FontSize"                
-                Value="{StaticResource FormSize}" />
-        <Setter Property="HorizontalAlignment"
-                Value="Stretch"/>
-        <Setter Property="VerticalAlignment"
-                Value="Center"/>
-        <Setter Property="VerticalContentAlignment"
-                Value="Center"/>
-    </Style>
-    <Style TargetType="{x:Type dxe:TextEdit}"
-           x:Key="TextEditFormStyle">
-        <Setter Property="Margin"
-                Value="2" />
-        <Setter Property="Height"
-                Value="30" />
-        <Setter Property="MaxWidth"
-                Value="350" />
-        <Setter Property="FontSize"
-                Value="{StaticResource FormSize}" />
-        <Setter Property="HorizontalAlignment"
-                Value="Stretch" />
-        <Setter Property="VerticalAlignment"
-                Value="Center" />
-        <Setter Property="VerticalContentAlignment"
-                Value="Center" />
-    </Style>
-    <Style TargetType="{x:Type dxe:TextEdit}"
-           x:Key="MultiLineTextEditFormStyle">
-        <Setter Property="Margin"
-                Value="2" />
-        <Setter Property="AcceptsReturn"
-                Value="True" />
-        <Setter Property="Height"
-                Value="90" />
-        <Setter Property="MaxWidth"
-                Value="350" />
-        <Setter Property="FontSize"
-                Value="{StaticResource FormSize}" />
-        <Setter Property="HorizontalContentAlignment"
-                Value="Left" />
-        <Setter Property="VerticalContentAlignment"
-                Value="Top" />
-        <Setter Property="TextWrapping"
-                Value="Wrap" />
-        <Setter Property="VerticalScrollBarVisibility"
-                Value="Auto" />
-    </Style>
-    <Style TargetType="{x:Type ComboBox}"  x:Key="ComboBoxFormStyle">
+    <!--#endregion-->
+    
+    <!--#region Combobox -->
+    <Style TargetType="{x:Type ComboBox}"
+           x:Key="ComboBoxFormStyle">
         <Setter Property="Padding"
                 Value="2" />
         <Setter Property="Margin"
                 Value="2" />
-        <Setter Property="FontSize"                
+        <Setter Property="FontSize"
                 Value="{StaticResource FormSize}" />
         <Setter Property="HorizontalAlignment"
-                Value="Stretch"/>
+                Value="Left" />
+        <Setter Property="MinWidth"
+                Value="{StaticResource InputMinWidth}" />
         <Setter Property="VerticalAlignment"
-                Value="Center"/>
+                Value="Center" />
         <Setter Property="Height"
-                Value="30"/>
+                Value="30" />
     </Style>
-   
+    <!--#endregion-->
+
+    <!--#region layout -->
     <Style TargetType="{x:Type lc:LayoutItemLabel}"
            x:Key="LabelFormStyle">
         <Setter Property="Padding"
@@ -216,25 +284,27 @@
                 Value="Center" />
         <Setter Property="Height"
                 Value="30" />
-    </Style>
-    <Style TargetType="{x:Type lc:LayoutItem}"
-           x:Key="LayoutItemFormStyle">
-        <Setter Property="Padding"
-                Value="2" />
-        <Setter Property="Margin"
-                Value="2" />
-       
-        <Setter Property="FontSize"
-                Value="{StaticResource HOneSize}" />
-        <Setter Property="HorizontalAlignment"
-                Value="Stretch" />
-        <Setter Property="VerticalAlignment"
-                Value="Center" />
-        <Setter Property="Height"
-                Value="30" />
-    </Style> 
+        </Style>
+        <Style TargetType="{x:Type lc:LayoutItem}"
+               x:Key="LayoutItemFormStyle">
+            <Setter Property="Padding"
+                    Value="2" />
+            <Setter Property="Margin"
+                    Value="2" />
+
+            <Setter Property="FontSize"
+                    Value="{StaticResource HOneSize}" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Stretch" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Height"
+                    Value="30" />
+        </Style>
+        <!--#endregion-->
+
+
     <!--#endregion-->
 
    
-    
 </ResourceDictionary>

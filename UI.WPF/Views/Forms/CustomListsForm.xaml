@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="UI.WPF.Views.Forms.CustomListForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:local="clr-namespace:UI.WPF.Views.SimProject"
+             xmlns:DS="clr-namespace:DataSource;assembly=DataSource"
+             xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+             xmlns:MUExt="clr-namespace:UI.WPF.Extensions"
+             xmlns:LocalHelpers="clr-namespace:UI.WPF.Helpers"
+             xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             mc:Ignorable="d"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             MinWidth="300"
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             HorizontalContentAlignment="Stretch"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <sys:String x:Key="RegexpNameRule">^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$</sys:String>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <lc:DockLayoutControl AllowItemSizing="True">
+            <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                         lc:DockLayoutControl.Dock="Left"
+                         ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
+                         TitleVisibility="Collapsed"
+                         DisplayMode="Light"
+                         Width="300"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Header="Navigation">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition /> <!--9 rows-->
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Custom Lists"
+                               Style="{StaticResource HeaderStyle}"
+                               Grid.Row="0" />
+                    <TextBlock Text="List Name"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Grid.Row="1" />
+                    <dxe:TextEdit Style="{StaticResource  SlimTextEditFormStyle}"
+                                  MaskType="RegEx"
+                                 MaskUseAsDisplayFormat="True"
+                                  Mask="[a-zA-Z]\w*[a-zA-Z0-9]"
+                                  Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                  Grid.Row="2"/>
+                   <TextBlock Text="List Value Type"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Grid.Row="3" />
+                    <ComboBox Style="{StaticResource ComboBoxFormStyle}"
+                              ItemsSource="{Binding DataContext.ValTypes.Primatives,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                              DisplayMemberPath="Name"
+                              Grid.Row="4"
+                              SelectedItem="{Binding DataContext.ListType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="5">
+                        <TextBlock Text="Nullable"
+                                   Style="{StaticResource TextBlockFormStyle}" 
+                                   Margin="2,0,6,0"
+                                   />
+                        <dxe:CheckEdit IsChecked="{Binding DataContext.ListType.Nullable,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" 
+                                   Grid.Row="5" />
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding DataContext.ListNameValidation,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                               Style="{StaticResource TextBlockFormStyleValidation}"
+                               Grid.Row="6" />
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="7" Margin="2,6"
+                                HorizontalAlignment="Right">
+                        <Button Content="Add" Style="{StaticResource SlimButtonStyle}"
+                                Command="{Binding DataContext.AddCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                        <Button Content="remove"
+                                Style="{StaticResource SlimButtonStyle}"
+                                Command="{Binding DataContext.RemoveCustomListItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
+                    </StackPanel>
+
+                    <TextBlock Text="Custom Lists"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Grid.Row="8" />
+                    <ListView ItemsSource="{Binding DataContext.CustomLists.ItemList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                              Grid.Row="9"
+                              Margin="2,6"
+                              SelectedItem="{Binding DataContext.SelectedCustomList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView},Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Key}"
+                                               Style="{StaticResource  TextBlockFormStyle}"
+                                               KeyboardNavigation.IsTabStop="False" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+                
+            </lc:GroupBox>
+            <lc:GroupBox lc:DockLayoutControl.AllowHorizontalSizing="True"
+                         lc:DockLayoutControl.Dock="Client"
+                         DisplayMode="Light"
+                         TitleVisibility="Collapsed"                         
+                         Header="Content">
+                <ContentControl Content="{Binding DataContext.SelectedCustomList.Value,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                ContentTemplate="{StaticResource CustomListTemplate}"
+                                Visibility="{Binding DataContext.HasSelectedList,Converter={StaticResource b2Vis},RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                                />
+                
+            </lc:GroupBox>
+        </lc:DockLayoutControl>
+        
+    </Grid>
+</UserControl>

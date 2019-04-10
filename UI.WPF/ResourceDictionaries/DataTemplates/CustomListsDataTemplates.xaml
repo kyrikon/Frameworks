@@ -1,0 +1,146 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
+                    x:Class="UI.WPF.ResourceDictionaries.CustomListsDataTemplates"
+                    x:ClassModifier="public"
+                    mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ResourceDictionaries/StyleResource.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--#region CustomList DataTemplates-->
+    <DataTemplate x:Key="CustomListTemplate"
+                  DataType="{x:Type DataCnt:CustomList}">
+        <Grid HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <!--14 rows-->
+            </Grid.RowDefinitions>
+            <TextBlock Text="List Details"
+                       Grid.Row="0"
+                       Style="{StaticResource HeaderStyle}"
+                       Margin="0,0,0,6" />
+            <TextBlock Text="{Binding ValueType.Name, StringFormat={}Value Type is {0}}"
+                       Grid.Row="1"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+
+            <TextBlock Text="{Binding ValueType.Nullable, StringFormat={}Value Nullable is {0}}"
+                       Grid.Row="2"
+                       Style="{StaticResource TextBlockFormStyle}"
+                       Margin="0,0,0,6" />
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Sort By Value"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Style="{StaticResource  TextBlockFormStyle}" />
+                <CheckBox IsChecked="{Binding SortByValue}"
+                          HorizontalAlignment="Right"
+                          Margin="0,0,200,0"
+                          Grid.Column="1" />
+            </Grid>
+            <TextBlock Text="Items"
+                       Style="{StaticResource  TextBlockFormStyle}"
+                       Grid.Row="4" />
+            <dxg:GridControl ItemsSource="{Binding Items.ItemList}"
+                             HorizontalAlignment="Left"
+                             AutoGenerateColumns="None"
+                             Margin="2,6"
+                             Width="400"
+                             Grid.Row="5"
+                             MaxHeight="600"
+                             FontSize="{StaticResource BdySize}">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="Key" />
+                    <dxg:GridColumn FieldName="Value"
+                                    Width="*" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView  ShowGroupPanel="False" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+
+            <TextBlock Text="Default Value"
+                       Grid.Row="6"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <ComboBox Style="{StaticResource ComboBoxFormStyle}"
+                      MaxWidth="350"
+                      Grid.Row="7"
+                      ItemsSource="{Binding SortedItems}"
+                      DisplayMemberPath="Key"
+                      SelectedValue="{Binding DefaultItem,Mode=TwoWay}" />
+            
+            <!--#region New Item DataTemplates-->
+            <lc:GroupBox ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
+                         TitleVisibility="Visible"
+                         DisplayMode="Light"
+                         Grid.Row="8"
+                         Margin="0,12,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Stretch"
+                         Header="New Item">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Key"
+                               Grid.Row="0"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <dxe:TextEdit Text="{Binding NewKey}"
+                                  Style="{StaticResource SlimTextEditFormStyle}"
+                                  Grid.Row="1"
+                                  MaxWidth="350" />
+                    <TextBlock Text="Value"
+                               Grid.Row="2"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplateSelector="{StaticResource CustomListTypeTemplate}"
+                                    Grid.Row="3" />
+                    <Button Content="Add"
+                            Command="{Binding AddListItemCmd}"
+                            Margin="0,12,200,0"
+                            Grid.Row="4"
+                            Style="{StaticResource SlimButtonStyle}" />
+                    <TextBlock Text="{Binding Validation}"
+                               Grid.Row="5"
+                               Style="{StaticResource TextBlockFormStyleValidation}" />
+                </Grid>
+
+            </lc:GroupBox>
+            <!--#endregion-->
+        </Grid>
+    </DataTemplate>
+    <!--#endregion-->
+
+
+
+</ResourceDictionary>

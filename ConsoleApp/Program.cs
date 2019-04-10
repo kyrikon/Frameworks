@@ -17,25 +17,64 @@ namespace Testingconsoleapp
         static async Task Main(string[] args)
         {
 
-            HDynamicObject TestSerial = new HDynamicObject();
 
-            DynamicObjectTemplate dmo = new DynamicObjectTemplate();
-            dmo.ValueType = DataInterface.ValueType.Text;          
-            StrValidationRules IRule = (StrValidationRules)dmo.Validator.Rules;          
+            string test = "A";
+
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "1AC";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "A 1C ";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "A 1C";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "1_AC";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "_AC";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "AC_";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "AC1";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "ab-cde";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "ab_c1";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "12";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
+            test = "abcd";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+            test = "abc ";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+            test = "ab cds";
+            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+
+            HDynamicObject TestSerial = new HDynamicObject();
+            ValueTypes VT = new ValueTypes();
+
+            FieldTemplate NewField = new FieldTemplate(VT[ValueTypes.Text]);                    
+            StrValidationRules IRule = (StrValidationRules)NewField.Validator.Rules;          
             IRule.MinLength = null;
 
-            IRule.RegExpPattern = @"^[a-zA-Z]+$";
-            IRule.MaxLength = 4;
-            dmo.DefaultValue = "A";
-            dmo.DefaultValue = "AC";
-            dmo.DefaultValue = "abc".ToUpper();
-            dmo.DefaultValue = "abc1".ToUpper();
-            dmo.DefaultValue = "12";
+            IRule.RegExpPattern = @"^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$";
+            //Use this Expression for FieldNames
+            // IRule.RegExpPattern = @"^[a-zA-Z]+$"; //^[a-zA-Z][a-zA-Z0-9_]*$
+            NewField.DefaultValue = "A";
+            NewField.DefaultValue = "1AC";
+            NewField.DefaultValue = "A 1C ";
+            NewField.DefaultValue = "AC ";
+            NewField.DefaultValue = "1_AC";
+            NewField.DefaultValue = "_AC";
+            NewField.DefaultValue = "A1_C";
+            NewField.DefaultValue = "AC_";
+            NewField.DefaultValue = "AC1".ToUpper();
+            NewField.DefaultValue = "ab-cde".ToUpper();
+            NewField.DefaultValue = "ab_c1".ToUpper();
+            NewField.DefaultValue = "12";
             IRule.RegExpPattern = null ;
-            dmo.DefaultValue = "45";
-            dmo.DefaultValue = 0;
-            dmo.DefaultValue = "d";
-            dmo.DefaultValue = null;
+            NewField.DefaultValue = "45";
+            NewField.DefaultValue = 0;
+            NewField.DefaultValue = "d";
+            NewField.DefaultValue = null;
 
             //dmo.ValueType = DataInterface.ValueType.Integer;
             //dmo.DefaultValue = 0;

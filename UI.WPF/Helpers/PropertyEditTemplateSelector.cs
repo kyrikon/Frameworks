@@ -7,33 +7,34 @@ namespace UI.WPF.Helpers
 {
     public class PropertyEditTemplateSelector : DataTemplateSelector
     {
-        public override DataTemplate
-            SelectTemplate(object item, DependencyObject container)
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement element = container as FrameworkElement;
 
             if (element != null && item != null)
             {
+                ValueTypes _Vtypes = new ValueTypes();
                 PropertyItem PI = item as PropertyItem;
-                DataInterface.ValueType ConItem = PI.Value.GetType().GetEditor();
-                switch(ConItem)
+                if (PI != null)
                 {
-                    case DataInterface.ValueType.Integer:
-                        return element.FindResource("IntEditTemplate") as DataTemplate;
-                    case DataInterface.ValueType.Text:
-                        return element.FindResource("StringEditTemplate") as DataTemplate;
-                     default:
-                        return   element.FindResource("StringEditTemplate") as DataTemplate;
+                    string ConItem = _Vtypes.GetValueType(PI.Value);
+                    switch (ConItem)
+                    {
+                        case DataInterface.ValueTypes.Int:
+                            return element.FindResource("IntEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Text:
+                            return element.FindResource("StringEditTemplate") as DataTemplate;
+                        default:
+                            return element.FindResource("StringEditTemplate") as DataTemplate;
+                    }
                 }
-               
             }
             return null;
         }
     }
     public class ObjectPageViewTemplateSelector : DataTemplateSelector
     {
-        public override DataTemplate
-            SelectTemplate(object item, DependencyObject container)
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement element = container as FrameworkElement;
 
@@ -50,6 +51,36 @@ namespace UI.WPF.Helpers
                 }
 
                 return element.FindResource("ObjectTemplate") as DataTemplate;
+            }
+            return null;
+        }
+    }
+    public class CustomListTypeTemplateSelector : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            FrameworkElement element = container as FrameworkElement;
+
+            if (element != null && item != null)
+            {
+                ValueTypes _Vtypes = new ValueTypes();
+                CustomList CL = item as CustomList;
+                if (CL != null)
+                {
+                    switch (CL.ValueType.Name)
+                    {
+                        case DataInterface.ValueTypes.Int:
+                            return element.FindResource("IntEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Boolean:
+                            return element.FindResource("BoolEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Decimal:
+                            return element.FindResource("DecEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Text:
+                            return element.FindResource("StringEditTemplate") as DataTemplate;
+                        default:
+                            return element.FindResource("StringEditTemplate") as DataTemplate;
+                    }
+                }
             }
             return null;
         }

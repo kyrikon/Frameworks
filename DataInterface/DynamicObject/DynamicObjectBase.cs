@@ -684,6 +684,11 @@ namespace DataInterface
     }
     public class PropertyItem : NotifyPropertyChanged
     {
+        
+        public PropertyItem()
+        {
+           
+        }
         public string Name
         {
             get
@@ -717,12 +722,18 @@ namespace DataInterface
                 SetPropertyValue<string>(value);
             }
         }
-        public ValueType EditorType
+        //TODO change this to FieldTemplate
+        public ValueType ValType
         {
             get
             {
-                return Value.GetType().GetEditor();
+                return GetPropertyValue<ValueType>();
             }
+             set
+            {
+                SetPropertyValue<ValueType>(value);
+            }
+
         }
         public string EditorMask
         {

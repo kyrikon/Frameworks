@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 
 namespace Core.Extensions
 {
@@ -14,10 +15,10 @@ namespace Core.Extensions
         #region Json
         public static string ToJson<T>(this T myObject)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(myObject,Formatting.Indented, new JsonSerializerSettings
+            return Newtonsoft.Json.JsonConvert.SerializeObject(myObject, Formatting.Indented, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,                
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.All
             });
         }
@@ -39,11 +40,11 @@ namespace Core.Extensions
 
                     });
             }
-            catch(ArgumentException )
+            catch (ArgumentException)
             {
 
             }
-            catch(JsonSerializationException)
+            catch (JsonSerializationException)
             {
 
             }
@@ -52,13 +53,13 @@ namespace Core.Extensions
             var d2 = JsonConvert.DeserializeObject<T>(s, settings);
 
             return default(T);
-        }       
+        }
         #endregion
         #region BSon
         public static string ToBSon<T>(this T myObject)
         {
-            using(MemoryStream ms = new MemoryStream())
-            using(BsonDataWriter datawriter = new BsonDataWriter(ms))
+            using (MemoryStream ms = new MemoryStream())
+            using (BsonDataWriter datawriter = new BsonDataWriter(ms))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(datawriter, myObject);
@@ -70,19 +71,19 @@ namespace Core.Extensions
         {
             byte[] data = Convert.FromBase64String(s);
 
-            using(MemoryStream ms = new MemoryStream(data))
-            using(BsonDataReader reader = new BsonDataReader(ms))
+            using (MemoryStream ms = new MemoryStream(data))
+            using (BsonDataReader reader = new BsonDataReader(ms))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 return serializer.Deserialize<T>(reader);
             }
         }
-        public static T FromBSon<T>(string s,bool isCollection = false)
+        public static T FromBSon<T>(string s, bool isCollection = false)
         {
             byte[] data = Convert.FromBase64String(s);
 
-            using(MemoryStream ms = new MemoryStream(data))
-            using(BsonDataReader reader = new BsonDataReader(ms))
+            using (MemoryStream ms = new MemoryStream(data))
+            using (BsonDataReader reader = new BsonDataReader(ms))
             {
                 reader.ReadRootValueAsArray = isCollection;
                 JsonSerializer serializer = new JsonSerializer();
@@ -144,21 +145,21 @@ namespace Core.Extensions
             var tokenType = reader.TokenType;
 
             var dict = existingValue as IDictionary<TKey, TValue>;
-            if(dict == null)
+            if (dict == null)
             {
                 var contract = serializer.ContractResolver.ResolveContract(objectType);
                 dict = (IDictionary<TKey, TValue>)contract.DefaultCreator();
             }
 
-            if(tokenType == JsonToken.StartArray)
+            if (tokenType == JsonToken.StartArray)
             {
                 var pairs = new JsonSerializer().Deserialize<KeyValuePair<TKey, TValue>[]>(reader);
-                if(pairs == null)
+                if (pairs == null)
                     return existingValue;
-                foreach(var pair in pairs)
+                foreach (var pair in pairs)
                     dict.Add(pair);
             }
-            else if(tokenType == JsonToken.StartObject)
+            else if (tokenType == JsonToken.StartObject)
             {
                 // Using "Populate()" avoids infinite recursion.
                 // https://github.com/JamesNK/Newtonsoft.Json/blob/ee170dc5510bb3ffd35fc1b0d986f34e33c51ab9/Src/Newtonsoft.Json/Converters/CustomCreationConverter.cs
@@ -191,9 +192,9 @@ namespace Core.Extensions
         /// <returns></returns>
         public static IEnumerable<Type> GetInterfacesAndSelf(this Type type)
         {
-            if(type == null)
+            if (type == null)
                 throw new ArgumentNullException();
-            if(type.IsInterface)
+            if (type.IsInterface)
                 return new[] { type }.Concat(type.GetInterfaces());
             else
                 return type.GetInterfaces();
@@ -201,16 +202,17 @@ namespace Core.Extensions
 
         public static IEnumerable<KeyValuePair<Type, Type>> GetDictionaryKeyValueTypes(this Type type)
         {
-            foreach(Type intType in type.GetInterfacesAndSelf())
+            foreach (Type intType in type.GetInterfacesAndSelf())
             {
-                if(intType.IsGenericType
+                if (intType.IsGenericType
                     && intType.GetGenericTypeDefinition() == typeof(IDictionary<,>))
                 {
                     var args = intType.GetGenericArguments();
-                    if(args.Length == 2)
+                    if (args.Length == 2)
                         yield return new KeyValuePair<Type, Type>(args[0], args[1]);
                 }
             }
         }
     }
+
 }

@@ -7,9 +7,9 @@ using System.Windows;
 
 namespace UI.WPF.ResourceDictionaries
 {
-    public partial class DataTemplateResource : ResourceDictionary
+    public partial class EditorDataTemplates : ResourceDictionary
     {
-        public DataTemplateResource()
+        public EditorDataTemplates()
         {
             InitializeComponent();
         }

@@ -38,20 +38,24 @@ namespace UI.WPF.Views.SimProject
         #region Constructors
         public SimProjectVM(IConnection Connection)
         {
+            ValTypes = new ValueTypes();
             DM = new DataModel(DataConnectionFactory.CreateNewDataSource(Connection));
             DM.ModelInitialized += DM_ModelInitialized;
             _UId = Guid.NewGuid();
             NewDSType = DataSourceType.LocalFile;
             ClearItemsCmd = new DelegateCommand(() => ClearItems());
-            CreateCmd = new DelegateCommand(() => CreateProject().Wait());
+            CreateCmd = new DelegateCommand(async () => await CreateProject());
             AddItemsCmd = new DelegateCommand(() => AddItems());
             CancelCmd = new DelegateCommand(() => GlobalSettings.Instance.ShellContext.NavBack());
             MoveUpCmd = new DelegateCommand<HDynamicObject>((x) => MoveUp(x));
             MoveDownCmd = new DelegateCommand<HDynamicObject>((x) => MoveDown(x));
             AddFldrCmd = new DelegateCommand(() => AddFldr());
             DelFldrCmd = new DelegateCommand(() => DelFldr());
+            AddCustomListItemCmd = new DelegateCommand(() => AddCustomListItem());
+            RemoveCustomListItemCmd = new DelegateCommand(() => RemoveCustomListItem());
+
         }
-       
+
         #endregion
         #region Commands           
         public DelegateCommand ClearItemsCmd
@@ -62,7 +66,6 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
-
         public DelegateCommand CancelCmd
         {
             get; private set;
@@ -71,12 +74,10 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
-
         public DelegateCommand<HDynamicObject> MoveUpCmd
         {
             get; private set;
         }
-
         public DelegateCommand<HDynamicObject> MoveDownCmd
         {
             get; private set;
@@ -89,6 +90,14 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
+        public DelegateCommand AddCustomListItemCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand RemoveCustomListItemCmd
+        {
+            get; private set;
+        }
         
         #endregion
         #region Properties
@@ -97,7 +106,21 @@ namespace UI.WPF.Views.SimProject
             get;
             private set;
 
-        }        
+        }
+        public ReadOnlyObservableCollection<HDynamicObject> Root
+        {
+            get
+            {
+                return GetPropertyValue<ReadOnlyObservableCollection<HDynamicObject>>();
+            }
+            private set
+            {
+                if (GetPropertyValue<ReadOnlyObservableCollection<HDynamicObject>>() != value)
+                {
+                    SetPropertyValue<ReadOnlyObservableCollection<HDynamicObject>>(value);
+                }
+            }
+        }
         public DataSourceType NewDSType
         {
             get
@@ -119,7 +142,19 @@ namespace UI.WPF.Views.SimProject
             {
                 return _UId;
             }
-        }     
+        }
+
+        public ValueTypes ValTypes
+        {
+            get
+            {
+                return GetPropertyValue<ValueTypes>();
+            }
+            private set
+            {
+                SetPropertyValue(value);
+            }
+        }
         public HDynamicObject SelectedNode
         {
             get
@@ -143,21 +178,8 @@ namespace UI.WPF.Views.SimProject
             }
             
         }
-        public ObservableCollection<HDynamicObject> Root
-        {
-            get
-            {
-                return GetPropertyValue<ObservableCollection<HDynamicObject>>();
-            }
-            private set
-            {
-                if (GetPropertyValue<ObservableCollection<HDynamicObject>>() != value)
-                {
-                    SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
-                }
-            }
-        }
-
+     
+       
         public bool HasSelectedNode
         {
             get
@@ -210,51 +232,140 @@ namespace UI.WPF.Views.SimProject
             }
         }
 
+        #region Custom List Members
+        public ObservableConcurrentDictionary<string, CustomList> CustomLists
+        {
+            get
+            {
+                return GetPropertyValue<ObservableConcurrentDictionary<string, CustomList>>();
+            }
+            private set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        public KeyValuePair<string, CustomList> SelectedCustomList
+        {
+            get
+            {
+                return GetPropertyValue<KeyValuePair<string, CustomList>>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+                SelectedCustomList.Value.Items.RefreshObservable();
+                OnPropertyChanged("HasSelectedList");
+            }
+        }
+        public string NewCustomListName
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        public CustomList ListItems
+        {
+            get
+            {
+                return GetPropertyValue<CustomList>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        public bool HasSelectedList
+        {
+            get
+            {
+                return SelectedCustomList.Key != null;
+            }
+        }
+        public DataInterface.ValueType ListType
+        {
+            get
+            {
+                return GetPropertyValue<DataInterface.ValueType>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        
+        public string ListNameValidation
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                if (GetPropertyValue<string>() != value)
+                {
+                    SetPropertyValue<string>(value);
+                }
+            }
+        }
+        #endregion
+
+
         #endregion
         #region Methods     
         private void ClearItems()
         {
-            if (DM.Root != null)
+            if (DM.Objects != null)
             {
                 DM.Clear();
             }
         }        
         private async Task CreateProject()
         {
-            _IsNew = true;
-            StringBuilder ConnectionPath = new StringBuilder(GlobalSettings.Instance.ShellContext.Configuration.GetValue<string>("SavePath"));
-            ConnectionPath.Append($"\\{ DM.DataSource.Connection.ConnectionName}\\{ DM.DataSource.Connection.ConnectionName}.{DM.DataSource.Connection.SaveFormat.ToString()}");
-            DM.DataSource.Connection.ConnectionString = ConnectionPath.ToString();
-            Tuple<bool,string> Result = DM.DataSource.ValidateNewConnection();
-            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Validate connection", Result.Item2);
-            if (Result.Item1)
+            bool IsSuccess = false;
+            await Task.Factory.StartNew(() =>
             {
-                Validation = string.Empty;
-                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Creating Project");
-                DynamicObjectHierarchy DH = new DynamicObjectHierarchy();
-                HierarchyFactory.GenerateFinance(ref DH);                
-                DM.CreateNewProject(DH);
-                _SW1 = Stopwatch.StartNew();
-                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Creating New Project", $"{DM.DataSource.Connection.ConnectionName}");
+                _IsNew = true;
+                StringBuilder ConnectionPath = new StringBuilder(GlobalSettings.Instance.ShellContext.Configuration.GetValue<string>("SavePath"));
+                ConnectionPath.Append($"\\{ DM.DataSource.Connection.ConnectionName}\\{ DM.DataSource.Connection.ConnectionName}.{DM.DataSource.Connection.SaveFormat.ToString()}");
+                DM.DataSource.Connection.ConnectionString = ConnectionPath.ToString();
+                Tuple<bool, string> Result = DM.DataSource.ValidateNewConnection();
+                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Validate connection", Result.Item2);
+                IsSuccess = Result.Item1;
+                if (Result.Item1)
+                {
+                    Validation = string.Empty;
+                    GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Creating Project");
+                    DynamicObjectHierarchy DH = new DynamicObjectHierarchy();
+                    HierarchyFactory.GenerateFinance(ref DH);
+                    DM.CreateNewProject(DH);
+                    _SW1 = Stopwatch.StartNew();
+                    GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Creating New Project", $"{DM.DataSource.Connection.ConnectionName}");
+                    GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Project Ready");
+                    GlobalSettings.Instance.ShellContext.NavigateProjectCmd.Execute(null);
 
-                
-                GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ConnectionBarItems.Add(
-                    new ConnectionBar.ConnectionBarItem()
-                    {   GrpID = GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ID,
-                        ID = this.UID,
-                        Connection = DM.DataSource.Connection,
-                        IsFavourite = false,
-                        IsSelected = true
-                    });
-                GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Project Ready");
-                GlobalSettings.Instance.ShellContext.NavigateProjectCmd.Execute(null);
-              
-            }
-            else
+                }
+                else
+                {
+                    Validation = $"*{Result.Item2}";
+                }
+            });
+            if (IsSuccess)
             {
-                Validation = $"*{Result.Item2}";
+                GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ConnectionBarItems.Add(
+                       new ConnectionBar.ConnectionBarItem()
+                       {
+                           GrpID = GlobalSettings.Instance.ShellContext.ConnectionBar.ClientConnectionGroups.FirstOrDefault(x => x.Name.Equals("Local")).ID,
+                           ID = this.UID,
+                           Connection = DM.DataSource.Connection,
+                           IsFavourite = false,
+                           IsSelected = true
+                       });
             }
-           
         }
         public async Task LoadProject()
         {
@@ -272,19 +383,7 @@ namespace UI.WPF.Views.SimProject
             SelectedNode["hello"] = SelectedNode["hello"] == null ? 0 : ((int)SelectedNode["hello"])+1;
             SelectedNode["hello2"] = SelectedNode["hello2"] == null ? 0 : ((int)SelectedNode["hello2"]) + 1;
             SelectedNode["hello3"] = "Hello World";
-        }
-        private async void DM_ModelInitialized(object sender, EventArgs args)
-        {            
-            _SW1.Stop();
-            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
-            if (_IsNew)
-            {
-                await DM.Save();
-            }
-            _IsNew = false;
-            Root = DM.Root;
-            SelectedNode = Root.FirstOrDefault();
-        }
+        }        
         private void MoveDown(HDynamicObject CurrChild)
         {
             if (CurrChild != null)
@@ -358,10 +457,58 @@ namespace UI.WPF.Views.SimProject
             
             }           
         }
+        private void AddCustomListItem()
+        {
+            if(ListType == null)
+            {
+                ListNameValidation = "Must Select Value Type";
+                return;
+            }
+            if (!NewCustomListName.IsFieldRules())
+            {
+                ListNameValidation = "Invalid Name";
+                return;
+            }            
+            KeyValuePair<string, CustomList> TmpList = new KeyValuePair<string, CustomList>(NewCustomListName, new CustomList() { Name = NewCustomListName, ValueType = ListType });
+            if (CustomLists.TryAdd(TmpList))
+            {
+                SelectedCustomList = TmpList;
+                ListNameValidation = string.Empty;
+            }
+            else
+            {
+                ListNameValidation = "Already Exists";
+            }     
+        }
+        private void RemoveCustomListItem()
+        {
+            if (SelectedCustomList.Key != null)
+            {
+                CustomList Obj = new CustomList();
+                CustomLists.TryRemove(SelectedCustomList.Key, out Obj);
+            }
+        }
 
         #endregion
         #region Callbacks
-
+        private async void DM_ModelInitialized(object sender, EventArgs args)
+        {
+            _SW1.Stop();
+            GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Loading Complete", $"{DM.Objects.Count} Objects added in {_SW1.Elapsed.TotalSeconds} seconds");
+            if (_IsNew)
+            {
+                await DM.Save();
+            }
+            _IsNew = false;
+            Root = DM.Root;
+            if (!Root.FirstOrDefault().HasKey("CustomLists") || Root.FirstOrDefault()["CustomLists"] == null)
+            {
+                Root.FirstOrDefault()["CustomLists"] = new ObservableConcurrentDictionary<string, CustomList>();
+            }
+            CustomLists = (ObservableConcurrentDictionary<string, CustomList>)Root.FirstOrDefault()["CustomLists"];
+            CustomLists.RefreshObservable();
+            SelectedNode = Root.FirstOrDefault();
+        }
         #endregion
     }
 

@@ -18,11 +18,12 @@ namespace UI.WPF.Views.Forms
     /// <summary>
     /// Interaction logic for ConnectionEdit.xaml
     /// </summary>
-    public partial class DetailsForm : UserControl
+    public partial class CustomListForm : UserControl
     {
-        public DetailsForm()
+        public CustomListForm()
         {
             InitializeComponent();
         }
+
     }
 }

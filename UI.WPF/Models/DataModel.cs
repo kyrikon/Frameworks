@@ -29,14 +29,12 @@ namespace UI.WPF.Models
         {
             Hierarchy = new DynamicObjectHierarchy();
             DataSource = DS;
-            KeyValueEnums = new ObservableConcurrentDictionary<string, KeyValueEnum<object>>();
         }
         public DataModel(IDataSource DS, DynamicObjectHierarchy _Hierarchy)
         {
             Hierarchy = _Hierarchy;
             DataSource = DS;
-            Objects = new UIHKeyDictionary();
-            KeyValueEnums = new ObservableConcurrentDictionary<string, KeyValueEnum<object>>();
+            Objects = new HKeyDynamicObjectDictionary();
         }
 
         #endregion
@@ -58,35 +56,30 @@ namespace UI.WPF.Models
             }
 
         }
-        public UIHKeyDictionary Objects
+        public HKeyDynamicObjectDictionary Objects
         {
             get
             {
-                return GetPropertyValue<UIHKeyDictionary>();
+                return GetPropertyValue<HKeyDynamicObjectDictionary>();
             }
             private set
             {
-                if (GetPropertyValue<UIHKeyDictionary>() != value)
+                if (GetPropertyValue<HKeyDynamicObjectDictionary>() != value)
                 {
-                    SetPropertyValue<UIHKeyDictionary>(value);
+                    SetPropertyValue<HKeyDynamicObjectDictionary>(value);
+                    OnPropertyChanged("Root");
                 }
             }
 
         }
         
-        public ObservableCollection<HDynamicObject> Root
+        public ReadOnlyObservableCollection<HDynamicObject> Root
         {
             get
             {
-                return GetPropertyValue<ObservableCollection<HDynamicObject>>();
+                return Objects.Root;
             }
-            private set
-            {
-                if (GetPropertyValue<ObservableCollection<HDynamicObject>>() != value)
-                {
-                    SetPropertyValue<ObservableCollection<HDynamicObject>>(value);
-                }
-            }
+            
         }
         public HDynamicObject CurrentItem
         {
@@ -109,101 +102,42 @@ namespace UI.WPF.Models
 
         }
 
-        public ObservableConcurrentDictionary<string, KeyValueEnum<object>> KeyValueEnums
-        {
-            get
-            {
-                return GetPropertyValue<ObservableConcurrentDictionary<string, KeyValueEnum<object>>>();
-            }
-            private set
-            {
-                if (GetPropertyValue<ObservableConcurrentDictionary<string, KeyValueEnum<object>>>() != value)
-                {
-                    SetPropertyValue<ObservableConcurrentDictionary<string, KeyValueEnum<object>>>(value);
-                }
-            }
-        }
         #endregion
         #region Methods    
 
-        public string SetCurrenItem(HKey key)
-        {
-            if (!Objects.ContainsKey(key))
-            {
-                if (!Objects.ContainsKey(key.ParentKey))
-                {
-                    return "Navigation Failed, Parent doesnt exist";
-                }
-                Objects.TryAdd(key, new HDynamicObject());
-            }
-            CurrentItem = Objects[key];
-            return "Navigation Successful";
-        }
         public void Initialize()
         {
-            Objects.TreeChanged -= Objects_TreeChanged;
-            Root = new ObservableCollection<HDynamicObject>();
 
-            Objects = new UIHKeyDictionary();
-            Objects.TreeChanged += Objects_TreeChanged;
-            DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
-            DataSource.Connection.ConnectionChangedEvent += Connection_ConnectionChangedEvent;
+            Objects = new HKeyDynamicObjectDictionary();
+            //DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
+            //DataSource.Connection.ConnectionChangedEvent += Connection_ConnectionChangedEvent;
             DataSource.DataInitializedEvent -= DataSource_DataInitializedEvent;
             DataSource.DataInitializedEvent += DataSource_DataInitializedEvent;
             DataSource.Connection.Disconnect();
             DataSource.Connection.Connect();
         }
-
-        public string GetHierarchyNames(HKey key)
-        {
-            if (key.IsRoot)
-            {
-                return $"{Objects[key].GetValue<string>("Name")}({string.Join(",", (int[])key)})";
-            }
-            else
-            {
-                List<string> HNames = new List<string>();
-                HKey CurrKey = key;
-                while (!CurrKey.Equals(key.RootKey))
-                {
-                    HNames.Add(Objects[CurrKey].GetValue<string>("Name"));
-                    CurrKey = CurrKey.ParentKey;
-                }
-                HNames.Add(Objects[CurrKey].GetValue<string>("Name"));
-                HNames.Reverse();
-                return $"{string.Join(",", HNames)}({string.Join(",", (int[])key)})";
-            }
-
-        }
-
+       
         public void Clear()
         {
             if (Objects != null && Root != null)
             {
                 Objects.Clear();
-                Root.Clear();
             }
         }
 
         public void CreateNewProject(DynamicObjectHierarchy DOH)
         {
-            Hierarchy = DOH;            
+            Hierarchy = DOH;
             Hierarchy.FirstOrDefault(x => x.ID.Equals(HKey.RootKeyVal)).Name = DataSource.Connection.ConnectionName;
 
-            if (Objects != null)
-            {
-                Objects.TreeChanged -= Objects_TreeChanged;
-            }
-            Root = new  ObservableCollection<HDynamicObject>();
-
-            Objects = new UIHKeyDictionary();
-            Objects.TreeChanged += Objects_TreeChanged;
+            Objects = new HKeyDynamicObjectDictionary();
 
             _Rslt = new List<KeyValuePair<HKey, HDynamicObject>>();
             foreach (var Itm in Hierarchy.OrderBy(x => x.ID))
             {
-                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID,true) { Name = Itm.Name, IsContainer = true,Rank = Itm.Rank }));
+                _Rslt.Add(new KeyValuePair<HKey, HDynamicObject>(Itm.ID, new HDynamicObject(Itm.ID, true) { Name = Itm.Name, IsContainer = true, Rank = Itm.Rank }));
             }
+
 
             DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
             DataSource.Connection.ConnectionChangedEvent += Connection_ConnectionChangedEvent;
@@ -219,14 +153,8 @@ namespace UI.WPF.Models
         }
         public async Task LoadProject()
         {
-            if (Objects != null)
-            {
-                Objects.TreeChanged -= Objects_TreeChanged;
-            }
-            Root = new ObservableCollection<HDynamicObject>();
 
-            Objects = new UIHKeyDictionary();
-            Objects.TreeChanged += Objects_TreeChanged;
+            Objects = new HKeyDynamicObjectDictionary();
 
             DataSource.Connection.ConnectionChangedEvent -= Connection_ConnectionChangedEvent;
             DataSource.Connection.ConnectionChangedEvent += Connection_ConnectionChangedEvent;
@@ -245,10 +173,6 @@ namespace UI.WPF.Models
                 });
             }
         }
-        public void AddEnum()
-        {
-           
-        }
         // to be implemented
         // Get from storage
         // Write back to storage
@@ -256,7 +180,6 @@ namespace UI.WPF.Models
         // manage Memberships
         // manage properties
 
-        // build graph
         // manage changes in storage (compare server timestamp for update and fix conflicts)
         // queue of storage key changes feed to update objects
 
@@ -266,65 +189,12 @@ namespace UI.WPF.Models
         {
             ModelInitialized?.Invoke(this, Args);
         }
-        private void Objects_TreeChanged(object sender, TreeChangedEventArgs<HKey, HDynamicObject> e)
-        {
-            switch (e.Action)
-            {
-                case CollectionAction.Add:
-                    HKey NewKey = e.NewVal.Key;
-                    
-                    if (!NewKey.IsRoot)
-                    {                        
-                        if (Objects.ContainsKey(NewKey.ParentKey))
-                        {
-                            HDynamicObject Parent = (HDynamicObject)Objects[NewKey.ParentKey];
-                            HDynamicObject NewItem = (HDynamicObject)e.NewVal.Value;
-                            NewItem.Parent = Parent;
-                            NewItem.Root = (HDynamicObject)Objects[NewKey.RootKey];
-                            if(e.NewVal.Value.Rank == null || e.NewVal.Value.Rank == 0)
-                            {
-                                e.NewVal.Value.Rank = e.NewVal.Key.Rank;
-                            }
-                            //Logic to add in all children in case not added in order
-                            //foreach(KeyValuePair<HKey, DataObject> Chldrn in Objects.Where(x => x.Key.Contains(NewKey) && !x.Key.Equals(NewKey)))
-                            //{
-
-                            //    Chldrn.Value.Parent = NewItem;
-                            //    NewItem.Children.TryAdd(Chldrn.Key, Chldrn.Value);
-
-                            //}
-                            Objects[NewKey.ParentKey].Children.Add(e.NewVal.Value);
-                        }
-                    }
-                    else
-                    {                        
-                        Root.Add(e.NewVal.Value);
-                        GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, $"Root Added");
-                    }
-                    break;
-                case CollectionAction.Remove:
-                    HKey DelKey = e.RemVal.Key;
-                    TreeListExpandedNodesHelper.RegisterBaseObject(e.RemVal.Value);
-                    if (!DelKey.IsRoot)
-                    {
-                        HKey ParKey = DelKey.ParentKey;
-                        if (Objects.ContainsKey(ParKey))
-                        {
-                            var DelItem = Objects[ParKey].Children.FirstOrDefault(x => x.HID.Equals(DelKey));
-                            if(DelItem != null)
-                            {
-                                Objects[ParKey].Children.Remove(DelItem);
-                            }
-                                              
-                        }
-                    }
-                    break;
-            }
-        }
+    
         private async void Connection_ConnectionChangedEvent(object sender, ConnectionChangedEventArgs args)
         {
             if (args.ConnectionState == System.Data.ConnectionState.Open)
             {
+               await Task.Delay(1);
                 //IObservable<KeyValuePair<HKey, HDataObject>> getEnum = DataSource.GetObjects();
                 //_Rslt = new List<KeyValuePair<HKey, HDataObject>>();
                 //await getEnum.ForEachAsync((itm) => _Rslt.Add(itm));
@@ -337,8 +207,6 @@ namespace UI.WPF.Models
                    Objects.AddList(_Rslt.OrderBy(x => x.Key));
                     Objects.EndEdit(_Rslt);
                 });
-           
-           // SetCurrenItem(HKey.RootKeyVal);
             OnModelInitialized(new EventArgs());
         }
         #endregion

@@ -12,8 +12,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataInterface", "DataInterface\DataInterface.csproj", "{30FB32F6-AB8D-446C-B867-F483A62FA95F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSetRest", "DataSetRest\DataSetRest.csproj", "{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSource", "DataSource\DataSource.csproj", "{7B5DFE42-B6FF-415A-B19B-62CF6E8C52EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{17C0A9C8-3747-4149-968C-65599BCF892C}"
@@ -82,26 +80,6 @@ Global
 		{30FB32F6-AB8D-446C-B867-F483A62FA95F}.Release|x64.Build.0 = Release|Any CPU
 		{30FB32F6-AB8D-446C-B867-F483A62FA95F}.Release|x86.ActiveCfg = Release|Any CPU
 		{30FB32F6-AB8D-446C-B867-F483A62FA95F}.Release|x86.Build.0 = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|ARM.Build.0 = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|x64.Build.0 = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Debug|x86.Build.0 = Debug|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|ARM.ActiveCfg = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|ARM.Build.0 = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|ARM64.Build.0 = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|x64.ActiveCfg = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|x64.Build.0 = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|x86.ActiveCfg = Release|Any CPU
-		{CE6B03F7-A0CD-4359-B676-679D4D6A78C9}.Release|x86.Build.0 = Release|Any CPU
 		{7B5DFE42-B6FF-415A-B19B-62CF6E8C52EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B5DFE42-B6FF-415A-B19B-62CF6E8C52EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B5DFE42-B6FF-415A-B19B-62CF6E8C52EB}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -253,7 +231,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
 		SolutionGuid = {E65B73EE-F1A3-4C8B-8FA7-9B4104B979B2}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
 	EndGlobalSection
 EndGlobal

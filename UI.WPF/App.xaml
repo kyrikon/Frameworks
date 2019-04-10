@@ -1,21 +1,19 @@
 ﻿<Application x:Class="UI.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:UI.WPF"
-             xmlns:DXMVVM="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             >
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ResourceDictionaries/BrushResource.xaml" />
                 <ResourceDictionary Source="/ResourceDictionaries/StyleResource.xaml" />
-                <ResourceDictionary Source="/ResourceDictionaries/DataTemplateResource.xaml" />
+                <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/ContainerResources.xaml" />
+                <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/DataSourceDataTemplates.xaml" />
+                <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/CustomListsDataTemplates.xaml" />
+                <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/EditorDataTemplates.xaml" />
+                <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/TreeDataTemplates.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DXMVVM:BooleanToVisibilityConverter x:Key="b2Vis"/>
-            <DXMVVM:BooleanToVisibilityConverter x:Key="b2VisNeg" Inverse="True" />
-            <DXMVVM:BooleanNegationConverter x:Key="NegBoolCvrt"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -115,7 +115,7 @@ namespace DataSource
                     break;
             }
             return Observable.Create<HDynamicObject>(
-                 async obs =>
+                 async obs => 
                  {
                      foreach (HDynamicObject item in GetData.OrderBy(x => x.HID))
                      {
