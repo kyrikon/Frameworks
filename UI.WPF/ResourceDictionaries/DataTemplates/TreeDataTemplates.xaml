@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:v4="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    x:Class="UI.WPF.ResourceDictionaries.TreeDataTemplates"
+                    x:ClassModifier="public"
+                    mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ResourceDictionaries/StyleResource.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate x:Key="TreeItemExpandedTemplate">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+            <v4:Image Source="{StaticResource FolderIconOpen}"
+                      Margin="2"
+                      x:Name="FldrImg"
+                      Width="16"
+                      VerticalAlignment="Center"
+                      Height="16" />
+            <TextBlock VerticalAlignment="Bottom"
+                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="RowData.Row.Name" />
+                        <Binding Path="RowData.Row.Children.Count" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="TreeItemTemplate">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+            <v4:Image Source="{StaticResource FolderIconClosed}"
+                      Margin="2"
+                      x:Name="FldrImg"
+                      Width="16"
+                      VerticalAlignment="Center"
+                      Height="16" />
+            <TextBlock VerticalAlignment="Bottom"
+                       Height="{Binding ElementName=FldrImg, Path=ActualHeight}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} ({1})">
+                        <Binding Path="RowData.Row.Name" />
+                        <Binding Path="RowData.Row.Children.Count" />
+                    </MultiBinding>
+                </TextBlock.Text></TextBlock>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

@@ -16,13 +16,18 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
              mc:Ignorable="d"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              MinWidth="300"
              VerticalAlignment="Stretch"
              HorizontalAlignment="Stretch"
              HorizontalContentAlignment="Stretch"
              d:DesignHeight="450"
              d:DesignWidth="800">
-   
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <sys:String x:Key="RegexpNameRule">^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$</sys:String>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -59,6 +64,9 @@
                                Style="{StaticResource TextBlockFormStyle}"
                                Grid.Row="1" />
                     <dxe:TextEdit Style="{StaticResource  SlimTextEditFormStyle}"
+                                  MaskType="RegEx"
+                                 MaskUseAsDisplayFormat="True"
+                                  Mask="[a-zA-Z]\w*[a-zA-Z0-9]"
                                   Text="{Binding DataContext.NewCustomListName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                                   Grid.Row="2"/>
                    <TextBlock Text="List Value Type"

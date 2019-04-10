@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    x:Class="UI.WPF.ResourceDictionaries.EditorDataTemplates"
+                    x:ClassModifier="public"
+                    mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ResourceDictionaries/StyleResource.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--#region Editor DataTemplates-->
+    <DataTemplate x:Key="StringEditTemplate">
+        <dxe:TextEdit EditValue="{Binding Path=NewValue}"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="IntEditTemplate">
+        <dxe:TextEdit  Mask="D"
+                       MaskType="Numeric"
+                       MaskUseAsDisplayFormat="True"
+                       EditValue="{Binding  Path=NewValue}"
+                       HorizontalContentAlignment="Right"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DecEditTemplate">
+        <dxe:TextEdit  Mask="##########.#####"                       
+                       MaskType="Numeric"
+                       MaskShowPlaceHolders="False"
+                       dxe:NumericMaskOptions.AlwaysShowDecimalSeparator="False"
+                       MaskUseAsDisplayFormat="True"
+                       EditValue="{Binding  Path=NewValue}"
+                       HorizontalContentAlignment="Right"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="BoolEditTemplate">
+        <dxe:CheckEdit IsChecked="{Binding  Path=NewValue}"/>
+    </DataTemplate>
+    <!--#endregion--> 
+    
+</ResourceDictionary>
