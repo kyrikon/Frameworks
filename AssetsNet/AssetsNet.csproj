@@ -139,5 +139,9 @@
     <Resource Include="Images\LightTheme\ic_arrow_downward_48pt.png" />
     <Resource Include="Images\LightTheme\ic_arrow_drop_down_48pt.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DarkTheme\ic_arrow_drop_down_white_18dp.png" />
+    <Resource Include="Images\DarkTheme\ic_arrow_drop_up_white_18dp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

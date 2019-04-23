@@ -98,33 +98,33 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,5" 
                         Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
-                        HorizontalAlignment="Right"
+                        HorizontalAlignment="Left"
                         Grid.Row="9">
                 <TextBlock Text="{Binding SelectedNode.Rank}" x:Name="RankTB"
                            Style="{StaticResource TextBlockFormStyle}"
                            Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
                 
                 <Button Style="{StaticResource SlimButtonStyle}"
-                        Height="30"
-                        Width="30"
+                        Height="24"
+                        Width="24"
                         MinWidth="24"
-                        Margin="40,0,2,0"
+                        Margin="0"
                         ToolTip="Move Up"
                         Command="{Binding MoveUpCmd}">
                     <Button.Content>
                         <Grid HorizontalAlignment="Center"
                               VerticalAlignment="Center">
                             <Image Source="{StaticResource DropUpIcon}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Height="24"
-                                   Width="24" />
+                                   Width="18"
+                                   Height="18" />
                         </Grid>
                     </Button.Content>
                 </Button>
                 <Button Style="{StaticResource SlimButtonStyle}"
-                        Height="30"
-                        Width="30"
+                        Height="24"
+                        Width="24"
                         MinWidth="24"
-                        Margin="40,0,2,0"
+                        Margin="2,0,2,0"
                         ToolTip="Move Down"
                         Command="{Binding MoveDownCmd}">
                     <Button.Content>
@@ -133,8 +133,9 @@
                             <Image Source="{StaticResource DropDownIcon}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   Height="24"
-                                   Width="24" />
+                                   Width="18"
+                                   Height="18"
+                                    />
                         </Grid>
                     </Button.Content>
                 </Button>
