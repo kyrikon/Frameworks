@@ -85,4 +85,34 @@ namespace UI.WPF.Helpers
             return null;
         }
     }
+    public class DynamicFieldTemplateSelector : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            FrameworkElement element = container as FrameworkElement;
+
+            if (element != null && item != null)
+            {
+                ValueTypes _Vtypes = new ValueTypes();
+                DynamicField DF = item as DynamicField;
+                if (DF != null)
+                {
+                    switch (DF.FieldTemplate.ValueType.Name)
+                    {
+                        case DataInterface.ValueTypes.Int:
+                            return element.FindResource("DfltIntEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Boolean:
+                            return element.FindResource("DfltBoolEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Decimal:
+                            return element.FindResource("DfltDecEditTemplate") as DataTemplate;
+                        case DataInterface.ValueTypes.Text:
+                            return element.FindResource("DfltStringEditTemplate") as DataTemplate;
+                        default:
+                            return element.FindResource("DfltStringEditTemplate") as DataTemplate;
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }

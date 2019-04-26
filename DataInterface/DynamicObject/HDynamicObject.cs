@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 namespace DataInterface
 {
     [Serializable]
-    public class HDynamicObject : DynamicObjectBase,IHDynamicObject
+    public class HDynamicObject : DynamicObjectBase, IHDynamicObject
     {
         // Considerations for base class
         // 1. Object nature
@@ -20,7 +20,7 @@ namespace DataInterface
         // 3. Edit Auditing
         // 4. Syncronization with backing data store (multi user)
         #region Events / Delegates
-            
+
         public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs args);
         [field: NonSerialized]
         public event SelectionChangedEventHandler SelectionChangedEvent;
@@ -39,19 +39,21 @@ namespace DataInterface
         #endregion
 
         #region Constructors
-        public HDynamicObject() :base (false)
+        public HDynamicObject() : base(false)
         {
-            _IsInit = true;      
+            _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
+            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
             IsExpanded = true;
             _IsInit = false;
 
-        }       
+        }
 
         public HDynamicObject(HKey Key) : base(false)
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
+            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -59,22 +61,25 @@ namespace DataInterface
         public HDynamicObject(bool _Transactional = false) : base(_Transactional)
         {
             _IsInit = true;
-            Children = new ObservableCollection<HDynamicObject>();      
+            Children = new ObservableCollection<HDynamicObject>();
+            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
             IsExpanded = true;
             _IsInit = false;
         }
-        public HDynamicObject(HKey Key,bool _Transactional = false) : base(_Transactional)
+        public HDynamicObject(HKey Key, bool _Transactional = false) : base(_Transactional)
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
+            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
         }
-        public HDynamicObject(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray,_Transactional)
+        public HDynamicObject(KeyValuePair<string, Object>[] InitArray, bool _Transactional = false) : base(InitArray, _Transactional)
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
+            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
             IsExpanded = true;
             _IsInit = false;
         }
@@ -82,6 +87,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
+            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -90,7 +96,7 @@ namespace DataInterface
         #region Properties
 
         [JsonProperty]
-        public int[] ID { get;  private set; }
+        public int[] ID { get; private set; }
 
         [JsonIgnore]
         public HKey HID
@@ -129,7 +135,7 @@ namespace DataInterface
                 SetPropertyValue<int>(value);
             }
         }
-
+        public ObservableConcurrentDictionary<string, DynamicField> InheritedProperties{ get; set; }
         public bool IsSelected
         {
             get

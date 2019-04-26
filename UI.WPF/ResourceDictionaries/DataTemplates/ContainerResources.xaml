@@ -88,7 +88,8 @@
                         <LocalForms:ChildrenForm />
                     </dxwui:PageViewItem>
                     <dxwui:PageViewItem Header="Available Properties">
-                        <ItemsControl ItemsSource="{Binding Properties}"
+                        <LocalForms:InheritedProperiesForm />
+                        <!--<ItemsControl ItemsSource="{Binding Properties}"
                                       Grid.Row="2"
                                       Grid.Column="1">
                             <ItemsControl.ItemTemplate>
@@ -102,7 +103,7 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        </ItemsControl>-->
                     </dxwui:PageViewItem>
                 </dxwui:PageView.Items>
             </dxwui:PageView>

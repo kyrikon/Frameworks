@@ -33,6 +33,7 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+        [JsonIgnore]
         public string ValidationText
         {
             get
@@ -45,7 +46,7 @@ namespace DataInterface
             }
         }
         //this is an alt name used for column headers or labels
-        public string LebelText
+        public string LabelText
         {
             get
             {
@@ -99,6 +100,13 @@ namespace DataInterface
                 return this.ItemList.Select(x => x.Value).Where(x => x.Flags.HasFlag(ValueFlags.Primative)).ToList();
             }
         }
+        public List<ValueType> All
+        {
+            get
+            {
+                return this.ItemList.Select(x => x.Value).ToList();
+            }
+        }
 
     }
     public class ValueType
@@ -128,13 +136,16 @@ namespace DataInterface
     #region Field Template
     public class FieldTemplate : Core.Helpers.NotifyPropertyChanged
     {
-        public FieldTemplate(ValueType _ValType, bool _IsNullable = true, bool _AllowValidation = true)
+        public FieldTemplate()
         {
-            IsNullable = _IsNullable;
+
+        }
+        public FieldTemplate(ValueType _ValType, bool _AllowValidation = true)
+        {
             AllowValidation = _AllowValidation;
             ValueType = _ValType;
         }
-        
+        [JsonProperty]
         public ValueType ValueType
         {
             get
@@ -158,7 +169,7 @@ namespace DataInterface
             }
 
         }
-
+        [JsonProperty]
         public object DefaultValue
         {
             get
@@ -169,7 +180,7 @@ namespace DataInterface
             {
                 if (AllowValidation)
                 {
-                    VResult = Validator.Validate(value);
+                    VResult = ValueType.Validator.Validate(value);
                     Console.WriteLine($"Value {value}");
                     Console.WriteLine(ValidationErrors);
                     OnPropertyChanged("ValidationErrors");
@@ -184,6 +195,7 @@ namespace DataInterface
                 }
             }
         }
+        [JsonIgnore]
         public string ValidationErrors
         {
             get
@@ -198,18 +210,8 @@ namespace DataInterface
             }
 
         }
+        [JsonIgnore]
         private ValidationResult VResult { get; set; }
-        public bool IsNullable
-        {
-            get
-            {               
-                return GetPropertyValue<bool>();
-            }
-            set
-            {
-                SetPropertyValue(value);
-            }
-        }
         public bool AllowValidation
         {
             get
@@ -219,13 +221,6 @@ namespace DataInterface
             set
             {
                 SetPropertyValue(value);
-            }
-        }
-        public IValidator Validator
-        {
-            get
-            {
-                return ValueType.Validator;
             }
         }
 

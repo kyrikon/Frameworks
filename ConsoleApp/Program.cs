@@ -52,7 +52,7 @@ namespace Testingconsoleapp
             ValueTypes VT = new ValueTypes();
 
             FieldTemplate NewField = new FieldTemplate(VT[ValueTypes.Text]);                    
-            StrValidationRules IRule = (StrValidationRules)NewField.Validator.Rules;          
+            StrValidationRules IRule = (StrValidationRules)NewField.ValueType.Validator.Rules;          
             IRule.MinLength = null;
 
             IRule.RegExpPattern = @"^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$";

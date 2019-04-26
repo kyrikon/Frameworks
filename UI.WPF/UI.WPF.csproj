@@ -210,6 +210,9 @@
     <Compile Include="ResourceDictionaries\BrushResource.xaml.cs">
       <DependentUpon>BrushResource.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceDictionaries\DataTemplates\InheritedPropertyItemsDataTemplates.xaml.cs">
+      <DependentUpon>InheritedPropertyItemsDataTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResourceDictionaries\DataTemplates\CustomListsDataTemplates.xaml.cs">
       <DependentUpon>CustomListsDataTemplates.xaml</DependentUpon>
     </Compile>
@@ -234,6 +237,9 @@
       <DependentUpon>ConnectionBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectionBar\ConnectionBarVM.cs" />
+    <Compile Include="Views\Forms\InheritedProperiesForm.xaml.cs">
+      <DependentUpon>InheritedProperiesForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Forms\CustomListsForm.xaml.cs">
       <DependentUpon>CustomListsForm.xaml</DependentUpon>
     </Compile>
@@ -288,6 +294,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ResourceDictionaries\DataTemplates\InheritedPropertyItemsDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ResourceDictionaries\DataTemplates\CustomListsDataTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -313,6 +323,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ConnectionBar\ConnectionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Forms\InheritedProperiesForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

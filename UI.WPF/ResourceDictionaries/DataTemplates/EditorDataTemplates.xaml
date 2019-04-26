@@ -36,6 +36,33 @@
     <DataTemplate x:Key="BoolEditTemplate">
         <dxe:CheckEdit IsChecked="{Binding  Path=NewValue}"/>
     </DataTemplate>
-    <!--#endregion--> 
-    
+    <!--#endregion-->
+    <!--#region Default Val Editor DataTemplates-->
+    <DataTemplate x:Key="DfltStringEditTemplate">
+        <dxe:TextEdit EditValue="{Binding Path=FieldTemplate.DefaultValue}"
+                      Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DfltIntEditTemplate">
+        <dxe:TextEdit  Mask="D"
+                       MaskType="Numeric"
+                       MaskUseAsDisplayFormat="True"
+                       EditValue="{Binding  Path=FieldTemplate.DefaultValue}"
+                       HorizontalContentAlignment="Right"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DfltDecEditTemplate">
+        <dxe:TextEdit  Mask="#########0.#####"
+                       MaskType="Numeric"
+                       MaskShowPlaceHolders="False"
+                       dxe:NumericMaskOptions.AlwaysShowDecimalSeparator="False"
+                       MaskUseAsDisplayFormat="True"
+                       EditValue="{Binding  Path=FieldTemplate.DefaultValue}"
+                       HorizontalContentAlignment="Right"
+                       Style="{StaticResource SlimTextEditFormStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DfltBoolEditTemplate">
+        <dxe:CheckEdit IsChecked="{Binding  Path=FieldTemplate.DefaultValue}" />
+    </DataTemplate>
+    <!--#endregion-->
+
 </ResourceDictionary>

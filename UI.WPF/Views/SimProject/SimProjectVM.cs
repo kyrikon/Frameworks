@@ -53,6 +53,8 @@ namespace UI.WPF.Views.SimProject
             DelFldrCmd = new DelegateCommand(() => DelFldr());
             AddCustomListItemCmd = new DelegateCommand(() => AddCustomListItem());
             RemoveCustomListItemCmd = new DelegateCommand(() => RemoveCustomListItem());
+            AddInheritedPropertyItemCmd = new DelegateCommand(() => AddInheritedPropertyItem());
+            RemoveInheritedPropertyItemCmd = new DelegateCommand(() => RemoveInheritedPropertyItem());
 
         }
 
@@ -98,7 +100,14 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
-        
+        public DelegateCommand AddInheritedPropertyItemCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand RemoveInheritedPropertyItemCmd
+        {
+            get; private set;
+        }
         #endregion
         #region Properties
         public DataModel DM
@@ -161,7 +170,7 @@ namespace UI.WPF.Views.SimProject
             {
                 return GetPropertyValue<HDynamicObject>();
             }
-             set
+            set
             {
                 if (GetPropertyValue<HDynamicObject>() != value)
                 {
@@ -169,7 +178,17 @@ namespace UI.WPF.Views.SimProject
                     if (SelectedNode != null)
                     {
                         GlobalLogging.AddLog(Core.Logging.LogTypes.Notifiction, "Change Selected node", $"{SelectedNode?.Name}");
-                        OnPropertyChanged("ObjectCnt");                        
+                        OnPropertyChanged("ObjectCnt");
+                        //logic for new list
+                        //Only If non root and container
+                        if(!SelectedNode.HID.IsRoot && SelectedNode.IsContainer)
+                        {
+                            InheritedProperties = SelectedNode.InheritedProperties;                          
+                        }
+                    }
+                    else
+                    {
+                        InheritedProperties = null;                        
                     }
                     OnPropertyChanged("HasSelectedNode");
                     OnPropertyChanged("SelectedNodeImage");
@@ -268,17 +287,6 @@ namespace UI.WPF.Views.SimProject
                 SetPropertyValue(value);
             }
         }
-        public CustomList ListItems
-        {
-            get
-            {
-                return GetPropertyValue<CustomList>();
-            }
-            set
-            {
-                SetPropertyValue(value);
-            }
-        }
         public bool HasSelectedList
         {
             get
@@ -296,8 +304,7 @@ namespace UI.WPF.Views.SimProject
             {
                 SetPropertyValue(value);
             }
-        }
-        
+        }        
         public string ListNameValidation
         {
             get
@@ -314,7 +321,79 @@ namespace UI.WPF.Views.SimProject
         }
         #endregion
 
-
+        #region Inherited Property Members
+        public ObservableConcurrentDictionary<string, DynamicField> InheritedProperties
+        {
+            get
+            {
+                return GetPropertyValue<ObservableConcurrentDictionary<string, DynamicField>>();
+            }
+            private set
+            {
+                value.RefreshObservable();
+                SetPropertyValue(value);
+                if (InheritedProperties.Any())
+                {
+                    SelectedInheritedProperty = InheritedProperties.FirstOrDefault();
+                }
+            }
+        }
+        public KeyValuePair<string, DynamicField> SelectedInheritedProperty
+        {
+            get
+            {
+                return GetPropertyValue<KeyValuePair<string, DynamicField>>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+                OnPropertyChanged("HasSelectedInheritedProperty");
+            }
+        }
+        public string NewInheritedPropertyName
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+        public DataInterface.ValueType PropertyType
+        {
+            get
+            {
+                return GetPropertyValue<DataInterface.ValueType>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }      
+        public bool HasSelectedInheritedProperty
+        {
+            get
+            {
+                return SelectedInheritedProperty.Key != null;
+            }
+        }
+        public string InheritedPropertyNameValidation
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                if (GetPropertyValue<string>() != value)
+                {
+                    SetPropertyValue<string>(value);
+                }
+            }
+        }
+        #endregion
         #endregion
         #region Methods     
         private void ClearItems()
@@ -486,6 +565,42 @@ namespace UI.WPF.Views.SimProject
             {
                 CustomList Obj = new CustomList();
                 CustomLists.TryRemove(SelectedCustomList.Key, out Obj);
+            }
+        }
+
+        private void AddInheritedPropertyItem()
+        {
+            if (PropertyType == null)
+            {
+                InheritedPropertyNameValidation = "Must Select property Type";
+                return;
+            }
+            if (!NewInheritedPropertyName.IsFieldRules())
+            {
+                InheritedPropertyNameValidation = "Invalid Name";
+                return;
+            }
+            KeyValuePair<string, DynamicField> TmpItem = new KeyValuePair<string, DynamicField>(NewInheritedPropertyName, new DynamicField()
+                                                                 { Name = NewInheritedPropertyName
+                                                                 ,  FieldTemplate = new FieldTemplate(PropertyType)
+            });
+            if (InheritedProperties.TryAdd(TmpItem))
+            {
+                SelectedInheritedProperty = TmpItem;
+                InheritedPropertyNameValidation = string.Empty;
+            }
+            else
+            {
+                InheritedPropertyNameValidation = "Already Exists";
+            }
+        }
+        private void RemoveInheritedPropertyItem()
+        {
+            if (SelectedInheritedProperty.Key != null)
+            {
+                DynamicField Obj = new DynamicField();
+
+                InheritedProperties.TryRemove(SelectedInheritedProperty.Key, out Obj);
             }
         }
 

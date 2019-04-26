@@ -1,0 +1,112 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
+                    x:Class="UI.WPF.ResourceDictionaries.InheritedPropertyItemsDataTemplates"
+                    x:ClassModifier="public"
+                    mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ResourceDictionaries/StyleResource.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--#region CustomList DataTemplates-->
+    <DataTemplate x:Key="InheritedPropertyItemsDataTemplate"
+                  DataType="{x:Type DataCnt:DynamicField}">
+        <lc:DockLayoutControl AllowItemSizing="True">
+            <lc:GroupBox lc:DockLayoutControl.AllowVerticalSizing="True"
+                         lc:DockLayoutControl.Dock="Top"
+                         ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
+                         TitleVisibility="Collapsed"
+                         DisplayMode="Light"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Header="Navigation">
+                <Grid HorizontalAlignment="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <!--14 rows-->
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Property Details"
+                               Grid.Row="0"
+                               Style="{StaticResource HeaderStyle}"
+                               Margin="0,0,0,6" />
+                    <TextBlock Text="{Binding FieldTemplate.ValueType.Name, StringFormat={}Value Type is {0}}"
+                               Grid.Row="1"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <TextBlock Text="{Binding FieldTemplate.ValueType.Nullable, StringFormat={}Value Nullable is {0}}"
+                               Grid.Row="2"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               Margin="0,0,0,6" />
+
+                    <TextBlock Text="Label Text"
+                               Style="{StaticResource  TextBlockFormStyle}"
+                               Grid.Row="3" />
+                    <dxe:TextEdit Text="{Binding LabelText}"
+                                  Style="{StaticResource SlimTextEditFormStyle}"
+                                  Grid.Row="4" />
+
+                    <TextBlock Text="Default Value"
+                               Grid.Row="5"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplateSelector="{StaticResource DynamicFieldTypeTemplate}"
+                                    Grid.Row="6" />
+
+                    <TextBlock Text="Format String"
+                               Grid.Row="7"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <dxe:TextEdit Text="{Binding FieldTemplate.FormatString}"
+                                  Style="{StaticResource SlimTextEditFormStyle}"
+                                  Grid.Row="8" />
+
+                    <TextBlock Text="Enable Validation"
+                               Grid.Row="9"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <dxe:CheckEdit IsChecked="{Binding FieldTemplate.AllowValidation}"                                  
+                                  Grid.Row="10" />
+
+
+                </Grid>
+            </lc:GroupBox>
+            <lc:GroupBox lc:DockLayoutControl.AllowVerticalSizing="True"
+                         lc:DockLayoutControl.Dock="Client"
+                         ShowShadow="WhenHasMouse"
+                         CornerRadius="2"
+                         TitleVisibility="Collapsed"
+                         DisplayMode="Light"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Header="Navigation">
+                <TextBlock Text="Validation"
+                           Style="{StaticResource HeaderStyle}"
+                           Grid.Row="0" />
+            </lc:GroupBox>
+        </lc:DockLayoutControl>
+    </DataTemplate>
+    <!--#endregion-->
+
+
+
+</ResourceDictionary>

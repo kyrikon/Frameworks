@@ -27,6 +27,8 @@
     <!--#region Helpers and Converters -->
      <LocalHelpers:PropertyEditTemplateSelector x:Key="PropertyTemplate" />
      <LocalHelpers:CustomListTypeTemplateSelector x:Key="CustomListTypeTemplate" />
+    <LocalHelpers:DynamicFieldTemplateSelector x:Key="DynamicFieldTypeTemplate" />
+    
      <DXMVVM:BooleanToVisibilityConverter x:Key="b2Vis"/>
      <DXMVVM:BooleanToVisibilityConverter x:Key="b2VisNeg" Inverse="True" />
      <DXMVVM:BooleanNegationConverter x:Key="NegBoolCvrt" />

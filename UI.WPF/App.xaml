@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/ContainerResources.xaml" />
                 <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/DataSourceDataTemplates.xaml" />
                 <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/CustomListsDataTemplates.xaml" />
+                <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/InheritedPropertyItemsDataTemplates.xaml" />
                 <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/EditorDataTemplates.xaml" />
                 <ResourceDictionary Source="/ResourceDictionaries/DataTemplates/TreeDataTemplates.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Colors.xaml" />
