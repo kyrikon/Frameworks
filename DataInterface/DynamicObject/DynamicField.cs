@@ -57,6 +57,30 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+
+        public int Rank
+        {
+            get
+            {
+                return GetPropertyValue<int>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
+
+        public bool Enabled
+        {
+            get
+            {
+                return GetPropertyValue<bool>();
+            }
+            set
+            {
+                SetPropertyValue(value);
+            }
+        }
     }
 
     #region Field Value Types

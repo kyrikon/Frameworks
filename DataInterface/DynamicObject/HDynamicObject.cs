@@ -43,7 +43,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
-            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
+            InheritedProperties = new InheritedPropertyDictionary();
             IsExpanded = true;
             _IsInit = false;
 
@@ -53,7 +53,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
-            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
+            InheritedProperties = new InheritedPropertyDictionary();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -62,7 +62,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
-            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
+            InheritedProperties = new InheritedPropertyDictionary();
             IsExpanded = true;
             _IsInit = false;
         }
@@ -70,7 +70,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
-            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
+            InheritedProperties = new InheritedPropertyDictionary();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -79,7 +79,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
-            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
+            InheritedProperties = new InheritedPropertyDictionary();
             IsExpanded = true;
             _IsInit = false;
         }
@@ -87,7 +87,7 @@ namespace DataInterface
         {
             _IsInit = true;
             Children = new ObservableCollection<HDynamicObject>();
-            InheritedProperties = new ObservableConcurrentDictionary<string, DynamicField>();
+            InheritedProperties = new InheritedPropertyDictionary();
             IsExpanded = true;
             ID = Key;
             _IsInit = false;
@@ -135,7 +135,7 @@ namespace DataInterface
                 SetPropertyValue<int>(value);
             }
         }
-        public ObservableConcurrentDictionary<string, DynamicField> InheritedProperties{ get; set; }
+        public InheritedPropertyDictionary InheritedProperties{ get; set; }
         public bool IsSelected
         {
             get

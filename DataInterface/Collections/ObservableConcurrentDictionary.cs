@@ -81,11 +81,21 @@ namespace DataInterface
             }
         }
         [JsonIgnore]
-        public ReadOnlyObservableCollection<KeyValuePair<T1,T2>> ItemList
+        public  ReadOnlyObservableCollection<KeyValuePair<T1,T2>> ItemList
         {
             get
             {
                 return _ROItemList;
+            }
+
+        }
+
+        [JsonIgnore]
+        public virtual ReadOnlyObservableCollection<T2> ItemValList
+        {
+            get
+            {
+                return new ReadOnlyObservableCollection<T2>(new ObservableCollection<T2>(_ROItemList.Select(x=> x.Value)));
             }
 
         }
@@ -235,6 +245,7 @@ namespace DataInterface
                     _ItemList.Clear();
                     break;
             }
+            OnPropertyChanged("ItemValList");
             DictionaryChanged?.Invoke(this, Args);
 
         }
@@ -251,6 +262,7 @@ namespace DataInterface
                 _ItemList = new ObservableCollection<KeyValuePair<T1,T2>>(this.ToList());            
                 _ROItemList = new ReadOnlyObservableCollection<KeyValuePair<T1, T2>>(_ItemList);
                 OnPropertyChanged("ItemList");
+                OnPropertyChanged("ItemValList");                
             }
         }
         #endregion

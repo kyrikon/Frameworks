@@ -105,14 +105,14 @@
                     <TextBlock Text="Properies"
                                Style="{StaticResource TextBlockFormStyle}"
                                Grid.Row="8" />
-                    <ListView ItemsSource="{Binding DataContext.InheritedProperties.ItemList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                    <ListView ItemsSource="{Binding DataContext.InheritedProperties.ItemValList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                               Grid.Row="9"
                               Margin="2,6"
                               SelectedItem="{Binding DataContext.SelectedInheritedProperty,RelativeSource={RelativeSource AncestorType=local:ProjectMainView},Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Key}"
+                                    <TextBlock Text="{Binding Name}"
                                                Style="{StaticResource  TextBlockFormStyle}"
                                                KeyboardNavigation.IsTabStop="False" />
                                 </StackPanel>
@@ -127,7 +127,7 @@
                          DisplayMode="Light"
                          TitleVisibility="Collapsed"                         
                          Header="Content">
-                <ContentControl Content="{Binding DataContext.SelectedInheritedProperty.Value,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
+                <ContentControl Content="{Binding DataContext.SelectedInheritedProperty,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                                 ContentTemplate="{StaticResource InheritedPropertyItemsDataTemplate}"
                                 Visibility="{Binding DataContext.HasSelectedInheritedProperty,Converter={StaticResource b2Vis},RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                                 />

@@ -91,8 +91,7 @@ namespace DataInterface
                 return null;
             }
             
-        }
-        [JsonIgnore]
+        }       
         public KeyValuePair<string,object>? SelectedItem
         {
             get

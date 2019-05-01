@@ -55,8 +55,10 @@ namespace UI.WPF.Views.SimProject
             RemoveCustomListItemCmd = new DelegateCommand(() => RemoveCustomListItem());
             AddInheritedPropertyItemCmd = new DelegateCommand(() => AddInheritedPropertyItem());
             RemoveInheritedPropertyItemCmd = new DelegateCommand(() => RemoveInheritedPropertyItem());
-
+            MoveUpInheritedPropertyItemCmd = new DelegateCommand(() => MoveUpInheritedPropertyItem());
+            MoveDownInheritedPropertyItemCmd = new DelegateCommand(() => MoveDownInheritedPropertyItem());
         }
+      
 
         #endregion
         #region Commands           
@@ -108,6 +110,16 @@ namespace UI.WPF.Views.SimProject
         {
             get; private set;
         }
+
+        public DelegateCommand MoveUpInheritedPropertyItemCmd
+        {
+            get; private set;
+        }
+        public DelegateCommand MoveDownInheritedPropertyItemCmd
+        {
+            get; private set;
+        }
+
         #endregion
         #region Properties
         public DataModel DM
@@ -197,8 +209,6 @@ namespace UI.WPF.Views.SimProject
             }
             
         }
-     
-       
         public bool HasSelectedNode
         {
             get
@@ -322,11 +332,11 @@ namespace UI.WPF.Views.SimProject
         #endregion
 
         #region Inherited Property Members
-        public ObservableConcurrentDictionary<string, DynamicField> InheritedProperties
+        public InheritedPropertyDictionary InheritedProperties
         {
             get
             {
-                return GetPropertyValue<ObservableConcurrentDictionary<string, DynamicField>>();
+                return GetPropertyValue<InheritedPropertyDictionary>();
             }
             private set
             {
@@ -334,15 +344,15 @@ namespace UI.WPF.Views.SimProject
                 SetPropertyValue(value);
                 if (InheritedProperties.Any())
                 {
-                    SelectedInheritedProperty = InheritedProperties.FirstOrDefault();
+                    SelectedInheritedProperty = InheritedProperties.FirstOrDefault().Value;
                 }
             }
         }
-        public KeyValuePair<string, DynamicField> SelectedInheritedProperty
+        public DynamicField SelectedInheritedProperty
         {
             get
             {
-                return GetPropertyValue<KeyValuePair<string, DynamicField>>();
+                return GetPropertyValue<DynamicField>();
             }
             set
             {
@@ -376,7 +386,7 @@ namespace UI.WPF.Views.SimProject
         {
             get
             {
-                return SelectedInheritedProperty.Key != null;
+                return SelectedInheritedProperty != null;
             }
         }
         public string InheritedPropertyNameValidation
@@ -582,11 +592,13 @@ namespace UI.WPF.Views.SimProject
             }
             KeyValuePair<string, DynamicField> TmpItem = new KeyValuePair<string, DynamicField>(NewInheritedPropertyName, new DynamicField()
                                                                  { Name = NewInheritedPropertyName
+                                                                 , Enabled = true
+                                                                 , Rank = InheritedProperties.Count + 1
                                                                  ,  FieldTemplate = new FieldTemplate(PropertyType)
             });
             if (InheritedProperties.TryAdd(TmpItem))
             {
-                SelectedInheritedProperty = TmpItem;
+                SelectedInheritedProperty = TmpItem.Value;
                 InheritedPropertyNameValidation = string.Empty;
             }
             else
@@ -596,14 +608,46 @@ namespace UI.WPF.Views.SimProject
         }
         private void RemoveInheritedPropertyItem()
         {
-            if (SelectedInheritedProperty.Key != null)
+            if (SelectedInheritedProperty != null)
             {
                 DynamicField Obj = new DynamicField();
 
-                InheritedProperties.TryRemove(SelectedInheritedProperty.Key, out Obj);
+                InheritedProperties.TryRemove(SelectedInheritedProperty.Name, out Obj);
+            }
+        }
+        private void MoveDownInheritedPropertyItem()
+        {
+            //InheritedProperties
+            int currRank = SelectedInheritedProperty.Rank;
+            if(currRank < InheritedProperties.ItemList.Count )
+            {
+                //find next one
+                DynamicField SwapFld = InheritedProperties.ItemValList.FirstOrDefault(x => x.Rank == currRank + 1);
+                if(SwapFld != null)
+                {
+                    SwapFld.Rank = currRank;
+                    SelectedInheritedProperty.Rank++;
+                    InheritedProperties.PropertyRankChange();
+                }
+
             }
         }
 
+        private void MoveUpInheritedPropertyItem()
+        {
+            int currRank = SelectedInheritedProperty.Rank;
+            if (currRank > 1)
+            {
+                //find next one
+                DynamicField SwapFld = InheritedProperties.ItemValList.FirstOrDefault(x => x.Rank == currRank - 1);
+                if (SwapFld != null)
+                {
+                    SwapFld.Rank = currRank;
+                    SelectedInheritedProperty.Rank--;
+                    InheritedProperties.PropertyRankChange();
+                }
+            }
+        }
         #endregion
         #region Callbacks
         private async void DM_ModelInitialized(object sender, EventArgs args)

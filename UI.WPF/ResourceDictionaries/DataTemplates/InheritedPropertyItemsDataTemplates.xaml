@@ -4,6 +4,7 @@
                     xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:UI.WPF.Views.SimProject"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:DataCnt="clr-namespace:DataInterface;assembly=DataInterface"
                     x:Class="UI.WPF.ResourceDictionaries.InheritedPropertyItemsDataTemplates"
@@ -28,6 +29,7 @@
                          Header="Navigation">
                 <Grid HorizontalAlignment="Left">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -87,6 +89,65 @@
                     <dxe:CheckEdit IsChecked="{Binding FieldTemplate.AllowValidation}"                                  
                                   Grid.Row="10" />
 
+                    <TextBlock Text="Rank"
+                               Grid.Row="11"
+                               Style="{StaticResource TextBlockFormStyle}"
+                               />
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,5"
+                              
+                                HorizontalAlignment="Left"
+                                Grid.Row="12">
+                        <TextBlock Text="{Binding Rank}"
+                                   x:Name="RankTB"
+                                   Style="{StaticResource TextBlockFormStyle}"
+                                   />
+
+                        <Button Style="{StaticResource SlimButtonStyle}"
+                                Height="24"
+                                Width="24"
+                                MinWidth="24"
+                                Margin="0"
+                                ToolTip="Move Up"
+                                Command="{Binding DataContext.MoveUpInheritedPropertyItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}">
+                            <Button.Content>
+                                <Grid HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                                    <Image Source="{StaticResource DropUpIcon}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Width="18"
+                                           Height="18" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <Button Style="{StaticResource SlimButtonStyle}"
+                                Height="24"
+                                Width="24"
+                                MinWidth="24"
+                                Margin="2,0,2,0"
+                                ToolTip="Move Down"
+                                Command="{Binding DataContext.MoveDownInheritedPropertyItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}">
+                            <Button.Content>
+                                <Grid HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                                    <Image Source="{StaticResource DropDownIcon}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Width="18"
+                                           Height="18" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+
+                    </StackPanel>
+                    <TextBlock Text="Enabled"
+                               Grid.Row="13"
+                               Style="{StaticResource  TextBlockFormStyle}" />
+
+                    <dxe:CheckEdit IsChecked="{Binding Enabled}"
+                                   Grid.Row="14" />
 
                 </Grid>
             </lc:GroupBox>
