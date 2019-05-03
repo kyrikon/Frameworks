@@ -6,6 +6,9 @@ using FluentValidation.Results;
 using System.Linq;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using Core.Helpers;
+using DataInterface.Extensions;
+using System.ComponentModel;
 
 namespace DataInterface
 {
@@ -139,7 +142,7 @@ namespace DataInterface
         public bool Nullable { get; set; }
         public ValueFlags Flags { get; set; }
         public string AssemblyTypeName { get; set; }
-        //TODO: Find a way to serialize this
+
         [JsonIgnore]
         public IValidator Validator { get; set; }
     }
@@ -160,20 +163,35 @@ namespace DataInterface
     #region Field Template
     public class FieldTemplate : Core.Helpers.NotifyPropertyChanged
     {
+        #region Constructors
         public FieldTemplate()
         {
-
+            ValidateCmd = new DelegateCommand((x) => Validate());
         }
         public FieldTemplate(ValueType _ValType, bool _AllowValidation = true)
         {
             AllowValidation = _AllowValidation;
             ValueType = _ValType;
+            if (ValidatonRules == null)
+            {
+                ValidatonRules = ValueType.Validator.Rules;
+            }
+            ValidateCmd = new DelegateCommand((x) => Validate());
         }
+        #endregion
+
+        [JsonIgnore]
+        public DelegateCommand ValidateCmd
+        {
+            get;private set;
+        }
+        #region Properties
         [JsonProperty]
         public ValueType ValueType
         {
             get
             {
+
                 return GetPropertyValue<ValueType>();
             }
             private set
@@ -204,10 +222,19 @@ namespace DataInterface
             {
                 if (AllowValidation)
                 {
-                    VResult = ValueType.Validator.Validate(value);
+                    if (ValueType.Validator == null)
+                    {
+                        ValueTypes VT = new ValueTypes();
+                        ValueType.Validator = VT[ValueType.Name].Validator;
+                    }
+                    if (ValidatonRules == null)
+                    {
+                        ValidatonRules = ValueType.Validator.Rules;
+                    }
+                    ValidatonRules.Value = value;
+                    Validate();
                     Console.WriteLine($"Value {value}");
                     Console.WriteLine(ValidationErrors);
-                    OnPropertyChanged("ValidationErrors");
                     if (VResult.IsValid)
                     {
                         SetPropertyValue(value);
@@ -224,13 +251,11 @@ namespace DataInterface
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"Valid {VResult.IsValid}");
-                if (!VResult.IsValid)
+                if(VResult != null)
                 {
-                    sb.Append($"- {VResult.ToString(":")}");
+                 return   VResult.ValidationErrorText();
                 }
-                return sb.ToString();
+                return string.Empty;
             }
 
         }
@@ -247,8 +272,66 @@ namespace DataInterface
                 SetPropertyValue(value);
             }
         }
+        [JsonProperty]
+        public IValidationRules ValidatonRules
+        {
+            get
+            {
+                return GetPropertyValue<IValidationRules>();
+            }
+            private set
+            {
+                if(ValidatonRules != null)
+                {
+                    ((BaseValidationRules)ValidatonRules).PropertyChanged -= ValidationPropertyChanged;
+                }
+                SetPropertyValue(value);
+                if (ValidatonRules != null)
+                {
+                    ((BaseValidationRules)ValidatonRules).PropertyChanged +=   ValidationPropertyChanged;
+                }
+            }
+        }
 
+       
+        #endregion
+        #region Methods
+        private void Validate()
+        {
+            if (ValueType.Validator == null)
+            {
+                ValueTypes VT = new ValueTypes();
+                ValueType.Validator = VT[ValueType.Name].Validator;
+            }
+            if (ValidatonRules == null)
+            {
+                ValidatonRules = ValueType.Validator.Rules;
+            }
+            ValueType.Validator.Rules = ValidatonRules;
+            VResult = ValueType.Validator.Validate();
+            OnPropertyChanged("ValidationErrors");
 
+        }
+
+        #endregion
+
+        #region Callbacks
+        private void ValidationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName != "Value") { 
+            if(ValidatonRules.Value != DefaultValue)
+            {
+                ValidatonRules.Value = DefaultValue;
+            }
+            
+            Validate();
+                if (!VResult.IsValid)
+                {
+                    DefaultValue = ValidatonRules.ResetDefault();
+                }
+            }
+        } 
+        #endregion
     } 
     #endregion
 }

@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     x:Class="UI.WPF.ResourceDictionaries.EditorDataTemplates"
                     x:ClassModifier="public"
                     mc:Ignorable="d">
@@ -18,8 +19,9 @@
     <DataTemplate x:Key="IntEditTemplate">
         <dxe:TextEdit  Mask="D"
                        MaskType="Numeric"
+                       EditValueType="{x:Type sys:Int32}"
                        MaskUseAsDisplayFormat="True"
-                       EditValue="{Binding  Path=NewValue}"
+                       EditValue="{Binding  Path=NewValue,UpdateSourceTrigger=LostFocus}"
                        HorizontalContentAlignment="Right"
                        Style="{StaticResource SlimTextEditFormStyle}" />
     </DataTemplate>
@@ -45,9 +47,11 @@
     <DataTemplate x:Key="DfltIntEditTemplate">
         <dxe:TextEdit  Mask="D"
                        MaskType="Numeric"
+                       EditValueType="{x:Type sys:Int32}"
                        MaskUseAsDisplayFormat="True"
-                       EditValue="{Binding  Path=FieldTemplate.DefaultValue}"
-                       HorizontalContentAlignment="Right"
+                       AllowNullInput="True"
+                       EditValue="{Binding  Path=FieldTemplate.DefaultValue,UpdateSourceTrigger=LostFocus}"
+                       HorizontalContentAlignment="Right"                                      
                        Style="{StaticResource SlimTextEditFormStyle}" />
     </DataTemplate>
     <DataTemplate x:Key="DfltDecEditTemplate">

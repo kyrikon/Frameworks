@@ -8,7 +8,7 @@ namespace DataInterface
 {
     public class DateValidator : AbstractValidator<DateValidationRules>,IValidator
     {
-
+        private IValidationRules _Rules;
         public DateValidator()
         {
             this.CascadeMode = CascadeMode.StopOnFirstFailure;
@@ -19,7 +19,24 @@ namespace DataInterface
             Rules = new DateValidationRules();
         }
 
-        public IValidationRules Rules { get; set; }
+        public IValidationRules Rules
+        {
+            get
+            {
+                return _Rules;
+            }
+            set
+            {
+                if (value.GetType() == typeof(DateValidationRules))
+                {
+                    _Rules = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Can Only Allocate DateValidationRules");
+                }
+            }
+        }
         public DateValidationRules DateValidationRules
         {
             get
@@ -60,6 +77,10 @@ namespace DataInterface
         public ValidationResult Validate(object Val)
         {
             DateValidationRules.Value = Val;
+            return base.Validate(DateValidationRules);
+        }
+        public ValidationResult Validate()
+        {  
             return base.Validate(DateValidationRules);
         }
     }

@@ -14,13 +14,10 @@ namespace Core.Extensions
     public static class NullExt
     {
 
-        #region Json
         public static bool CheckNullValRef(this object Obj)
         {
             return Obj.GetType() == typeof(NullValRef);
         }
-
-        #endregion
 
     }
    

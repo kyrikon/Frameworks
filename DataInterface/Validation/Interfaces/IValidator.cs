@@ -16,16 +16,17 @@ namespace DataInterface
         #endregion
         #region Methods
         ValidationResult Validate(object Val);
+        ValidationResult Validate();
         #endregion
     }
     public interface IValidationRules
     {
         #region Properties       
-         object Value { get; set; }
-         bool Nullable { get; set; }
+        object Value { get; set; }
+        bool Nullable { get; set; }
         #endregion
 
+        object ResetDefault();
     }
-
 
 }

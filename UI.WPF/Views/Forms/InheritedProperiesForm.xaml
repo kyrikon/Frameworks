@@ -78,22 +78,12 @@
                               Grid.Row="4"
                               SelectedItem="{Binding DataContext.PropertyType,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
 
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="5">
-                        <TextBlock Text="Nullable"
-                                   Style="{StaticResource TextBlockFormStyle}" 
-                                   Margin="2,0,6,0"
-                                   />
-                        <dxe:CheckEdit IsChecked="{Binding DataContext.PropertyType.Nullable,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" 
-                                   Grid.Row="5" />
-                    </StackPanel>
-
                     <TextBlock Text="{Binding DataContext.InheritedPropertyNameValidation,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                                Style="{StaticResource TextBlockFormStyleValidation}"
-                               Grid.Row="6" />
+                               Grid.Row="5" />
                     
                     <StackPanel Orientation="Horizontal"
-                                Grid.Row="7" Margin="2,6"
+                                Grid.Row="6" Margin="2,6"
                                 HorizontalAlignment="Right">
                         <Button Content="Add" Style="{StaticResource SlimButtonStyle}"
                                 Command="{Binding DataContext.AddInheritedPropertyItemCmd,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}" />
@@ -104,9 +94,9 @@
 
                     <TextBlock Text="Properies"
                                Style="{StaticResource TextBlockFormStyle}"
-                               Grid.Row="8" />
+                               Grid.Row="7" />
                     <ListView ItemsSource="{Binding DataContext.InheritedProperties.ItemValList,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
-                              Grid.Row="9"
+                              Grid.Row="8"
                               Margin="2,6"
                               SelectedItem="{Binding DataContext.SelectedInheritedProperty,RelativeSource={RelativeSource AncestorType=local:ProjectMainView},Mode=TwoWay}">
                         <ListView.ItemTemplate>

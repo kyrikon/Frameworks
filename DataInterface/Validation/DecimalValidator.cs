@@ -8,7 +8,7 @@ namespace DataInterface
 {
     public class DecimalValidator : AbstractValidator<DecimalValidationRules>,IValidator
     {
-
+        private IValidationRules _Rules;
         public DecimalValidator()
         {
             this.CascadeMode = CascadeMode.StopOnFirstFailure;
@@ -19,9 +19,26 @@ namespace DataInterface
             Rules = new DecimalValidationRules();
         }
 
-       
 
-        public IValidationRules Rules { get; set; }
+
+        public IValidationRules Rules
+        {
+            get
+            {
+                return _Rules;
+            }
+            set
+            {
+                if (value.GetType() == typeof(DecimalValidationRules))
+                {
+                    _Rules = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Can Only Allocate DecimalValidationRules");
+                }
+            }
+        }
         public DecimalValidationRules DecimalValidationRules
         {
             get
@@ -62,6 +79,10 @@ namespace DataInterface
         public ValidationResult Validate(object Val)
         {
             DecimalValidationRules.Value = Val;
+            return base.Validate(DecimalValidationRules);
+        }
+        public ValidationResult Validate()
+        {
             return base.Validate(DecimalValidationRules);
         }
     }

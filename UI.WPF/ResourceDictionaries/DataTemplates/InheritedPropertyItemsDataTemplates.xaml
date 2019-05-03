@@ -14,7 +14,7 @@
         <ResourceDictionary Source="/ResourceDictionaries/StyleResource.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!--#region CustomList DataTemplates-->
+    <!--#region InheritedPropertyItemsDataTemplate DataTemplates-->
     <DataTemplate x:Key="InheritedPropertyItemsDataTemplate"
                   DataType="{x:Type DataCnt:DynamicField}">
         <lc:DockLayoutControl AllowItemSizing="True">
@@ -44,7 +44,8 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <!--14 rows-->
+                        <RowDefinition Height="auto" />
+                        <!--16 rows-->
                     </Grid.RowDefinitions>
                     <TextBlock Text="Property Details"
                                Grid.Row="0"
@@ -53,11 +54,6 @@
                     <TextBlock Text="{Binding FieldTemplate.ValueType.Name, StringFormat={}Value Type is {0}}"
                                Grid.Row="1"
                                Style="{StaticResource  TextBlockFormStyle}" />
-
-                    <TextBlock Text="{Binding FieldTemplate.ValueType.Nullable, StringFormat={}Value Nullable is {0}}"
-                               Grid.Row="2"
-                               Style="{StaticResource TextBlockFormStyle}"
-                               Margin="0,0,0,6" />
 
                     <TextBlock Text="Label Text"
                                Style="{StaticResource  TextBlockFormStyle}"
@@ -70,27 +66,31 @@
                                Grid.Row="5"
                                Style="{StaticResource  TextBlockFormStyle}" />
 
+                    
                     <ContentControl Content="{Binding}"
                                     ContentTemplateSelector="{StaticResource DynamicFieldTypeTemplate}"
                                     Grid.Row="6" />
 
-                    <TextBlock Text="Format String"
+                    <TextBlock Text="{Binding Path=FieldTemplate.ValidationErrors }"
                                Grid.Row="7"
+                               Style="{StaticResource  TextBlockFormStyleValidation}" />
+                    <TextBlock Text="Format String"
+                               Grid.Row="8"
                                Style="{StaticResource  TextBlockFormStyle}" />
 
                     <dxe:TextEdit Text="{Binding FieldTemplate.FormatString}"
                                   Style="{StaticResource SlimTextEditFormStyle}"
-                                  Grid.Row="8" />
+                                  Grid.Row="9" />
 
                     <TextBlock Text="Enable Validation"
-                               Grid.Row="9"
+                               Grid.Row="10"
                                Style="{StaticResource  TextBlockFormStyle}" />
 
                     <dxe:CheckEdit IsChecked="{Binding FieldTemplate.AllowValidation}"                                  
-                                  Grid.Row="10" />
+                                  Grid.Row="11" />
 
                     <TextBlock Text="Rank"
-                               Grid.Row="11"
+                               Grid.Row="12"
                                Style="{StaticResource TextBlockFormStyle}"
                                />
 
@@ -98,7 +98,7 @@
                                 Margin="0,5"
                               
                                 HorizontalAlignment="Left"
-                                Grid.Row="12">
+                                Grid.Row="13">
                         <TextBlock Text="{Binding Rank}"
                                    x:Name="RankTB"
                                    Style="{StaticResource TextBlockFormStyle}"
@@ -143,11 +143,11 @@
 
                     </StackPanel>
                     <TextBlock Text="Enabled"
-                               Grid.Row="13"
+                               Grid.Row="14"
                                Style="{StaticResource  TextBlockFormStyle}" />
 
                     <dxe:CheckEdit IsChecked="{Binding Enabled}"
-                                   Grid.Row="14" />
+                                   Grid.Row="15" />
 
                 </Grid>
             </lc:GroupBox>
@@ -160,14 +160,138 @@
                          HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch"
                          Header="Navigation">
-                <TextBlock Text="Validation"
-                           Style="{StaticResource HeaderStyle}"
-                           Grid.Row="0" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions >
+                    <TextBlock Text="Validation"
+                               Style="{StaticResource HeaderStyle}"
+                               Grid.Row="0" />
+                   <ContentControl Content="{Binding}"
+                                    ContentTemplateSelector="{StaticResource ValidationTypeTemplate}"
+                                    Grid.Row="1" />
+                </Grid>
+           
             </lc:GroupBox>
         </lc:DockLayoutControl>
     </DataTemplate>
+    
     <!--#endregion-->
+    <!--#region Validation DataTemplates-->
+    <DataTemplate x:Key="IntValidationTemplate"
+                  DataType="{x:Type DataCnt:DynamicField}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <!--10 rows-->
+            </Grid.RowDefinitions>
+            <TextBlock Text="Nullable"
+                       Grid.Row="0"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:CheckEdit IsChecked="{Binding FieldTemplate.ValidatonRules.Nullable}"
+                       Grid.Row="1" />
+            <TextBlock Text="Min"
+                       Grid.Row="2"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit  Mask="D"
+                           MaskType="Numeric"
+                           AllowNullInput="True"                           
+                           Grid.Row="3"
+                           MaskUseAsDisplayFormat="True"
+                           EditValue="{Binding  Path= FieldTemplate.ValidatonRules.Min}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+            <TextBlock Text="Max"
+                       Grid.Row="4"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit  Mask="D"
+                           MaskType="Numeric"
+                           AllowNullInput="True"
+                           Grid.Row="5"
+                           MaskUseAsDisplayFormat="True"
+                           EditValue="{Binding  Path=FieldTemplate.ValidatonRules.Max}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+        </Grid>
 
+    </DataTemplate>
+    <DataTemplate x:Key="StrValidationTemplate"
+                  DataType="{x:Type DataCnt:DynamicField}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <!--10 rows-->
+            </Grid.RowDefinitions>
+            <!--<TextBlock Text="Nullable"
+                       Grid.Row="0"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:CheckEdit IsChecked="{Binding FieldTemplate.ValidatonRules.Nullable}"
+                           Grid.Row="1" />-->
+            <TextBlock Text="Min Length"
+                       Grid.Row="0"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit  Mask="D"
+                           MaskType="Numeric"
+                           AllowNullInput="True"
+                           Grid.Row="1"
+                           MaskUseAsDisplayFormat="True"
+                           EditValue="{Binding  Path= FieldTemplate.ValidatonRules.MinLength}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+            <TextBlock Text="Max Length"
+                       Grid.Row="2"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit  Mask="D"
+                           MaskType="Numeric"
+                           AllowNullInput="True"
+                           Grid.Row="3"
+                           MaskUseAsDisplayFormat="True"
+                           EditValue="{Binding  Path=FieldTemplate.ValidatonRules.MaxLength}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+
+            <TextBlock Text="RegExp"
+                       Grid.Row="4"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit  AllowNullInput="True"
+                           Grid.Row="5"
+                           EditValue="{Binding  Path=FieldTemplate.ValidatonRules.RegExpPattern}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+        </Grid>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="DecValidationTemplate"
+                  DataType="{x:Type DataCnt:DynamicField}">
+        <TextBlock Text="DEC" />
+
+    </DataTemplate>
+    <DataTemplate x:Key="DateValidationTemplate"
+                  DataType="{x:Type DataCnt:DynamicField}">
+        <TextBlock Text="DATE" />
+
+    </DataTemplate>
+    <!--#endregion-->
 
 
 </ResourceDictionary>

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DataInterface;
+using DataInterface.Extensions;
+using DevExpress.Xpf.Editors;
+using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +17,10 @@ namespace UI.WPF.ResourceDictionaries
         {
             InitializeComponent();
         }
+
+        private void TextEdit_Validate(object sender, DevExpress.Xpf.Editors.ValidationEventArgs e)
+        {
+
+        }        
     }
 }

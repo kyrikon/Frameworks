@@ -18,35 +18,10 @@ namespace Testingconsoleapp
         {
 
 
-            string test = "A";
+            IntValidator IV = new IntValidator();
+            string Serialize = IV.ToJson();
 
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "1AC";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "A 1C ";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "A 1C";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "1_AC";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "_AC";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "AC_";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "AC1";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "ab-cde";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "ab_c1";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "12";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()} {test.IsNumberOnly()}");
-            test = "abcd";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
-            test = "abc ";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
-            test = "ab cds";
-            Console.WriteLine($"({test}) {test.IsFieldRules()} {test.IsAlphaOnly()}");
+            IntValidator IV2 = Serialization.FromJson<IntValidator>(Serialize);
 
             HDynamicObject TestSerial = new HDynamicObject();
             ValueTypes VT = new ValueTypes();

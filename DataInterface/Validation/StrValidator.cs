@@ -8,18 +8,37 @@ namespace DataInterface
 {
     public class StrValidator : AbstractValidator<StrValidationRules>,IValidator
     {
-
+        private IValidationRules _Rules;
         public StrValidator()
         {
             this.CascadeMode = CascadeMode.StopOnFirstFailure;
-            RuleFor(x => x.Value).NotNull().When(x => !x.Nullable).WithMessage(x => $"Default Value must not be null");
-            RuleFor(x => x).Must(x => x.Value?.GetType() ==typeof(string)).Unless(x => x.Value == null).WithMessage(x => $"Default Value must be Type {typeof(string).Name}");
-            RuleFor(x => x).Must(LengthCheck).WithMessage(x => $"Default Value length be  {x.MinLength} to {x.MaxLength} characters");
-            RuleFor(x => (string)x.Value).Matches(x => x.RegExpPattern).When(x => !string.IsNullOrEmpty(x.RegExpPattern)).WithMessage(x => $"Default Value {x.Value} Doesnt match Pattern [{x.RegExpPattern}]");
+           base.
+            RuleFor(x => x.Value).NotNull().When(x => !x.Nullable).WithMessage(x => $"Value must not be null");
+            RuleFor(x => x).Must(x => x.Value?.GetType() ==typeof(string)).Unless(x => x.Value == null).WithMessage(x => $"Value must be Type {typeof(string).Name}");
+            RuleFor(x => x).Must(MinMaxLengthCheck).WithMessage(x => $"Min length must be less than or equal to max length");
+            RuleFor(x => x).Must(LengthCheck).WithMessage(x => $"Value length between  {x.MinLength} to {x.MaxLength} characters");           
+            RuleFor(x => (string)x.Value).Matches(x => x.RegExpPattern).When(x => !string.IsNullOrEmpty(x.RegExpPattern)).WithMessage(x => $"Value {x.Value} Doesnt match Pattern [{x.RegExpPattern}]");
             Rules = new StrValidationRules();
         }
 
-        public IValidationRules Rules { get; set; }
+        public IValidationRules Rules
+        {
+            get
+            {
+                return _Rules;
+            }
+            set
+            {
+                if (value.GetType() == typeof(StrValidationRules))
+                {
+                    _Rules = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Can Only Allocate StrValidationRules");
+                }
+            }
+        }
         public StrValidationRules StrRules
         {
             get
@@ -57,14 +76,41 @@ namespace DataInterface
             
 
         }
+        private bool MinMaxLengthCheck(StrValidationRules CurrItem)
+        {
+            try
+            {
+               
+                if (CurrItem.MinLength.HasValue && CurrItem.MaxLength.HasValue)
+                {
+                    return CurrItem.MinLength.Value <= CurrItem.MaxLength.Value;
+                }
+                return true;
+            }
+            catch (InvalidCastException)
+            {
+
+            }
+            return true;
+
+
+        }
         public  ValidationResult Validate(object Val)
         {
             StrRules.Value = Val;
             return base.Validate(StrRules);
         }
+        public ValidationResult Validate()
+        {
+            return base.Validate(StrRules);
+        }
     }
     public class StrValidationRules : BaseValidationRules
     {
+        public StrValidationRules()
+        {
+            Nullable = true;
+        }
         public int? MinLength
         {
             get
@@ -97,6 +143,11 @@ namespace DataInterface
             {
                 SetPropertyValue<string>(value);
             }
+        }
+        public override object ResetDefault()
+        {
+
+            return string.Empty;
         }
     }
 }

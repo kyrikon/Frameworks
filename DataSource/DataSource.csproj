@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>PLEXOSSign.pfx</AssemblyOriginatorKeyFile>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

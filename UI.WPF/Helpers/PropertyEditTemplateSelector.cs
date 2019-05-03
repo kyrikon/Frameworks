@@ -115,4 +115,36 @@ namespace UI.WPF.Helpers
             return null;
         }
     }
+    public class ValidationTemplateSelector : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            FrameworkElement element = container as FrameworkElement;
+
+            if (element != null && item != null)
+            {
+
+               DynamicField DT = item as DynamicField;
+               
+                if (DT != null)
+                {
+                    IValidationRules VR = DT.FieldTemplate.ValidatonRules;
+                    switch (VR)
+                    {
+                        case IntValidationRules Int_type:
+                            return element.FindResource("IntValidationTemplate") as DataTemplate;
+                        case StrValidationRules Str_type:
+                            return element.FindResource("StrValidationTemplate") as DataTemplate;
+                        case DecimalValidationRules Dec_type:
+                            return element.FindResource("DecValidationTemplate") as DataTemplate;
+                        case DateValidationRules Date_type:
+                            return element.FindResource("DateValidationTemplate") as DataTemplate;
+                        default:
+                            return element.FindResource("StrValidationTemplate") as DataTemplate;
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }
