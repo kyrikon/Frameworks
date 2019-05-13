@@ -208,18 +208,18 @@
                            AllowNullInput="True"                           
                            Grid.Row="3"
                            MaskUseAsDisplayFormat="True"
-                           EditValue="{Binding  Path= FieldTemplate.ValidatonRules.Min}"
+                           EditValue="{Binding Path=FieldTemplate.ValidatonRules.Min}"
                            HorizontalContentAlignment="Right"
                            Style="{StaticResource SlimTextEditFormStyle}" />
             <TextBlock Text="Max"
                        Grid.Row="4"
-                       Style="{StaticResource  TextBlockFormStyle}" />
+                       Style="{StaticResource TextBlockFormStyle}" />
             <dxe:TextEdit  Mask="D"
                            MaskType="Numeric"
                            AllowNullInput="True"
                            Grid.Row="5"
                            MaskUseAsDisplayFormat="True"
-                           EditValue="{Binding  Path=FieldTemplate.ValidatonRules.Max}"
+                           EditValue="{Binding Path=FieldTemplate.ValidatonRules.Max}"
                            HorizontalContentAlignment="Right"
                            Style="{StaticResource SlimTextEditFormStyle}" />
         </Grid>
@@ -254,7 +254,7 @@
                            AllowNullInput="True"
                            Grid.Row="1"
                            MaskUseAsDisplayFormat="True"
-                           EditValue="{Binding  Path= FieldTemplate.ValidatonRules.MinLength}"
+                           EditValue="{Binding  Path=FieldTemplate.ValidatonRules.MinLength}"
                            HorizontalContentAlignment="Right"
                            Style="{StaticResource SlimTextEditFormStyle}" />
             <TextBlock Text="Max Length"
@@ -283,7 +283,50 @@
 
     <DataTemplate x:Key="DecValidationTemplate"
                   DataType="{x:Type DataCnt:DynamicField}">
-        <TextBlock Text="DEC" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <!--10 rows-->
+            </Grid.RowDefinitions>
+            <TextBlock Text="Nullable"
+                       Grid.Row="0"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:CheckEdit IsChecked="{Binding FieldTemplate.ValidatonRules.Nullable}"
+                           Grid.Row="1" />
+            <TextBlock Text="Min Dec"
+                       Grid.Row="2"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit Mask="#########0.#####"
+                           Grid.Row="3"
+                           MaskType="Numeric"
+                           MaskShowPlaceHolders="False"
+                           dxe:NumericMaskOptions.AlwaysShowDecimalSeparator="False"
+                           MaskUseAsDisplayFormat="True"
+                           EditValue="{Binding  Path=FieldTemplate.ValidatonRules.Min}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+            <TextBlock Text="Max"
+                       Grid.Row="4"
+                       Style="{StaticResource  TextBlockFormStyle}" />
+            <dxe:TextEdit  Mask="#########0.#####"
+                           MaskType="Numeric"
+                           Grid.Row="5"
+                           MaskShowPlaceHolders="False"
+                           dxe:NumericMaskOptions.AlwaysShowDecimalSeparator="False"
+                           MaskUseAsDisplayFormat="True"
+                           EditValue="{Binding  Path= FieldTemplate.ValidatonRules.Max}"
+                           HorizontalContentAlignment="Right"
+                           Style="{StaticResource SlimTextEditFormStyle}" />
+        </Grid>
 
     </DataTemplate>
     <DataTemplate x:Key="DateValidationTemplate"

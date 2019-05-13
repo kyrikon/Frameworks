@@ -146,7 +146,6 @@ namespace DataInterface
         }
         public override object ResetDefault()
         {
-
             return string.Empty;
         }
     }
