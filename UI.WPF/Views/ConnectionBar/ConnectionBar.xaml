@@ -76,25 +76,23 @@
             <dx:SimpleButton Glyph="{StaticResource AddGroup}"  Margin="0,0,2,0"  Command="{Binding AddGrpCmd}"  ToolTip="Add a new group" Visibility="Collapsed"/>
             <dx:SimpleButton Glyph="{StaticResource NewProject}"  Margin="2,0,2,0"  Command="{Binding NewProjectCmd}"  ToolTip="New Project"/>
         </StackPanel>
-        <dxa:AccordionControl
-            Grid.Row="1"
-                x:Name="accordion"
-                ExpandMode="MultipleOrNone"
-                SelectedItem="{Binding SelectedConnectionItem}"
-                SelectionUnit="SubItem"
-                ItemsSource="{Binding ClientConnectionGroups}"
-                ChildrenPath="ConnectionBarItems"
-                ShowSearchControl="True"
-                MouseDoubleClick="Accordion_MouseDoubleClick"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ItemContainerStyle="{StaticResource accordionItemContainerStyle}"           
-                VerticalAlignment="Top"
-                RootItemDisplayMode="Group" >
+        <dxa:AccordionControl Grid.Row="1"
+                              x:Name="accordion"
+                              ExpandMode="MultipleOrNone"
+                              SelectedItem="{Binding SelectedConnectionItem}"
+                              SelectionUnit="SubItem"
+                              ItemsSource="{Binding ClientConnectionGroups}"
+                              ChildrenPath="ConnectionBarItems"
+                              ShowSearchControl="True"
+                              MouseDoubleClick="Accordion_MouseDoubleClick"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ItemContainerStyle="{StaticResource accordionItemContainerStyle}"
+                              VerticalAlignment="Top"
+                              RootItemDisplayMode="Group">
             <dxmvvm:Interaction.Behaviors>
-                <dxmvvm:FocusBehavior SourceName="root" EventName="ModuleAppear"/>
+                <dxmvvm:FocusBehavior SourceName="root"
+                                      EventName="ModuleAppear" />
             </dxmvvm:Interaction.Behaviors>
         </dxa:AccordionControl>
-        
-       
     </Grid>
 </UserControl>

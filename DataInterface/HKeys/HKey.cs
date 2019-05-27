@@ -27,13 +27,29 @@ namespace DataInterface
             _Key = _inpt;
            
         }
-      
-        
-        #endregion        
+        public HKey(string _inpt)
+        {
+            if (_inpt.Length == 0)
+            {
+                throw new HKeyException("Key must have length > 0");
+            }
+            string[] Split = _inpt.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                _Key = Array.ConvertAll<string, int>(Split, int.Parse);
+            }
+            catch (FormatException)
+            {
+                throw new HKeyException("String Key in incorrect format. Must be N1.N2....NN where N is an integer");
+            }
+
+        }
+
+        #endregion
         #region Commands   
         #endregion
         #region Properties
-      
+
         public int this[int index]
         {
             get
@@ -166,7 +182,10 @@ namespace DataInterface
             newKey[newKey.Length -1] = LastKey;
             return new HKey(newKey);
         }
-
+        public override string ToString()
+        {
+            return String.Join(".", _Key.Select(p => p.ToString()).ToArray());
+        }
 
         #endregion
         #region Static
@@ -177,6 +196,15 @@ namespace DataInterface
         static public implicit operator int[] (HKey value)
         {
             return value._Key;
+        }
+
+        static public implicit operator HKey(string value)
+        {
+            return new HKey(value);
+        }
+        static public implicit operator string (HKey value)
+        {
+            return value.ToString();
         }
         public static HKey RootKeyVal
         {

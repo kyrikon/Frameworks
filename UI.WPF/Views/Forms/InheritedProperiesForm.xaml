@@ -25,7 +25,7 @@
              d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
-            <sys:String x:Key="RegexpNameRule">^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$</sys:String>
+            <sys:String x:Key="RegexpNameRule">^[a-zA-Z](?:[a-zA-Z0-9_.]*[a-zA-Z0-9])?$</sys:String>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -66,7 +66,7 @@
                     <dxe:TextEdit Style="{StaticResource  SlimTextEditFormStyle}"
                                   MaskType="RegEx"
                                   MaskUseAsDisplayFormat="True"
-                                  Mask="[a-zA-Z]\w*[a-zA-Z0-9]"
+                                  Mask="[a-zA-Z]+[\.]?+[_]?+([a-zA-Z0-9]*)"
                                   Text="{Binding DataContext.NewInheritedPropertyName,RelativeSource={RelativeSource AncestorType=local:ProjectMainView}}"
                                   Grid.Row="2"/>
                     <TextBlock Text="Property Type"

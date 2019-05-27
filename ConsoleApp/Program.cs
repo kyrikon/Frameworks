@@ -17,6 +17,20 @@ namespace Testingconsoleapp
         static async Task Main(string[] args)
         {
 
+            HKey aKey = new HKey("1.2.1");
+            Console.WriteLine(aKey);
+            HKey BKey = new HKey(new int[] { 2,3,4});
+            Console.WriteLine(BKey);
+            HKey cKey = "1.2.3.4";
+            Console.WriteLine(cKey);
+            HKey dKey =new int[] { 2, 3, 5 };
+            Console.WriteLine(dKey);
+          
+            Func<int, string> TimesTenStr = a => (a * 10).ToString();
+
+            Console.WriteLine(TimesTenStr(10));
+    
+
 
             IntValidator IV = new IntValidator();
             string Serialize = IV.ToJson();
