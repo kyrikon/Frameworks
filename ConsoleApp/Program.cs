@@ -8,7 +8,9 @@ using DataInterface;
 using DataSource;
 using System.Reactive.Linq;
 using System.ComponentModel;
-using System.Dynamic;
+using MongoDB.Driver;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Testingconsoleapp
 {
@@ -16,20 +18,22 @@ namespace Testingconsoleapp
     {
         static async Task Main(string[] args)
         {
+            MongoPlay();
+
 
             HKey aKey = new HKey("1.2.1");
             Console.WriteLine(aKey);
-            HKey BKey = new HKey(new int[] { 2,3,4});
+            HKey BKey = new HKey(new int[] { 2, 3, 4 });
             Console.WriteLine(BKey);
             HKey cKey = "1.2.3.4";
             Console.WriteLine(cKey);
-            HKey dKey =new int[] { 2, 3, 5 };
+            HKey dKey = new int[] { 2, 3, 5 };
             Console.WriteLine(dKey);
-          
+
             Func<int, string> TimesTenStr = a => (a * 10).ToString();
 
             Console.WriteLine(TimesTenStr(10));
-    
+
 
 
             IntValidator IV = new IntValidator();
@@ -40,8 +44,8 @@ namespace Testingconsoleapp
             HDynamicObject TestSerial = new HDynamicObject();
             ValueTypes VT = new ValueTypes();
 
-            FieldTemplate NewField = new FieldTemplate(VT[ValueTypes.Text]);                    
-            StrValidationRules IRule = (StrValidationRules)NewField.ValueType.Validator.Rules;          
+            FieldTemplate NewField = new FieldTemplate(VT[ValueTypes.Text]);
+            StrValidationRules IRule = (StrValidationRules)NewField.ValueType.Validator.Rules;
             IRule.MinLength = null;
 
             IRule.RegExpPattern = @"^[a-zA-Z](?:[a-zA-Z0-9_]*[a-zA-Z0-9])?$";
@@ -59,7 +63,7 @@ namespace Testingconsoleapp
             NewField.DefaultValue = "ab-cde".ToUpper();
             NewField.DefaultValue = "ab_c1".ToUpper();
             NewField.DefaultValue = "12";
-            IRule.RegExpPattern = null ;
+            IRule.RegExpPattern = null;
             NewField.DefaultValue = "45";
             NewField.DefaultValue = 0;
             NewField.DefaultValue = "d";
@@ -88,38 +92,36 @@ namespace Testingconsoleapp
 
             HKeyDynamicObjectDictionary Dict = new HKeyDynamicObjectDictionary();
 
-          
-           // Src.Connection.Connect();
 
-         //   await Src.GetObjects().ForEachAsync((itm) => Dict.TryAdd(itm));
-           //var getItems =  await  Src.GetObjects().ToList();
-           // Dict.AddList(getItems);
-           // byte[] SerBin = Dict.ToBinary();
-           // using (Stream file = File.OpenWrite(@"Ei.Bin"))
-           // {
-           //     file.Write(SerBin, 0, SerBin.Length);
-           // }
+            // Src.Connection.Connect();
 
-           // FileStream stream = File.OpenRead(@"Ei.Bin");
-           // byte[] fileBytes = new byte[stream.Length];
+            //   await Src.GetObjects().ForEachAsync((itm) => Dict.TryAdd(itm));
+            //var getItems =  await  Src.GetObjects().ToList();
+            // Dict.AddList(getItems);
+            // byte[] SerBin = Dict.ToBinary();
+            // using (Stream file = File.OpenWrite(@"Ei.Bin"))
+            // {
+            //     file.Write(SerBin, 0, SerBin.Length);
+            // }
 
-           // stream.Read(fileBytes, 0, fileBytes.Length);
-           // stream.Close();
-           // HKeyDictionary cpyDict = HKeyDictionary.FromBinary(fileBytes);
-            
+            // FileStream stream = File.OpenRead(@"Ei.Bin");
+            // byte[] fileBytes = new byte[stream.Length];
 
-          //  DataModel model = new DataModel();
-        //    model.Initialize();
-       //     model.ModelInitialized += Model_ModelInitialized;
+            // stream.Read(fileBytes, 0, fileBytes.Length);
+            // stream.Close();
+            // HKeyDictionary cpyDict = HKeyDictionary.FromBinary(fileBytes);
+
+
+            //  DataModel model = new DataModel();
+            //    model.Initialize();
+            //     model.ModelInitialized += Model_ModelInitialized;
             Console.WriteLine("Loading Data");
-                      
-            while(true)
+
+            while (true)
             {
-               
+
             }
         }
-
-
 
         private static void PropChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -129,10 +131,10 @@ namespace Testingconsoleapp
         private static void Model_ModelInitialized(object sender, EventArgs args)
         {
             Console.WriteLine("Loading Complete");
-           // Help();
+            // Help();
             while (true)
             {
-             //   ParseCmd(Console.ReadLine(), (DataModel)sender);
+                //   ParseCmd(Console.ReadLine(), (DataModel)sender);
             }
         }
 
@@ -229,7 +231,7 @@ namespace Testingconsoleapp
         //    //{
         //    //    Console.WriteLine($"Invalid Key:");
         //    //}
-           
+
 
         //}
         //private static void DeleteProp(DataObject Po)
@@ -254,7 +256,7 @@ namespace Testingconsoleapp
         //    }
         //    else
         //    {
-                
+
         //        Po.Undo();
         //    }
 
@@ -334,7 +336,7 @@ namespace Testingconsoleapp
         //    {
         //        Console.WriteLine($"Key - {key} not found");
         //    }
-            
+
         //}
         //private static void Help()
         //{
@@ -397,9 +399,43 @@ namespace Testingconsoleapp
         //        cnt++;
         //    }
         //    HKey DK = Po.Hierarchy.CreateKey(intRes);
-           
+
         //    //Console.WriteLine(Po.SetCurrenItem(DK));
         //}
-       
+        private async static void MongoPlay()
+        {
+            var client = new MongoClient(new MongoUrl(@"mongodb://localhost:27017"));
+            var db = client.GetDatabase("Test");
+            var x = db.GetCollection<CashSim>("CashSimH");
+            using (IAsyncCursor<CashSim> cursor = await x.FindAsync(x => x.Name.Length > 0))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    IEnumerable<CashSim> batch = cursor.Current;
+                    foreach (CashSim document in batch)
+                    {
+                        Console.WriteLine($"From Mongo ({new HKey(document.HKey).ToString()}) {document.Name}");
+                    }
+                }
+            }
+            var options = new ChangeStreamOptions { FullDocument = ChangeStreamFullDocumentOption.UpdateLookup };
+            var enumerator = x.Watch(options).ToEnumerable().GetEnumerator();
+            enumerator.MoveNext();
+            var next = enumerator.Current;
+            CashSim getchange = next.FullDocument;
+            Console.WriteLine($"Change From Mongo ({new HKey(getchange.HKey).ToString()}) {getchange.Name}");
+            enumerator.Dispose();
+        }
+        public class CashSim
+        {
+            [BsonId]
+            [BsonRepresentation(BsonType.ObjectId)]
+            public string Id { get; set; }
+
+            public string Name { get; set; }
+
+            public int[] HKey { get; set; }
+
+        }
     }
 }

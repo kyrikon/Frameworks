@@ -215,7 +215,21 @@ namespace DataInterface
                 }
             }
         }
-
+        [JsonProperty]
+        public bool IsFixed
+        {
+            get
+            {
+                return GetPropertyValue<bool>();
+            }
+           private set
+            {
+                if (GetPropertyValue<bool>() != value)
+                {
+                    SetPropertyValue<bool>(value);                   
+                }
+            }
+        }
         #endregion
         #region Methods     
         private void ExpandParents(HDynamicObject Obj)

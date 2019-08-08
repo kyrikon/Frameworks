@@ -48,7 +48,10 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <!--12 Rows-->
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <!--13 Rows-->
             </Grid.RowDefinitions>
             <TextBlock Style="{StaticResource TextBlockFormStyle}" Grid.Row="0">
                 <TextBlock.Text>
@@ -92,18 +95,19 @@
                           Style="{StaticResource MultiLineTextEditFormStyle}"
                           Grid.Row="7"
                          />
-            <TextBlock Text="Rank" Grid.Row="8"
-                   Style="{StaticResource TextBlockFormStyle}"
+            <dxe:CheckEdit Content="Read Only" IsChecked="{Binding SelectedNode.IsReadOnly,Mode=TwoWay}"  Grid.Row="8" />
+            <TextBlock Text="Rank" Grid.Row="9"
+                       Style="{StaticResource TextBlockFormStyle}"
                        Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
 
             <StackPanel Orientation="Horizontal" Margin="0,5" 
                         Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
                         HorizontalAlignment="Left"
-                        Grid.Row="9">
+                        Grid.Row="10">
                 <TextBlock Text="{Binding SelectedNode.Rank}" x:Name="RankTB"
                            Style="{StaticResource TextBlockFormStyle}"
                            Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}" />
-                
+
                 <Button Style="{StaticResource SlimButtonStyle}"
                         Height="24"
                         Width="24"
@@ -139,22 +143,30 @@
                         </Grid>
                     </Button.Content>
                 </Button>
-               
             </StackPanel>
+
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
-                        Grid.Row="10"
-                        >
+                        Visibility="{Binding SelectedNode.IsFixed,Converter={StaticResource b2VisNeg}}"
+                        Grid.Row="11">
                 <Button Style="{StaticResource SlimButtonStyle}"
-                    Content="New Folder" 
+                        Content="New Folder"
                     Command="{Binding AddFldrCmd}" />
+                <Button Style="{StaticResource SlimButtonStyle}"                     
+                    Command="{Binding AddFldrCmd}" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="New" Margin="0,0,2,0"/>
+                            <TextBlock Text="{Binding SelectedNode.Name}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Button Style="{StaticResource SlimButtonStyle}"
-                        Content="Remove"
-                        Visibility="{Binding SelectedNode.HID.IsRoot,Converter={StaticResource b2VisNeg}}"
+                        Content="Remove"                       
                         Command="{Binding DelFldrCmd}" />
             </StackPanel>
             <TextBlock Text="{Binding Validation}"
-                       Grid.Row="11"
+                       Grid.Row="12"
                        Margin="10,10,2,2"
                        Style="{StaticResource TextBlockFormStyleValidation}" />
         </Grid>
