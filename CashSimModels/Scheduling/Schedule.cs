@@ -18,6 +18,7 @@ namespace CashSimModels.Scheduling
             FrequencyUnits = 1;
             IncludeDays = Days.All;
             NumOccurences = -1;
+            NextWorkingDay = true;
         }
         #endregion
         #region Properties  
@@ -47,6 +48,10 @@ namespace CashSimModels.Scheduling
         {
             get;set;
         }
+        public bool NextWorkingDay
+        {
+            get;set;
+        } 
 
         #endregion
         #region Methods     
@@ -54,6 +59,8 @@ namespace CashSimModels.Scheduling
         {
             DateTime CurrDate = new[] { FirstDate, tl.StartDate }.Max();
             DateTime EndDate = tl.EndDate;
+            DateTime NextDate = CurrDate;
+
             if (LastDate.HasValue)
             {
                  EndDate = new[] { LastDate.Value, tl.EndDate }.Min();
@@ -62,8 +69,16 @@ namespace CashSimModels.Scheduling
 
             if (DayOfWeekEnabled(CurrDate.DayOfWeek))
             {
+                if (NextWorkingDay)
+                {
+                    CurrDate = Schedule.NextWorkingDate(CurrDate);
+                }
                 DayCnt++;
                 yield return CurrDate;
+            }
+            if(CurrDate != NextDate)
+            {
+                CurrDate = NextDate;
             }
             while (CurrDate < EndDate)
             {
@@ -80,11 +95,25 @@ namespace CashSimModels.Scheduling
                         CurrDate = CurrDate.AddDays(FrequencyUnits * 7);
                         break;
                     case (FrequencyType.Monthly):
+                        if (CurrDate != NextDate)
+                        {
+                            CurrDate = NextDate;
+                        }
                         CurrDate = CurrDate.AddMonths(FrequencyUnits);
+                        NextDate = CurrDate;
                         break;
                     case (FrequencyType.Yearly):
+                        if (CurrDate != NextDate)
+                        {
+                            CurrDate = NextDate;
+                        }
                         CurrDate = CurrDate.AddYears(FrequencyUnits);
+                        NextDate = CurrDate;
                         break;
+                }
+                if (NextWorkingDay)
+                {
+                    CurrDate = Schedule.NextWorkingDate(CurrDate);
                 }
                 //DayOfWeek logic
                 if (DayOfWeekEnabled(CurrDate.DayOfWeek))
@@ -99,6 +128,8 @@ namespace CashSimModels.Scheduling
         {
             return IncludeDays.HasFlag(GetDayOfWeekMap[dow]);
         }
+       
+
         #endregion
 
         #region CallBacks           
@@ -120,6 +151,14 @@ namespace CashSimModels.Scheduling
                 return DaysFlagMap.MapDayOfWeek;
             }
 
+        }
+        public static DateTime NextWorkingDate(DateTime dt)
+        {
+            while (Days.WeekEnd.HasFlag(Schedule.GetDayOfWeekMap[dt.DayOfWeek]))
+            {
+                dt = dt.AddDays(1);
+            }
+            return dt;
         }
         #endregion
     }
