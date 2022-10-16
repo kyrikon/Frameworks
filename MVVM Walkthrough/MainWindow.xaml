@@ -17,9 +17,9 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="{Binding SomeText}" Margin="5" Width="{Binding ElementName=myTB,Path=Width}"/>
-        <TextBox Name="myTB" Grid.Column="1" Grid.Row="0" MaxLength="20"  Text="{Binding SomeText, UpdateSourceTrigger=PropertyChanged}" Width="200" IsEnabled="{Binding IsTBEnabled}" VerticalContentAlignment="Center" />
-        <Label Grid.Column="0" Grid.Row="1" Content="{Binding CountClicks}" Margin="5"/>
+        <Label Grid.Column="0" Grid.Row="0" Content="{Binding DemoModel.StringValue}" Margin="5" Width="{Binding ElementName=myTB,Path=Width}"/>
+        <TextBox Name="myTB" Grid.Column="1" Grid.Row="0" MaxLength="20"  Text="{Binding DemoModel.StringValue, UpdateSourceTrigger=PropertyChanged}" Width="200" IsEnabled="{Binding DemoModel.BoolValue}" VerticalContentAlignment="Center" />
+        <Label Grid.Column="0" Grid.Row="1" Content="{Binding DemoModel.IntValue}" Margin="5"/>
         <Button Grid.Column="1" Grid.Row="1" Width="100" Height="30" Margin="5" HorizontalAlignment="Left" Content="Click Me" Command="{Binding ClickCmd}" />
 
     </Grid>

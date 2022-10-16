@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,50 @@ namespace MVVM_Walkthrough
         int IntValue { get; set; }
         bool BoolValue { get; set; }
     }
-    public class DemoModel : IDemoModel
+    internal sealed class DemoModel : NotifyPropertyChanged, IDemoModel
     {
-        public string StringValue { get; set; } = "A string";
-        public int IntValue { get; set; } = 10;
-        public bool BoolValue { get; set; } = false;
+        #region CTor
+        public DemoModel()
+        {
+            StringValue = "A String";
+            IntValue = 0;
+            BoolValue = false;
+        }
+        #endregion
+        #region Properties
+        public string StringValue
+        {
+            get
+            {
+                return GetPropertyValue<string>();
+            }
+            set
+            {
+                SetPropertyValue<string>(value);
+            }
+        }
+        public int IntValue
+        {
+            get
+            {
+                return GetPropertyValue<int>();
+            }
+            set
+            {
+                SetPropertyValue<int>(value);
+            }
+        }
+        public bool BoolValue
+        {
+            get
+            {
+                return GetPropertyValue<bool>();
+            }
+            set
+            {
+                SetPropertyValue<bool>(value);
+            }
+        } 
+        #endregion
     }
 }

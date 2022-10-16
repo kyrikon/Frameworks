@@ -8,41 +8,9 @@ using System.Threading.Tasks;
 
 namespace MVVM_Walkthrough
 {
-    sealed internal class MainWindowVM : NotifyPropertyChanged
+    sealed internal class MainWindowVM 
     {
-        public string SomeText
-        {
-            get
-            {
-                return GetPropertyValue<string>();
-            }
-            set
-            {
-                SetPropertyValue<string>(value);
-            }
-        }
-        public int CountClicks
-        {
-            get
-            {
-                return GetPropertyValue<int>();
-            }
-            set
-            {
-                SetPropertyValue<int>(value);
-            }
-        }
-        public bool IsTBEnabled
-        {
-            get
-            {
-                return GetPropertyValue<bool>();
-            }
-            set
-            {
-                SetPropertyValue<bool>(value);
-            }
-        }
+        public IDemoModel DemoModel { get; private set; }
         public DelegateCommand ClickCmd
         {
             get;
@@ -50,13 +18,11 @@ namespace MVVM_Walkthrough
         }
         public MainWindowVM(IDemoModel Model)
         {
-            SomeText = Model.StringValue;
-            CountClicks = Model.IntValue;
-            IsTBEnabled = Model.BoolValue;
+            DemoModel = Model;
             ClickCmd = new DelegateCommand(delegate (object o)
             {
-                CountClicks++;
-                IsTBEnabled = !IsTBEnabled;
+                DemoModel.IntValue++;
+                DemoModel.BoolValue = !DemoModel.BoolValue;
 
             });
         }
