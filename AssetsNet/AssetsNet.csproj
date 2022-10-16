@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentWPF, Version=0.10.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\NuGetPackages\FluentWPF.0.10.2\lib\net45\FluentWPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -142,6 +145,9 @@
   <ItemGroup>
     <Resource Include="Images\DarkTheme\ic_arrow_drop_down_white_18dp.png" />
     <Resource Include="Images\DarkTheme\ic_arrow_drop_up_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

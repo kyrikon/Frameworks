@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentWPF" Version="0.10.2" />
     <PackageReference Include="NETStandard.Library.Extensions.EntityFrameworkCore" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
