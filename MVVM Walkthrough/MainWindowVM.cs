@@ -16,16 +16,29 @@ namespace MVVM_Walkthrough
             get;
             private set;
         }
+        public DelegateCommand ClickCmd2
+        {
+            get;
+            private set;
+        }
         public MainWindowVM(IDemoModel Model)
         {
             DemoModel = Model;
             ClickCmd = new DelegateCommand(delegate (object o)
             {
-                DemoModel.IntValue++;
-                DemoModel.BoolValue = !DemoModel.BoolValue;
+               
+                //DemoModel.BoolValue = !DemoModel.BoolValue;
+                DemoModel.calculateFib();
+
+            });
+            ClickCmd2 = new DelegateCommand(delegate (object o)
+            {
+               
+                DemoModel.BoolValue2 = !DemoModel.BoolValue2;
 
             });
         }
+        
        
     }
 }
