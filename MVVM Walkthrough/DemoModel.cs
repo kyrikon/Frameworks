@@ -123,14 +123,10 @@ namespace MVVM_Walkthrough
             {
                 Fib[i] = Fib[i - 2] + Fib[i - 1];
             }
-            for(int i = 0;i < Fib.Length; i++)
+            for(int i = Fib.Length - numRows;i < Fib.Length; i++)
             {
-                if(i >= Fib.Length - numRows)
-                {
-                    RsltValue += Fib[i];
-                }
-            }
-           
+                 RsltValue += Fib[i];
+            }           
             
         }
         #endregion
